@@ -1,0 +1,19 @@
+---
+import Icon from './Icon.astro';
+import { finalCta } from '../content/copy';
+---
+
+<section class="bg-accent-700 py-16 sm:py-20">
+  <div class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+    <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{finalCta.title}</h2>
+    <p class="mt-4 text-lg text-accent-50">{finalCta.subtitle}</p>
+    <a
+      href={finalCta.cta.href}
+      data-track="cta_final"
+      class="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 text-base font-semibold text-accent-700 shadow-soft transition-colors hover:bg-accent-50"
+    >
+      {finalCta.cta.label}
+      <Icon name="arrow-right" class="h-5 w-5" />
+    </a>
+  </div>
+</section>

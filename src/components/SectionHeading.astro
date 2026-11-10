@@ -1,0 +1,21 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  align?: 'center' | 'left';
+}
+
+const { eyebrow, title, description, align = 'center' } = Astro.props;
+const alignClass = align === 'center' ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl';
+---
+
+<div class={`${alignClass} reveal`}>
+  {
+    eyebrow && (
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-600">{eyebrow}</p>
+    )
+  }
+  <h2 class="text-3xl font-bold tracking-tight text-ink-900 sm:text-4xl">{title}</h2>
+  {description && <p class="mt-4 text-lg text-ink-600">{description}</p>}
+</div>

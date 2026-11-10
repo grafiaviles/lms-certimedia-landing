@@ -1,0 +1,300 @@
+---
+import { contactForm } from '../content/copy';
+
+// Endpoint del formulario, resuelto en build time desde la variable de entorno.
+// Vacío = envío simulado (modo desarrollo). Ver README y .env.example.
+const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+---
+
+<section id="contacto" class="bg-white py-16 sm:py-24">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <div class="reveal text-center">
+      <p class="mb-3 text-sm font-semibold uppercase tracking-wide text-accent-600">
+        {contactForm.eyebrow}
+      </p>
+      <h2 class="text-3xl font-bold tracking-tight text-ink-900 sm:text-4xl">
+        {contactForm.title}
+      </h2>
+      <p class="mt-4 text-lg text-ink-600">{contactForm.description}</p>
+      <p class="mt-2 text-sm font-medium text-accent-700">{contactForm.disclaimer}</p>
+    </div>
+
+    <div class="reveal mt-10 rounded-card border border-ink-200 bg-white p-6 shadow-soft sm:p-8">
+      <form id="contact-form" novalidate>
+        <!-- Honeypot anti-spam: oculto para personas, visible para bots que autocompletan todo.
+             clip-path en vez de left:-9999px para no generar overflow horizontal en la página. -->
+        <div
+          class="absolute h-px w-px overflow-hidden whitespace-nowrap"
+          style="clip-path: inset(50%)"
+          aria-hidden="true"
+        >
+          <label for="company_website">No completar este campo</label>
+          <input
+            type="text"
+            id="company_website"
+            name="company_website"
+            tabindex="-1"
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <div>
+            <label for="name" class="block text-sm font-medium text-ink-700">Nombre *</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              autocomplete="name"
+              class="mt-1.5 block w-full rounded-lg border border-ink-200 px-3.5 py-2.5 text-ink-900 placeholder:text-ink-400 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
+              aria-describedby="name-error"
+            />
+            <p id="name-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-medium text-ink-700">
+              Correo corporativo *
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              autocomplete="email"
+              class="mt-1.5 block w-full rounded-lg border border-ink-200 px-3.5 py-2.5 text-ink-900 placeholder:text-ink-400 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
+              aria-describedby="email-error"
+            />
+            <p id="email-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+          </div>
+
+          <div>
+            <label for="phone" class="block text-sm font-medium text-ink-700">
+              Teléfono / WhatsApp *
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              required
+              inputmode="tel"
+              autocomplete="tel"
+              placeholder="+56 9 1234 5678"
+              class="mt-1.5 block w-full rounded-lg border border-ink-200 px-3.5 py-2.5 text-ink-900 placeholder:text-ink-400 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
+              aria-describedby="phone-error"
+            />
+            <p id="phone-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+          </div>
+
+          <div>
+            <label for="otec" class="block text-sm font-medium text-ink-700">
+              Nombre de la OTEC *
+            </label>
+            <input
+              type="text"
+              id="otec"
+              name="otec"
+              required
+              autocomplete="organization"
+              class="mt-1.5 block w-full rounded-lg border border-ink-200 px-3.5 py-2.5 text-ink-900 placeholder:text-ink-400 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
+              aria-describedby="otec-error"
+            />
+            <p id="otec-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="volume" class="block text-sm font-medium text-ink-700">
+              Cantidad aproximada de cursos o alumnos al año *
+            </label>
+            <select
+              id="volume"
+              name="volume"
+              required
+              class="mt-1.5 block w-full rounded-lg border border-ink-200 bg-white px-3.5 py-2.5 text-ink-900 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
+              aria-describedby="volume-error"
+            >
+              {
+                contactForm.volumeOptions.map((option) => (
+                  <option value={option.value}>{option.label}</option>
+                ))
+              }
+            </select>
+            <p id="volume-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="message" class="block text-sm font-medium text-ink-700">
+              Mensaje (opcional)
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="3"
+              class="mt-1.5 block w-full rounded-lg border border-ink-200 px-3.5 py-2.5 text-ink-900 placeholder:text-ink-400 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
+            ></textarea>
+          </div>
+        </div>
+
+        <div
+          id="form-banner"
+          class="mt-5 hidden rounded-lg px-4 py-3 text-sm"
+          role="status"
+          aria-live="polite"
+        >
+        </div>
+
+        <button
+          type="submit"
+          id="submit-button"
+          data-track="form_submit"
+          class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3.5 text-base font-semibold text-white shadow-soft transition-colors hover:bg-accent-700 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          <span id="submit-label">{contactForm.submitLabel}</span>
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ states: contactForm.states, FORM_ENDPOINT: formEndpoint }}>
+  (function () {
+    const form = document.getElementById('contact-form');
+    const banner = document.getElementById('form-banner');
+    const submitButton = document.getElementById('submit-button');
+    const submitLabel = document.getElementById('submit-label');
+    if (!form || !banner || !submitButton || !submitLabel) return;
+
+    const originalLabel = submitLabel.textContent;
+
+    const fields = {
+      name: { el: document.getElementById('name'), errorEl: document.getElementById('name-error') },
+      email: { el: document.getElementById('email'), errorEl: document.getElementById('email-error') },
+      phone: { el: document.getElementById('phone'), errorEl: document.getElementById('phone-error') },
+      otec: { el: document.getElementById('otec'), errorEl: document.getElementById('otec-error') },
+      volume: { el: document.getElementById('volume'), errorEl: document.getElementById('volume-error') },
+    };
+
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const PHONE_RE = /^[0-9+()\s-]{8,}$/;
+
+    function setFieldError(field, message) {
+      field.el.classList.toggle('border-red-400', Boolean(message));
+      field.el.setAttribute('aria-invalid', message ? 'true' : 'false');
+      field.errorEl.textContent = message || '';
+      field.errorEl.classList.toggle('hidden', !message);
+    }
+
+    function validate() {
+      let valid = true;
+
+      if (!fields.name.el.value.trim()) {
+        setFieldError(fields.name, 'Ingresa tu nombre.');
+        valid = false;
+      } else {
+        setFieldError(fields.name, '');
+      }
+
+      if (!EMAIL_RE.test(fields.email.el.value.trim())) {
+        setFieldError(fields.email, 'Ingresa un correo válido.');
+        valid = false;
+      } else {
+        setFieldError(fields.email, '');
+      }
+
+      if (!PHONE_RE.test(fields.phone.el.value.trim())) {
+        setFieldError(fields.phone, 'Ingresa un teléfono válido.');
+        valid = false;
+      } else {
+        setFieldError(fields.phone, '');
+      }
+
+      if (!fields.otec.el.value.trim()) {
+        setFieldError(fields.otec, 'Ingresa el nombre de tu OTEC.');
+        valid = false;
+      } else {
+        setFieldError(fields.otec, '');
+      }
+
+      if (!fields.volume.el.value) {
+        setFieldError(fields.volume, 'Selecciona un rango.');
+        valid = false;
+      } else {
+        setFieldError(fields.volume, '');
+      }
+
+      return valid;
+    }
+
+    function showBanner(kind, message) {
+      banner.textContent = message;
+      banner.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-accent-50', 'text-accent-700');
+      if (kind === 'success') {
+        banner.classList.add('bg-accent-50', 'text-accent-700');
+      } else {
+        banner.classList.add('bg-red-50', 'text-red-700');
+      }
+    }
+
+    function setLoading(isLoading) {
+      submitButton.disabled = isLoading;
+      submitLabel.textContent = isLoading ? states.loading : originalLabel;
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      banner.classList.add('hidden');
+
+      // Honeypot: si un bot completó este campo, se descarta el envío en silencio.
+      const honeypot = document.getElementById('company_website');
+      if (honeypot && honeypot.value) {
+        showBanner('success', states.success);
+        form.reset();
+        return;
+      }
+
+      if (!validate()) {
+        return;
+      }
+
+      const payload = {
+        name: fields.name.el.value.trim(),
+        email: fields.email.el.value.trim(),
+        phone: fields.phone.el.value.trim(),
+        otec: fields.otec.el.value.trim(),
+        volume: fields.volume.el.value,
+        message: document.getElementById('message').value.trim(),
+        source: 'landing-lms-certimedia',
+      };
+
+      setLoading(true);
+
+      try {
+        if (!FORM_ENDPOINT) {
+          // Sin endpoint configurado: simulamos un envío exitoso (modo desarrollo).
+          await new Promise((resolve) => setTimeout(resolve, 600));
+          console.info('[contact-form] PUBLIC_FORM_ENDPOINT no configurado: envío simulado.', payload);
+        } else {
+          const response = await fetch(FORM_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          if (!response.ok) {
+            throw new Error(`Respuesta no válida del servidor (${response.status})`);
+          }
+        }
+
+        showBanner('success', states.success);
+        form.reset();
+        window.trackEvent?.('form_submit_success', { form: 'contacto' });
+      } catch (error) {
+        console.error('[contact-form] Error al enviar el formulario', error);
+        showBanner('error', states.error);
+        window.trackEvent?.('form_submit_error', { form: 'contacto' });
+      } finally {
+        setLoading(false);
+      }
+    });
+  })();
+</script>

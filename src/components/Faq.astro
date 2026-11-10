@@ -1,0 +1,60 @@
+---
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import { faq } from '../content/copy';
+---
+
+<section id="faq" class="bg-white py-16 sm:py-24">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <SectionHeading eyebrow={faq.eyebrow} title={faq.title} />
+
+    <div class="reveal mt-10 divide-y divide-ink-200 rounded-card border border-ink-200">
+      {
+        faq.items.map((item, i) => (
+          <div class="faq-item">
+            <h3>
+              <button
+                type="button"
+                class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold text-ink-900 sm:px-6"
+                aria-expanded="false"
+                aria-controls={`faq-panel-${i}`}
+                data-faq-trigger
+              >
+                <span>{item.question}</span>
+                <span data-faq-icon class="shrink-0 text-ink-500 transition-transform duration-200">
+                  <Icon name="chevron-down" class="h-5 w-5" />
+                </span>
+              </button>
+            </h3>
+            <div
+              id={`faq-panel-${i}`}
+              class="hidden px-5 pb-4 text-sm leading-relaxed text-ink-600 sm:px-6"
+              data-faq-panel
+            >
+              {item.answer}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    const triggers = document.querySelectorAll('[data-faq-trigger]');
+
+    triggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const panelId = trigger.getAttribute('aria-controls');
+        const panel = panelId ? document.getElementById(panelId) : null;
+        const icon = trigger.querySelector('[data-faq-icon]');
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+
+        trigger.setAttribute('aria-expanded', String(!isOpen));
+        panel?.classList.toggle('hidden', isOpen);
+        icon?.classList.toggle('rotate-180', !isOpen);
+      });
+    });
+  })();
+</script>

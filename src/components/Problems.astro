@@ -1,0 +1,36 @@
+---
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import { problems } from '../content/copy';
+---
+
+<section id="problemas" class="bg-ink-50 py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <SectionHeading
+      eyebrow="Problemas que resuelve"
+      title="Lo que hoy te quita tiempo y te genera riesgo"
+      description="Cada tarjeta parte del problema real de tu OTEC y termina en cómo lo resuelve el LMS Certimedia."
+    />
+
+    <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        problems.map((item, i) => (
+          <article
+            class="reveal flex flex-col rounded-card border border-ink-200 bg-white p-6 shadow-softer transition-shadow hover:shadow-soft"
+            style={`transition-delay: ${Math.min(i, 5) * 60}ms`}
+          >
+            <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent-50">
+              <Icon name={item.icon} class="h-6 w-6 text-accent-600" />
+            </div>
+            <p class="text-sm font-semibold text-ink-900">{item.pain}</p>
+            <p class="mb-1.5 mt-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-accent-600">
+              <Icon name="arrow-right" class="h-3.5 w-3.5" />
+              Cómo lo resuelve el LMS
+            </p>
+            <p class="text-sm leading-relaxed text-ink-600">{item.solution}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

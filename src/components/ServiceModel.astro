@@ -1,0 +1,31 @@
+---
+import Icon from './Icon.astro';
+import SectionHeading from './SectionHeading.astro';
+import { serviceModel } from '../content/copy';
+
+const icons = ['settings', 'shield-check'] as const;
+---
+
+<section class="bg-white py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <SectionHeading eyebrow={serviceModel.eyebrow} title={serviceModel.title} />
+
+    <div class="mx-auto mt-12 grid max-w-3xl grid-cols-1 gap-6 sm:grid-cols-2">
+      {
+        serviceModel.options.map((option, i) => (
+          <div class="reveal rounded-card border border-ink-200 p-7" style={`transition-delay: ${i * 80}ms`}>
+            <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent-50">
+              <Icon name={icons[i]} class="h-6 w-6 text-accent-600" />
+            </div>
+            <h3 class="text-lg font-semibold text-ink-900">{option.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink-600">{option.description}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="reveal mx-auto mt-8 max-w-3xl text-center text-base font-medium text-ink-700">
+      {serviceModel.closing}
+    </p>
+  </div>
+</section>

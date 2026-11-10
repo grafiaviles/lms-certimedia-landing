@@ -1,0 +1,84 @@
+---
+import '../styles/global.css';
+import { site } from '../content/copy';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? site.url);
+
+// JSON-LD Organization: solo datos reales entregados en el brief (sin métricas ni certificaciones inventadas).
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.company,
+  url: site.url,
+  email: site.email,
+  telephone: site.phone,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Providencia',
+    addressRegion: 'Región Metropolitana',
+    addressCountry: 'CL',
+  },
+};
+---
+
+<!doctype html>
+<html lang="es-CL" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:locale" content="es_CL" />
+    <meta property="og:site_name" content={site.name} />
+    <!-- TODO(marketing): agregar og:image (1200x630) con una pieza gráfica real de marca. -->
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- TODO(marketing): sumar favicon.ico / apple-touch-icon para navegadores que no soportan SVG. -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} />
+
+    <script is:inline>
+      // Progressive enhancement: con JS disponible, habilitamos las animaciones de reveal.
+      document.documentElement.classList.remove('no-js');
+
+      // Stub de analítica: dataLayer + trackEvent, sin cargar scripts de terceros por defecto.
+      // Conectar un proveedor (GA4, GTM, etc.) solo empuja a este mismo array.
+      window.dataLayer = window.dataLayer || [];
+      window.trackEvent = function trackEvent(name, params) {
+        window.dataLayer.push({ event: name, ...params });
+      };
+    </script>
+  </head>
+  <body class="font-sans antialiased">
+    <slot />
+    <script>
+      import '../scripts/reveal.js';
+      import '../scripts/analytics.js';
+    </script>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+---
+import Icon from './Icon.astro';
+import DashboardMockup from './DashboardMockup.astro';
+import { hero } from '../content/copy';
+---
+
+<section id="top" class="relative overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-24">
+  <div
+    class="pointer-events-none absolute -top-24 right-[-10%] h-[28rem] w-[28rem] rounded-full bg-accent-100/70 blur-3xl"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div class="relative z-10 text-center lg:text-left">
+        <p
+          class="mb-4 inline-flex items-center rounded-full bg-accent-50 px-3.5 py-1 text-sm font-medium text-accent-700"
+        >
+          {hero.eyebrow}
+        </p>
+        <h1
+          class="text-4xl font-bold tracking-tight text-ink-900 sm:text-5xl lg:text-[3.25rem] lg:leading-[1.08]"
+        >
+          {hero.title}
+        </h1>
+        <p class="mx-auto mt-5 max-w-xl text-lg text-ink-600 lg:mx-0">
+          {hero.subtitle}
+        </p>
+
+        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+          <a
+            href={hero.ctaPrimary.href}
+            data-track="cta_hero_primary"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3.5 text-base font-semibold text-white shadow-soft transition-colors hover:bg-accent-700 sm:w-auto"
+          >
+            {hero.ctaPrimary.label}
+            <Icon name="arrow-right" class="h-5 w-5" />
+          </a>
+          <a
+            href={hero.ctaSecondary.href}
+            data-track="cta_hero_secondary"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-ink-200 bg-white px-6 py-3.5 text-base font-semibold text-ink-700 transition-colors hover:border-accent-300 hover:text-accent-700 sm:w-auto"
+          >
+            <Icon name="play" class="h-4 w-4" />
+            {hero.ctaSecondary.label}
+          </a>
+        </div>
+      </div>
+
+      <div class="relative z-10 reveal">
+        <DashboardMockup />
+      </div>
+    </div>
+  </div>
+</section>
