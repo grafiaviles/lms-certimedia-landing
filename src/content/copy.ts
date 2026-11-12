@@ -37,19 +37,6 @@ export const hero = {
     'El LMS Certimedia centraliza tus cursos, asistencia y certificación, con alertas que te avisan antes de cada fecha crítica de la franquicia SENCE.',
   ctaPrimary: { label: 'Agenda una demo gratis', href: '#contacto' },
   ctaSecondary: { label: 'Ver cómo funciona', href: '#como-funciona' },
-  people: {
-    // Iniciales de la data demo de la plataforma (no son testimonios ni clientes reales),
-    // solo para dar rostro humano al hero.
-    avatars: [
-      { initials: 'CR', tone: 'blue' },
-      { initials: 'DM', tone: 'teal' },
-      { initials: 'VS', tone: 'amber' },
-      { initials: 'JV', tone: 'rose' },
-      { initials: 'TR', tone: 'violet' },
-    ],
-    caption:
-      'Pensado para las personas que capacitas: tus alumnos y los equipos de tus clientes.',
-  },
 };
 
 export const credibility = [
