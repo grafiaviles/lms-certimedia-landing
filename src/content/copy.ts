@@ -120,7 +120,7 @@ export const problems = [
 
 export const solution = {
   eyebrow: 'La solución',
-  title: 'Una plataforma, dos aplicaciones',
+  title: 'Una plataforma, dos experiencias',
   // SEO: única mención de la frase clave en el cuerpo de la página.
   description:
     'Un LMS para OTEC con integración SENCE, en dos aplicaciones que trabajan juntas: Campus y Control.',
