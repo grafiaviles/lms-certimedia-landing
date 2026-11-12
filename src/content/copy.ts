@@ -249,12 +249,21 @@ export const contactForm = {
     'Cuéntanos de tu OTEC y te contactamos para coordinar una demo o asesoría gratuita de 1 hora.',
   disclaimer: 'Sin costo, sin compromiso.',
   submitLabel: 'Agenda una demo gratis',
-  volumeOptions: [
+  cursosOptions: [
     { value: '', label: 'Selecciona un rango' },
-    { value: '1-10', label: '1 a 10 cursos o alumnos al año' },
-    { value: '11-50', label: '11 a 50 cursos o alumnos al año' },
-    { value: '51-200', label: '51 a 200 cursos o alumnos al año' },
-    { value: '200+', label: 'Más de 200 cursos o alumnos al año' },
+    { value: '1-5', label: '1 a 5' },
+    { value: '6-20', label: '6 a 20' },
+    { value: '21-50', label: '21 a 50' },
+    { value: '50+', label: 'Más de 50' },
+    { value: 'no-se', label: 'Aún no lo sé' },
+  ],
+  personasOptions: [
+    { value: '', label: 'Selecciona un rango' },
+    { value: '<100', label: 'Menos de 100' },
+    { value: '100-500', label: '100 a 500' },
+    { value: '501-1000', label: '501 a 1.000' },
+    { value: '1000+', label: 'Más de 1.000' },
+    { value: 'no-se', label: 'Aún no lo sé' },
   ],
   states: {
     loading: 'Enviando...',

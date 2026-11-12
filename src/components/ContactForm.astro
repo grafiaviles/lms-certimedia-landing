@@ -103,24 +103,44 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
             <p id="otec-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
           </div>
 
-          <div class="sm:col-span-2">
-            <label for="volume" class="block text-sm font-medium text-ink-700">
-              Cantidad aproximada de cursos o alumnos al año *
+          <div>
+            <label for="cursos_anio" class="block text-sm font-medium text-ink-700">
+              Cursos que dictas al año *
             </label>
             <select
-              id="volume"
-              name="volume"
+              id="cursos_anio"
+              name="cursos_anio"
               required
               class="mt-1.5 block w-full rounded-lg border border-ink-200 bg-white px-3.5 py-2.5 text-ink-900 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
-              aria-describedby="volume-error"
+              aria-describedby="cursos_anio-error"
             >
               {
-                contactForm.volumeOptions.map((option) => (
+                contactForm.cursosOptions.map((option) => (
                   <option value={option.value}>{option.label}</option>
                 ))
               }
             </select>
-            <p id="volume-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+            <p id="cursos_anio-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+          </div>
+
+          <div>
+            <label for="personas_anio" class="block text-sm font-medium text-ink-700">
+              Personas que capacitas al año *
+            </label>
+            <select
+              id="personas_anio"
+              name="personas_anio"
+              required
+              class="mt-1.5 block w-full rounded-lg border border-ink-200 bg-white px-3.5 py-2.5 text-ink-900 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
+              aria-describedby="personas_anio-error"
+            >
+              {
+                contactForm.personasOptions.map((option) => (
+                  <option value={option.value}>{option.label}</option>
+                ))
+              }
+            </select>
+            <p id="personas_anio-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
           </div>
 
           <div class="sm:col-span-2">
@@ -172,7 +192,14 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
       email: { el: document.getElementById('email'), errorEl: document.getElementById('email-error') },
       phone: { el: document.getElementById('phone'), errorEl: document.getElementById('phone-error') },
       otec: { el: document.getElementById('otec'), errorEl: document.getElementById('otec-error') },
-      volume: { el: document.getElementById('volume'), errorEl: document.getElementById('volume-error') },
+      cursos_anio: {
+        el: document.getElementById('cursos_anio'),
+        errorEl: document.getElementById('cursos_anio-error'),
+      },
+      personas_anio: {
+        el: document.getElementById('personas_anio'),
+        errorEl: document.getElementById('personas_anio-error'),
+      },
     };
 
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -216,11 +243,18 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
         setFieldError(fields.otec, '');
       }
 
-      if (!fields.volume.el.value) {
-        setFieldError(fields.volume, 'Selecciona un rango.');
+      if (!fields.cursos_anio.el.value) {
+        setFieldError(fields.cursos_anio, 'Selecciona un rango.');
         valid = false;
       } else {
-        setFieldError(fields.volume, '');
+        setFieldError(fields.cursos_anio, '');
+      }
+
+      if (!fields.personas_anio.el.value) {
+        setFieldError(fields.personas_anio, 'Selecciona un rango.');
+        valid = false;
+      } else {
+        setFieldError(fields.personas_anio, '');
       }
 
       return valid;
@@ -262,9 +296,10 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
         email: fields.email.el.value.trim(),
         phone: fields.phone.el.value.trim(),
         otec: fields.otec.el.value.trim(),
-        volume: fields.volume.el.value,
+        cursos_anio: fields.cursos_anio.el.value,
+        personas_anio: fields.personas_anio.el.value,
         message: document.getElementById('message').value.trim(),
-        source: 'landing-lms-certimedia',
+        source: 'landing-certimedia',
       };
 
       setLoading(true);
