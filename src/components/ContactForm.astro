@@ -177,7 +177,7 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
   </div>
 </section>
 
-<script define:vars={{ states: contactForm.states, FORM_ENDPOINT: formEndpoint }}>
+<script define:vars={{ states: contactForm.states, FORM_ENDPOINT: formEndpoint, delivery: contactForm.delivery }}>
   (function () {
     const form = document.getElementById('contact-form');
     const banner = document.getElementById('form-banner');
@@ -300,6 +300,11 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
         personas_anio: fields.personas_anio.el.value,
         message: document.getElementById('message').value.trim(),
         source: 'landing-certimedia',
+        // Campos de control de FormSubmit (ignorados por otros endpoints).
+        _cc: delivery.cc,
+        _subject: delivery.subject,
+        _template: 'table',
+        _captcha: 'false',
       };
 
       setLoading(true);

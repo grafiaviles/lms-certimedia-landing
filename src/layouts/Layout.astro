@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { site } from '../content/copy';
+import { asset } from '../lib/asset';
 
 interface Props {
   title?: string;
@@ -50,7 +51,7 @@ const organizationJsonLd = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
     <!-- TODO(marketing): sumar favicon.ico / apple-touch-icon para navegadores que no soportan SVG. -->
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />

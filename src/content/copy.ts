@@ -271,6 +271,12 @@ export const contactForm = {
     error:
       'No pudimos enviar tu solicitud. Inténtalo nuevamente o escríbenos directamente a caviles@certimedia.cl.',
   },
+  // Entrega vía FormSubmit. El destinatario principal va en PUBLIC_FORM_ENDPOINT
+  // (formsubmit.co/ajax/<correo>); aquí la copia (CC) y el asunto del correo.
+  delivery: {
+    cc: 'clopez@certimedia.cl',
+    subject: 'Nueva solicitud de demo · landing Certimedia',
+  },
 };
 
 export const faq = {

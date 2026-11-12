@@ -2,11 +2,15 @@ import { defineConfig } from 'astro/config';
 import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 
-// TODO: reemplazar por el dominio real de producción antes de desplegar.
-const SITE_URL = 'https://www.certimedia.tech';
+// Dominio y base configurables por entorno.
+// - Producción (certimedia.tech): valores por defecto, en la raíz.
+// - GitHub Pages (proyecto): el workflow define SITE_URL y BASE_PATH (subcarpeta).
+const SITE = process.env.SITE_URL || 'https://www.certimedia.tech';
+const BASE = process.env.BASE_PATH || undefined;
 
 export default defineConfig({
-  site: SITE_URL,
+  site: SITE,
+  base: BASE,
   integrations: [
     tailwind({ applyBaseStyles: false }),
     sitemap(),

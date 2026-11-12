@@ -3,6 +3,7 @@ import Icon from './Icon.astro';
 import Illustration from './Illustration.astro';
 import SectionHeading from './SectionHeading.astro';
 import { solution } from '../content/copy';
+import { asset } from '../lib/asset';
 
 // Los placeholders de captura solo se muestran en desarrollo.
 const showPlaceholders = import.meta.env.DEV;
@@ -79,7 +80,7 @@ const showPlaceholders = import.meta.env.DEV;
                     )}
 
                     <img
-                      src={block.image}
+                      src={asset(block.image)}
                       alt={block.imageAlt}
                       width={block.imageWidth}
                       height={block.imageHeight}
