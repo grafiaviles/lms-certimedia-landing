@@ -1,17 +1,24 @@
-// Contenido textual centralizado de la landing "LMS Certimedia".
+// Contenido textual centralizado de la landing de Certimedia.
 // Editar el copy aquí no requiere tocar el layout de ningún componente.
 
 export const site = {
-  name: 'LMS Certimedia',
+  name: 'Certimedia',
   company: 'Certimedia Technologies SpA',
   url: 'https://www.certimedia.tech',
   email: 'caviles@certimedia.cl',
   phone: '+56 9 9381 9841',
   phoneHref: '+56993819841',
   address: 'Providencia, Santiago, Chile',
-  title: 'LMS para OTEC con integración SENCE | LMS Certimedia',
+  // SEO: mantener la frase "LMS para OTEC con integración SENCE" en title/meta/OG.
+  title: 'LMS para OTEC con integración SENCE | Certimedia',
   description:
-    'Plataforma de aprendizaje gestionada para OTECs chilenas: gestión proactiva SENCE, asistencia auditable, dashboard multi-empresa y diplomas automáticos. Agenda una demo gratis.',
+    'Plataforma de aprendizaje gestionada para OTECs chilenas: gestión proactiva SENCE, asistencia auditable, dashboard multi-empresa y diplomas automáticos. Agenda una asesoría gratis.',
+};
+
+// Nombres de las dos aplicaciones de la plataforma (editables sin tocar componentes).
+export const productNames = {
+  campus: 'Campus',
+  control: 'Control',
 };
 
 export const nav = {
@@ -31,12 +38,13 @@ export const nav = {
 };
 
 export const hero = {
-  eyebrow: 'LMS gestionado para OTECs',
+  eyebrow: 'Plataforma de operación para OTECs',
   title: 'Menos carga operativa. Más tiempo para vender cursos.',
   subtitle:
-    'El LMS Certimedia centraliza tus cursos, asistencia y certificación, con alertas que te avisan antes de cada fecha crítica de la franquicia SENCE.',
-  ctaPrimary: { label: 'Agenda una demo gratis', href: '#contacto' },
+    'Tus alumnos aprenden en tu campus. Tu equipo gestiona cohortes, empresas y reportería SENCE desde un solo panel. Todo con tu marca, operando en 1 a 2 semanas.',
+  ctaPrimary: { label: 'Agenda tu asesoría gratis', href: '#contacto' },
   ctaSecondary: { label: 'Ver cómo funciona', href: '#como-funciona' },
+  microcopy: '1 hora, sin costo y sin compromiso.',
 };
 
 export const credibility = [
@@ -50,7 +58,7 @@ export const problemsSection = {
   eyebrow: 'Problemas que resuelve',
   title: 'Lo que hoy te quita tiempo y te genera riesgo',
   description:
-    'Elige un dolor de tu día a día y mira cómo lo resuelve el LMS Certimedia.',
+    'Elige un dolor de tu día a día y mira cómo lo resuelve la plataforma.',
 };
 
 export const problems = [
@@ -112,57 +120,49 @@ export const problems = [
 
 export const solution = {
   eyebrow: 'La solución',
-  title: 'Un LMS pensado para cómo opera una OTEC chilena',
+  title: 'Una plataforma, dos aplicaciones',
+  // SEO: única mención de la frase clave en el cuerpo de la página.
+  description:
+    'Un LMS para OTEC con integración SENCE, en dos aplicaciones que trabajan juntas: Campus y Control.',
   blocks: [
     {
-      title: 'Integración SENCE',
+      app: productNames.campus,
+      tagline: 'Aprendizaje',
       description:
-        'Gestión proactiva de los plazos y las Declaraciones Juradas de la franquicia SENCE, con alertas antes de cada fecha crítica.',
+        'Tus alumnos toman tus cursos y, al finalizar, reciben diplomas en PDF automáticos e insignias digitales verificables (Open Badges), con flujos de correo automáticos.',
       bullets: [
-        'Alertas antes de cada fecha crítica',
-        'Gestión proactiva de Declaraciones Juradas',
-      ],
-      icon: 'sence',
-      image: '/solucion-sence.webp',
-      imageWidth: 2000,
-      imageHeight: 821,
-      imageAlt:
-        'Panel de reportes y trazabilidad del LMS Certimedia con cumplimiento SENCE, asistencia y alertas de cierre.',
-    },
-    {
-      title: 'Dashboard y reportería',
-      description:
-        'Reportes de asistencia y avance listos para fiscalización, con acceso multi-empresa para que cada cliente vea solo a su equipo.',
-      bullets: [
-        'Asistencia y avance en vivo',
-        'Reportes válidos para fiscalización',
-        'Acceso multi-empresa',
-      ],
-      icon: 'dashboard',
-      image: '/solucion-dashboard.webp',
-      imageWidth: 2000,
-      imageHeight: 884,
-      imageAlt:
-        'Reportería del LMS Certimedia con el avance por módulos, evaluaciones, asistencia SENCE y alertas de cada alumno.',
-    },
-    {
-      title: 'Certificaciones y credenciales',
-      description:
-        'Diplomas en PDF automáticos e insignias digitales verificables (Open Badges) al finalizar cada curso.',
-      bullets: [
+        'Cursos y alumnos en tu campus',
         'Diplomas en PDF automáticos',
         'Insignias Open Badges verificables',
         'Flujos de correo automáticos',
       ],
       icon: 'badge',
-      // TODO(imagen): falta una captura real de un diploma / credencial generado por la plataforma.
-      // Dejar el archivo en public/ como solucion-certificaciones.webp (~2000 px de ancho). Mientras
-      // no exista, este slot muestra un placeholder automáticamente.
-      image: '/solucion-certificaciones.webp',
+      illustration: 'diplomas',
+      image: '/solucion-dashboard.webp',
       imageWidth: 2000,
-      imageHeight: 820,
+      imageHeight: 884,
       imageAlt:
-        'Diploma en PDF e insignia digital verificable generados por el LMS Certimedia.',
+        'Avance de los alumnos por curso en Campus, con evaluaciones y asistencia.',
+    },
+    {
+      app: productNames.control,
+      tagline: 'Gestión y cumplimiento',
+      description:
+        'Tu equipo gestiona cohortes y empresas, y lleva la reportería SENCE (asistencia, Declaración Jurada y reportes para fiscalización) con alertas antes de cada cierre, en un dashboard multi-empresa.',
+      bullets: [
+        'Gestión proactiva de Declaraciones Juradas',
+        'Alertas antes de cada fecha crítica',
+        'Reportes válidos para fiscalización',
+        'Dashboard multi-empresa',
+        'Gestión de cohortes y empresas',
+      ],
+      icon: 'dashboard',
+      illustration: 'visibilidad',
+      image: '/solucion-sence.webp',
+      imageWidth: 2000,
+      imageHeight: 821,
+      imageAlt:
+        'Reportes y trazabilidad en Control, con cumplimiento SENCE, asistencia y alertas de cierre.',
     },
   ],
 };
@@ -201,7 +201,7 @@ export const howItWorks = {
 
 export const serviceModel = {
   eyebrow: 'Modelo de servicio',
-  title: 'Dos formas de operar tu LMS',
+  title: 'Dos formas de operar tu plataforma',
   options: [
     {
       title: 'Autogestionado',
@@ -271,7 +271,7 @@ export const faq = {
     {
       question: '¿Funciona con SENCE?',
       answer:
-        'Sí. El LMS Certimedia incluye gestión proactiva de los plazos y las Declaraciones Juradas de la franquicia SENCE, con alertas antes de cada fecha crítica.',
+        'Sí. Control incluye gestión proactiva de los plazos y las Declaraciones Juradas de la franquicia SENCE, con alertas antes de cada fecha crítica.',
     },
     {
       question: '¿Puedo usar mi propio dominio y marca?',
@@ -313,5 +313,5 @@ export const finalCta = {
 export const footer = {
   cta: { label: 'Agenda una demo gratis', href: '#contacto' },
   description:
-    'LMS gestionado para OTECs chilenas: cumplimiento SENCE, reportería y certificación en una sola plataforma.',
+    'Plataforma de operación para OTECs chilenas: Campus para el aprendizaje y Control para la gestión SENCE, cohortes y reportería.',
 };

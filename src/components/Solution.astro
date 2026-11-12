@@ -4,12 +4,17 @@ import Illustration from './Illustration.astro';
 import SectionHeading from './SectionHeading.astro';
 import { solution } from '../content/copy';
 
-const blockIllustrations = ['plazos', 'visibilidad', 'diplomas'] as const;
+// Los placeholders de captura solo se muestran en desarrollo.
+const showPlaceholders = import.meta.env.DEV;
 ---
 
 <section id="solucion" class="bg-white py-16 sm:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <SectionHeading eyebrow={solution.eyebrow} title={solution.title} />
+    <SectionHeading
+      eyebrow={solution.eyebrow}
+      title={solution.title}
+      description={solution.description}
+    />
 
     <div class="mt-14 flex flex-col gap-16 sm:gap-24">
       {
@@ -24,13 +29,16 @@ const blockIllustrations = ['plazos', 'visibilidad', 'diplomas'] as const;
                     <Icon name={block.icon} class="h-4 w-4" />
                   </span>
                   <span class="text-xs font-semibold uppercase tracking-wide text-accent-700">
-                    Pilar {String(i + 1).padStart(2, '0')}
+                    Aplicación {String(i + 1).padStart(2, '0')}
                   </span>
                 </div>
 
                 <h3 class="text-2xl font-bold tracking-tight text-ink-900 sm:text-3xl">
-                  {block.title}
+                  {block.app}
                 </h3>
+                <p class="mt-1 text-sm font-semibold uppercase tracking-wide text-accent-600">
+                  {block.tagline}
+                </p>
                 <p class="mt-3 text-base leading-relaxed text-ink-600">{block.description}</p>
 
                 <ul class="mt-5 space-y-2.5">
@@ -55,18 +63,20 @@ const blockIllustrations = ['plazos', 'visibilidad', 'diplomas'] as const;
                   </div>
 
                   <div class="relative bg-ink-50">
-                    {/* Placeholder visible hasta que exista la captura real (se oculta al cargar la imagen). */}
-                    <div
-                      class="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center text-ink-400"
-                      data-img-placeholder
-                    >
-                      <Illustration name={blockIllustrations[i]} class="h-20 w-20" />
-                      <p class="px-6 text-xs font-medium">
-                        Captura de la plataforma
-                        <br />
-                        <span class="text-ink-300">(pendiente de subir)</span>
-                      </p>
-                    </div>
+                    {/* Placeholder visible solo en desarrollo; en producción no se renderiza. */}
+                    {showPlaceholders && (
+                      <div
+                        class="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center text-ink-400"
+                        data-img-placeholder
+                      >
+                        <Illustration name={block.illustration} class="h-20 w-20" />
+                        <p class="px-6 text-xs font-medium">
+                          Captura de la plataforma
+                          <br />
+                          <span class="text-ink-300">(pendiente de subir)</span>
+                        </p>
+                      </div>
+                    )}
 
                     <img
                       src={block.image}

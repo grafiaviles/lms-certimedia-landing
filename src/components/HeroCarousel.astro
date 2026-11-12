@@ -6,10 +6,10 @@ import Avatar from './Avatar.astro';
 // Todo HTML/CSS/SVG (sin imágenes externas). Auto-rota, pausa al pasar el mouse/teclado
 // y respeta prefers-reduced-motion.
 const slides = [
-  { id: 'panel', title: 'Panel general' },
-  { id: 'metricas', title: 'Reportes y trazabilidad' },
-  { id: 'sence', title: 'Cumplimiento SENCE' },
-  { id: 'cohorte', title: 'Cohorte y personas' },
+  { id: 'panel', title: 'Control · Panel general' },
+  { id: 'metricas', title: 'Control · Reportes y trazabilidad' },
+  { id: 'sence', title: 'Control · Cumplimiento SENCE' },
+  { id: 'cohorte', title: 'Campus · Cohorte y personas' },
 ];
 
 const cohorte = [
@@ -43,8 +43,11 @@ const cumplimiento = [
       <span class="h-2.5 w-2.5 rounded-full bg-ink-300"></span>
       <span class="h-2.5 w-2.5 rounded-full bg-ink-300"></span>
       <span class="h-2.5 w-2.5 rounded-full bg-ink-300"></span>
-      <span class="ml-2 text-xs font-medium text-ink-500" data-carousel-title>
-        {slides[0].title} · LMS Certimedia
+      <span class="ml-2 flex-1 truncate text-xs font-medium text-ink-500" data-carousel-title>
+        {slides[0].title}
+      </span>
+      <span class="shrink-0 rounded-full bg-ink-200 px-2 py-0.5 text-[10px] font-medium text-ink-500">
+        Datos de ejemplo
       </span>
     </div>
 
@@ -150,7 +153,7 @@ const cumplimiento = [
 
         <div class="rounded-xl border border-accent-200 bg-accent-50 p-3">
           <p class="text-xs leading-relaxed text-accent-800">
-            <span class="font-bold">2 de 6</span> alumnos cumplen hoy el 75% de asistencia · Cierre 23-10-2026
+            <span class="font-bold">2 de 6</span> alumnos cumplen hoy el 75% de asistencia · Cierre en 12 días
           </p>
         </div>
 
@@ -232,10 +235,10 @@ const cumplimiento = [
     const dots = Array.from(root.querySelectorAll('[data-dot]'));
     const titleEl = root.querySelector('[data-carousel-title]');
     const titles = [
-      'Panel general',
-      'Reportes y trazabilidad',
-      'Cumplimiento SENCE',
-      'Cohorte y personas',
+      'Control · Panel general',
+      'Control · Reportes y trazabilidad',
+      'Control · Cumplimiento SENCE',
+      'Campus · Cohorte y personas',
     ];
     if (slides.length === 0) return;
 
@@ -260,7 +263,7 @@ const cumplimiento = [
         dot.classList.toggle('w-2', !active);
         dot.classList.toggle('bg-ink-300', !active);
       });
-      if (titleEl) titleEl.textContent = `${titles[index]} · LMS Certimedia`;
+      if (titleEl) titleEl.textContent = titles[index];
     }
 
     function start() {
