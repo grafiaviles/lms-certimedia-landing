@@ -32,11 +32,24 @@ export const nav = {
 
 export const hero = {
   eyebrow: 'LMS gestionado para OTECs',
-  title: 'Menos carga operativa. Cero sobresaltos con SENCE.',
+  title: 'Menos carga operativa. Más tiempo para vender cursos.',
   subtitle:
     'El LMS Certimedia centraliza tus cursos, asistencia y certificación, con alertas que te avisan antes de cada fecha crítica de la franquicia SENCE.',
   ctaPrimary: { label: 'Agenda una demo gratis', href: '#contacto' },
   ctaSecondary: { label: 'Ver cómo funciona', href: '#como-funciona' },
+  people: {
+    // Iniciales de la data demo de la plataforma (no son testimonios ni clientes reales),
+    // solo para dar rostro humano al hero.
+    avatars: [
+      { initials: 'CR', tone: 'blue' },
+      { initials: 'DM', tone: 'teal' },
+      { initials: 'VS', tone: 'amber' },
+      { initials: 'JV', tone: 'rose' },
+      { initials: 'TR', tone: 'violet' },
+    ],
+    caption:
+      'Pensado para las personas que capacitas: tus alumnos y los equipos de tus clientes.',
+  },
 };
 
 export const credibility = [
@@ -46,42 +59,67 @@ export const credibility = [
   'Soporte del equipo Certimedia',
 ];
 
+export const problemsSection = {
+  eyebrow: 'Problemas que resuelve',
+  title: 'Lo que hoy te quita tiempo y te genera riesgo',
+  description:
+    'Elige un dolor de tu día a día y mira cómo lo resuelve el LMS Certimedia.',
+};
+
 export const problems = [
   {
+    tag: 'Plazos SENCE',
     pain: 'Cerrar a tiempo las Declaraciones Juradas SENCE.',
     solution:
       'Alertas preventivas de cierre: el sistema te avisa antes de cada fecha crítica para que la gestión SENCE sea proactiva, no de último minuto.',
+    result: 'Gestión proactiva SENCE',
     icon: 'bell',
+    illustration: 'plazos',
   },
   {
+    tag: 'Asistencia y fiscalización',
     pain: 'Registro de asistencia manual y fiscalizaciones que exigen respaldo.',
     solution:
       'Asistencia automática y reportes válidos para fiscalización, con historial auditable de cada curso y cada alumno.',
+    result: 'Respaldo auditable',
     icon: 'clipboard-check',
+    illustration: 'asistencia',
   },
   {
+    tag: 'Visibilidad para tus clientes',
     pain: 'Tus clientes (empresas) piden ver el avance de su gente.',
     solution:
       'Dashboard en vivo multi-empresa: cada cliente entra con su propio acceso y ve solo el avance de su equipo.',
+    result: 'Dashboard multi-empresa',
     icon: 'bar-chart',
+    illustration: 'visibilidad',
   },
   {
+    tag: 'Carga operativa',
     pain: 'Tu equipo pierde tiempo cargando cursos y armando cohortes.',
     solution:
       'Operación gestionada: el equipo de Certimedia configura tus cursos y cohortes por ti.',
+    result: 'Operación gestionada',
     icon: 'settings',
+    illustration: 'carga',
   },
   {
+    tag: 'Plataforma y marca',
     pain: 'Plataformas genéricas que se caen o no se ven como tu marca.',
     solution:
       'Servidores dedicados y personalización total: dominio propio, tus logos y tus colores.',
+    result: 'Servidores dedicados y marca propia',
     icon: 'shield-check',
+    illustration: 'plataforma',
   },
   {
+    tag: 'Diplomas y certificados',
     pain: 'Diplomas y certificados hechos a mano.',
     solution:
       'Diplomas en PDF automáticos e insignias digitales verificables (Open Badges), con flujos de correo automáticos.',
+    result: 'Certificación automática',
     icon: 'award',
+    illustration: 'diplomas',
   },
 ];
 
@@ -93,19 +131,51 @@ export const solution = {
       title: 'Integración SENCE',
       description:
         'Gestión proactiva de los plazos y las Declaraciones Juradas de la franquicia SENCE, con alertas antes de cada fecha crítica.',
+      bullets: [
+        'Alertas antes de cada fecha crítica',
+        'Gestión proactiva de Declaraciones Juradas',
+      ],
       icon: 'sence',
+      image: '/solucion-sence.webp',
+      imageWidth: 2000,
+      imageHeight: 821,
+      imageAlt:
+        'Panel de reportes y trazabilidad del LMS Certimedia con cumplimiento SENCE, asistencia y alertas de cierre.',
     },
     {
       title: 'Dashboard y reportería',
       description:
         'Reportes de asistencia y avance listos para fiscalización, con acceso multi-empresa para que cada cliente vea solo a su equipo.',
+      bullets: [
+        'Asistencia y avance en vivo',
+        'Reportes válidos para fiscalización',
+        'Acceso multi-empresa',
+      ],
       icon: 'dashboard',
+      image: '/solucion-dashboard.webp',
+      imageWidth: 2000,
+      imageHeight: 884,
+      imageAlt:
+        'Reportería del LMS Certimedia con el avance por módulos, evaluaciones, asistencia SENCE y alertas de cada alumno.',
     },
     {
       title: 'Certificaciones y credenciales',
       description:
         'Diplomas en PDF automáticos e insignias digitales verificables (Open Badges) al finalizar cada curso.',
+      bullets: [
+        'Diplomas en PDF automáticos',
+        'Insignias Open Badges verificables',
+        'Flujos de correo automáticos',
+      ],
       icon: 'badge',
+      // TODO(imagen): falta una captura real de un diploma / credencial generado por la plataforma.
+      // Dejar el archivo en public/ como solucion-certificaciones.webp (~2000 px de ancho). Mientras
+      // no exista, este slot muestra un placeholder automáticamente.
+      image: '/solucion-certificaciones.webp',
+      imageWidth: 2000,
+      imageHeight: 820,
+      imageAlt:
+        'Diploma en PDF e insignia digital verificable generados por el LMS Certimedia.',
     },
   ],
 };
@@ -119,21 +189,25 @@ export const howItWorks = {
       title: 'Diagnóstico',
       description:
         'Revisamos cómo opera tu OTEC hoy: cursos, cohortes y requisitos SENCE.',
+      illustration: 'diagnostico',
     },
     {
       title: 'Implementación y personalización de marca',
       description:
         'Configuramos tu plataforma con tu dominio, tus logos y tus colores.',
+      illustration: 'marca',
     },
     {
       title: 'Carga de cursos y cohortes',
       description:
         'Subimos tus contenidos y armamos tus cohortes según el modelo que elijas.',
+      illustration: 'cursos',
     },
     {
       title: 'Operación y soporte continuo',
       description:
         'Tu plataforma queda operando, con el equipo de Certimedia disponible para apoyarte.',
+      illustration: 'operacion',
     },
   ],
 };
@@ -164,16 +238,19 @@ export const support = {
       title: 'Soporte del equipo Certimedia',
       description:
         'Un equipo disponible para resolver dudas y problemas operativos de tu plataforma.',
+      illustration: 'soporte',
     },
     {
       title: 'Actualizaciones normativas y de seguridad',
       description:
         'La plataforma se mantiene al día con los cambios normativos de SENCE y con parches de seguridad.',
+      illustration: 'actualizaciones',
     },
     {
       title: 'Roadmap con IA y agentes',
       description:
         'Seguimos incorporando funciones de inteligencia artificial y agentes para hacer tu operación cada vez más simple.',
+      illustration: 'roadmap',
     },
   ],
 };

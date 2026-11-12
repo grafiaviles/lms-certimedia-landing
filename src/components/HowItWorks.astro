@@ -1,6 +1,7 @@
 ---
 import SectionHeading from './SectionHeading.astro';
 import Icon from './Icon.astro';
+import Illustration from './Illustration.astro';
 import { howItWorks } from '../content/copy';
 ---
 
@@ -19,12 +20,15 @@ import { howItWorks } from '../content/copy';
             class="reveal relative rounded-card border border-ink-200 bg-white p-6"
             style={`transition-delay: ${i * 80}ms`}
           >
-            <span
-              class="mb-4 inline-flex h-9 w-9 items-center justify-center rounded-full bg-accent-600 text-sm font-bold text-white"
-              aria-hidden="true"
-            >
-              {i + 1}
-            </span>
+            <div class="mb-4 flex items-center justify-between">
+              <Illustration name={step.illustration} class="h-16 w-16" />
+              <span
+                class="flex h-8 w-8 items-center justify-center rounded-full bg-accent-600 text-sm font-bold text-white"
+                aria-hidden="true"
+              >
+                {i + 1}
+              </span>
+            </div>
             <h3 class="text-base font-semibold text-ink-900">{step.title}</h3>
             <p class="mt-2 text-sm leading-relaxed text-ink-600">{step.description}</p>
             {i < howItWorks.steps.length - 1 && (

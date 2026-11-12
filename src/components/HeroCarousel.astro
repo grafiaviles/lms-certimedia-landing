@@ -1,0 +1,293 @@
+---
+import Icon from './Icon.astro';
+import Avatar from './Avatar.astro';
+
+// Mockup del hero que rota entre los componentes principales del software.
+// Todo HTML/CSS/SVG (sin imágenes externas). Auto-rota, pausa al pasar el mouse/teclado
+// y respeta prefers-reduced-motion.
+const slides = [
+  { id: 'panel', title: 'Panel general' },
+  { id: 'metricas', title: 'Reportes y trazabilidad' },
+  { id: 'sence', title: 'Cumplimiento SENCE' },
+  { id: 'cohorte', title: 'Cohorte y personas' },
+];
+
+const cohorte = [
+  { name: 'Camila Rojas', value: 85 },
+  { name: 'Valentina Soto', value: 64 },
+  { name: 'Josefa Vega', value: 100 },
+  { name: 'Tomás Reyes', value: 47 },
+  { name: 'Diego Muñoz', value: 20 },
+];
+
+// KPIs de negocio (datos demo ilustrativos).
+const metricas = [
+  { value: '2', label: 'Cohortes vigentes', note: '2 en curso', tone: 'ink' },
+  { value: '10', label: 'Alumnos en curso', note: 'en cohortes activas', tone: 'ink' },
+  { value: '50%', label: 'Avance promedio', note: 'módulos completados', tone: 'accent' },
+  { value: '3', label: 'En riesgo', note: 'avance bajo 30%', tone: 'amber' },
+];
+
+// Cumplimiento SENCE del 75% de asistencia (datos demo ilustrativos).
+const cumplimiento = [
+  { name: 'Camila Rojas', asis: '7 de 8 · 88%', ok: true },
+  { name: 'Diego Muñoz', asis: '2 de 8 · 25%', ok: false },
+  { name: 'Josefa Vega', asis: '6 de 8 · 75%', ok: true },
+  { name: 'Tomás Reyes', asis: '4 de 8 · 50%', ok: false },
+];
+---
+
+<div class="mx-auto w-full max-w-md" data-hero-carousel>
+  <div class="overflow-hidden rounded-2xl border border-ink-200 bg-white shadow-soft sm:rounded-card">
+    <div class="flex items-center gap-2 border-b border-ink-100 bg-ink-50 px-4 py-3">
+      <span class="h-2.5 w-2.5 rounded-full bg-ink-300"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-ink-300"></span>
+      <span class="h-2.5 w-2.5 rounded-full bg-ink-300"></span>
+      <span class="ml-2 text-xs font-medium text-ink-500" data-carousel-title>
+        {slides[0].title} · LMS Certimedia
+      </span>
+    </div>
+
+    <div class="relative h-[416px]">
+      {/* Slide 1 · Panel general */}
+      <div class="absolute inset-0 space-y-4 p-4 transition-opacity duration-500 sm:p-5" data-slide="0">
+        <div class="flex items-start gap-3 rounded-xl border border-accent-200 bg-accent-50 p-3">
+          <Icon name="bell" class="mt-0.5 h-5 w-5 shrink-0 text-accent-700" />
+          <div>
+            <p class="text-sm font-semibold text-accent-800">Declaración Jurada SENCE</p>
+            <p class="text-xs text-accent-700">Cierra en 5 días · 3 cohortes pendientes</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-3">
+          <div class="rounded-xl border border-ink-100 p-3">
+            <p class="text-xs text-ink-500">Asistencia</p>
+            <p class="mt-1 text-xl font-bold text-ink-900">96%</p>
+          </div>
+          <div class="rounded-xl border border-ink-100 p-3">
+            <p class="text-xs text-ink-500">Cohortes</p>
+            <p class="mt-1 text-xl font-bold text-ink-900">12</p>
+          </div>
+          <div class="rounded-xl border border-ink-100 p-3">
+            <p class="text-xs text-ink-500">Empresas</p>
+            <p class="mt-1 text-xl font-bold text-ink-900">8</p>
+          </div>
+        </div>
+        <div class="rounded-xl border border-ink-100 p-4">
+          <p class="mb-3 text-xs font-medium text-ink-500">Avance por cohorte</p>
+          <div class="space-y-2.5">
+            {
+              [
+                { label: 'Prevención de riesgos', value: 82 },
+                { label: 'Excel intermedio', value: 64 },
+                { label: 'Atención a cliente', value: 45 },
+              ].map((row) => (
+                <div>
+                  <div class="mb-1 flex items-center justify-between text-xs text-ink-600">
+                    <span>{row.label}</span>
+                    <span class="font-medium text-ink-800">{row.value}%</span>
+                  </div>
+                  <div class="h-2 overflow-hidden rounded-full bg-ink-100">
+                    <div class="h-full rounded-full bg-accent-500" style={`width: ${row.value}%`} />
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+
+      {/* Slide 2 · Métricas del negocio (Reportes y trazabilidad) */}
+      <div
+        class="pointer-events-none absolute inset-0 space-y-3 p-4 opacity-0 transition-opacity duration-500 sm:p-5"
+        data-slide="1"
+      >
+        <div class="flex items-center justify-between">
+          <p class="text-sm font-semibold text-ink-900">Reportes y trazabilidad</p>
+          <span class="rounded-full bg-accent-50 px-2.5 py-1 text-[11px] font-medium text-accent-700">
+            Vista OTEC
+          </span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5">
+          {
+            metricas.map((m) => (
+              <div class="rounded-xl border border-ink-100 p-3">
+                <p
+                  class:list={[
+                    'text-2xl font-bold',
+                    m.tone === 'accent' ? 'text-accent-600' : m.tone === 'amber' ? 'text-amber-600' : 'text-ink-900',
+                  ]}
+                >
+                  {m.value}
+                </p>
+                <p class="mt-0.5 text-xs font-semibold text-ink-800">{m.label}</p>
+                <p class="text-[11px] text-ink-500">{m.note}</p>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="flex items-center justify-between rounded-xl border border-accent-200 bg-accent-50 p-3.5">
+          <div>
+            <p class="text-xs font-semibold text-ink-800">Asistencia SENCE</p>
+            <p class="text-[11px] text-ink-500">promedio de sesiones registradas</p>
+          </div>
+          <p class="text-2xl font-bold text-accent-700">55%</p>
+        </div>
+      </div>
+
+      {/* Slide · Cumplimiento SENCE */}
+      <div
+        class="pointer-events-none absolute inset-0 space-y-3 p-4 opacity-0 transition-opacity duration-500 sm:p-5"
+        data-slide="sence"
+      >
+        <div class="flex items-center justify-between">
+          <p class="text-sm font-semibold text-ink-900">Cumplimiento SENCE</p>
+          <span class="rounded-full bg-accent-50 px-2.5 py-1 text-[11px] font-medium text-accent-700">
+            HACCP · Sep 2026
+          </span>
+        </div>
+
+        <div class="rounded-xl border border-accent-200 bg-accent-50 p-3">
+          <p class="text-xs leading-relaxed text-accent-800">
+            <span class="font-bold">2 de 6</span> alumnos cumplen hoy el 75% de asistencia · Cierre 23-10-2026
+          </p>
+        </div>
+
+        <div class="space-y-2">
+          {
+            cumplimiento.map((r) => (
+              <div class="flex items-center justify-between rounded-xl border border-ink-100 px-3 py-2.5">
+                <div class="min-w-0">
+                  <p class="truncate text-sm font-medium text-ink-800">{r.name}</p>
+                  <p class="text-[11px] text-ink-500">Asistencia {r.asis}</p>
+                </div>
+                <span
+                  class:list={[
+                    'shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold',
+                    r.ok ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600',
+                  ]}
+                >
+                  {r.ok ? 'Cumple' : 'No cumple'}
+                </span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+
+      {/* Slide 3 · Cohorte y personas */}
+      <div
+        class="pointer-events-none absolute inset-0 space-y-3 p-4 opacity-0 transition-opacity duration-500 sm:p-5"
+        data-slide="2"
+      >
+        <div class="flex items-center justify-between">
+          <p class="text-sm font-semibold text-ink-900">HACCP básico</p>
+          <span class="text-xs text-ink-500">6 personas</span>
+        </div>
+        {
+          cohorte.map((p, idx) => (
+            <div class="flex items-center gap-3 rounded-xl border border-ink-100 p-2.5">
+              <Avatar variant={idx} class="h-9 w-9 shrink-0 rounded-full" />
+              <div class="min-w-0 flex-1">
+                <div class="mb-1 flex items-center justify-between gap-2">
+                  <span class="truncate text-sm font-medium text-ink-800">{p.name}</span>
+                  <span class="shrink-0 text-xs font-semibold text-ink-700">{p.value}%</span>
+                </div>
+                <div class="h-1.5 overflow-hidden rounded-full bg-ink-100">
+                  <div class="h-full rounded-full bg-accent-500" style={`width: ${p.value}%`} />
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+    </div>
+  </div>
+
+  {/* Indicadores / controles */}
+  <div class="mt-4 flex items-center justify-center gap-2" role="tablist" aria-label="Vistas del producto">
+    {
+      slides.map((s, i) => (
+        <button
+          type="button"
+          role="tab"
+          aria-selected={i === 0 ? 'true' : 'false'}
+          aria-label={s.title}
+          data-dot={i}
+          class="h-2 rounded-full bg-ink-300 transition-all duration-300"
+        />
+      ))
+    }
+  </div>
+</div>
+
+<script>
+  (function () {
+    const root = document.querySelector('[data-hero-carousel]');
+    if (!root) return;
+
+    const slides = Array.from(root.querySelectorAll('[data-slide]'));
+    const dots = Array.from(root.querySelectorAll('[data-dot]'));
+    const titleEl = root.querySelector('[data-carousel-title]');
+    const titles = [
+      'Panel general',
+      'Reportes y trazabilidad',
+      'Cumplimiento SENCE',
+      'Cohorte y personas',
+    ];
+    if (slides.length === 0) return;
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let index = 0;
+    let timer = null;
+
+    function show(next) {
+      index = (next + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        const active = i === index;
+        slide.classList.toggle('opacity-0', !active);
+        slide.classList.toggle('pointer-events-none', !active);
+        slide.classList.toggle('opacity-100', active);
+        slide.setAttribute('aria-hidden', String(!active));
+      });
+      dots.forEach((dot, i) => {
+        const active = i === index;
+        dot.setAttribute('aria-selected', String(active));
+        dot.classList.toggle('w-6', active);
+        dot.classList.toggle('bg-accent-600', active);
+        dot.classList.toggle('w-2', !active);
+        dot.classList.toggle('bg-ink-300', !active);
+      });
+      if (titleEl) titleEl.textContent = `${titles[index]} · LMS Certimedia`;
+    }
+
+    function start() {
+      if (reduce || timer) return;
+      timer = window.setInterval(() => show(index + 1), 4500);
+    }
+    function stop() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => {
+        show(i);
+        stop();
+        start();
+      });
+    });
+
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+
+    show(0);
+    start();
+  })();
+</script>

@@ -1,0 +1,253 @@
+---
+// Línea de ilustraciones "spot" a dos/tres tonos de azul Certimedia.
+// Usa los tokens de marca (--accent-*) para que la paleta se mantenga coherente y sea
+// fácil de cambiar. Sin dependencias ni imágenes externas.
+//   tone fuerte  = rgb(var(--accent-600))  (azul de marca)
+//   tono medio   = rgb(var(--accent-300))
+//   tono claro   = rgb(var(--accent-100))
+interface Props {
+  name:
+    | 'plazos'
+    | 'asistencia'
+    | 'visibilidad'
+    | 'carga'
+    | 'plataforma'
+    | 'diplomas'
+    | 'diagnostico'
+    | 'marca'
+    | 'cursos'
+    | 'operacion'
+    | 'soporte'
+    | 'actualizaciones'
+    | 'roadmap';
+  class?: string;
+}
+
+const { name, class: className = 'h-24 w-24' } = Astro.props;
+
+const strong = 'rgb(var(--accent-600))';
+const mid = 'rgb(var(--accent-300))';
+const light = 'rgb(var(--accent-100))';
+---
+
+<svg
+  class={className}
+  viewBox="0 0 96 96"
+  xmlns="http://www.w3.org/2000/svg"
+  fill="none"
+  role="img"
+  aria-hidden="true"
+>
+  <rect x="2" y="2" width="92" height="92" rx="22" fill={light}></rect>
+
+  {
+    name === 'plazos' && (
+      <g>
+        {/* Calendario con alerta */}
+        <rect x="24" y="28" width="40" height="38" rx="6" fill="#fff" stroke={mid} stroke-width="2" />
+        <rect x="24" y="28" width="40" height="11" rx="6" fill={strong} />
+        <line x1="33" y1="24" x2="33" y2="33" stroke={strong} stroke-width="3" stroke-linecap="round" />
+        <line x1="55" y1="24" x2="55" y2="33" stroke={strong} stroke-width="3" stroke-linecap="round" />
+        <circle cx="34" cy="49" r="2.4" fill={mid} />
+        <circle cx="44" cy="49" r="2.4" fill={mid} />
+        <circle cx="54" cy="49" r="2.4" fill={strong} />
+        <circle cx="34" cy="58" r="2.4" fill={mid} />
+        <circle cx="44" cy="58" r="2.4" fill={mid} />
+        {/* Campana de alerta */}
+        <circle cx="64" cy="62" r="13" fill={strong} />
+        <path d="M64 55a4 4 0 0 0-4 4v2.2l-1.2 1.8h10.4L68 61.2V59a4 4 0 0 0-4-4Z" fill="#fff" />
+        <path d="M62 67a2 2 0 0 0 4 0" stroke="#fff" stroke-width="1.6" stroke-linecap="round" />
+      </g>
+    )
+  }
+
+  {
+    name === 'asistencia' && (
+      <g>
+        {/* Portapapeles con checks */}
+        <rect x="26" y="24" width="38" height="48" rx="6" fill="#fff" stroke={mid} stroke-width="2" />
+        <rect x="36" y="20" width="18" height="9" rx="3" fill={strong} />
+        <path d="M33 40l3 3 5-5" stroke={strong} stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+        <line x1="45" y1="40" x2="58" y2="40" stroke={mid} stroke-width="2.4" stroke-linecap="round" />
+        <path d="M33 52l3 3 5-5" stroke={strong} stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+        <line x1="45" y1="52" x2="58" y2="52" stroke={mid} stroke-width="2.4" stroke-linecap="round" />
+        {/* Lupa de fiscalización */}
+        <circle cx="62" cy="64" r="11" fill="#fff" stroke={strong} stroke-width="3" />
+        <line x1="70" y1="72" x2="77" y2="79" stroke={strong} stroke-width="4" stroke-linecap="round" />
+      </g>
+    )
+  }
+
+  {
+    name === 'visibilidad' && (
+      <g>
+        {/* Pantalla / dashboard */}
+        <rect x="20" y="24" width="56" height="40" rx="5" fill="#fff" stroke={mid} stroke-width="2" />
+        <rect x="20" y="24" width="56" height="10" rx="5" fill={strong} />
+        <rect x="28" y="52" width="8" height="8" rx="2" fill={mid} />
+        <rect x="40" y="46" width="8" height="14" rx="2" fill={strong} />
+        <rect x="52" y="42" width="8" height="18" rx="2" fill={mid} />
+        <rect x="64" y="48" width="6" height="12" rx="2" fill={strong} />
+        <rect x="30" y="68" width="36" height="5" rx="2.5" fill={mid} />
+        <rect x="40" y="70" width="16" height="12" rx="3" fill={strong} />
+      </g>
+    )
+  }
+
+  {
+    name === 'carga' && (
+      <g>
+        {/* Capas/tarjetas ordenadas + engranaje */}
+        <rect x="22" y="30" width="40" height="12" rx="4" fill={mid} />
+        <rect x="22" y="46" width="40" height="12" rx="4" fill={strong} />
+        <rect x="22" y="62" width="40" height="12" rx="4" fill={mid} />
+        <circle cx="66" cy="62" r="13" fill={strong} />
+        <circle cx="66" cy="62" r="4.5" fill="#fff" />
+        <g stroke="#fff" stroke-width="2.4" stroke-linecap="round">
+          <line x1="66" y1="50" x2="66" y2="54" />
+          <line x1="66" y1="70" x2="66" y2="74" />
+          <line x1="54" y1="62" x2="58" y2="62" />
+          <line x1="74" y1="62" x2="78" y2="62" />
+        </g>
+      </g>
+    )
+  }
+
+  {
+    name === 'plataforma' && (
+      <g>
+        {/* Navegador + escudo (servidores dedicados / marca) */}
+        <rect x="20" y="24" width="56" height="40" rx="5" fill="#fff" stroke={mid} stroke-width="2" />
+        <rect x="20" y="24" width="56" height="10" rx="5" fill={strong} />
+        <circle cx="27" cy="29" r="1.6" fill="#fff" />
+        <circle cx="33" cy="29" r="1.6" fill="#fff" />
+        <rect x="28" y="42" width="24" height="5" rx="2.5" fill={mid} />
+        <rect x="28" y="51" width="18" height="5" rx="2.5" fill={light} stroke={mid} stroke-width="1" />
+        {/* Escudo */}
+        <path d="M62 50l11 4v7c0 7-5 11-11 13-6-2-11-6-11-13v-7l11-4Z" fill={strong} />
+        <path d="M57.5 60.5l3.2 3.2 5.3-5.3" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+    )
+  }
+
+  {
+    name === 'diplomas' && (
+      <g>
+        {/* Diploma + medalla */}
+        <rect x="22" y="26" width="40" height="30" rx="4" fill="#fff" stroke={mid} stroke-width="2" />
+        <line x1="29" y1="34" x2="55" y2="34" stroke={mid} stroke-width="2.4" stroke-linecap="round" />
+        <line x1="29" y1="40" x2="50" y2="40" stroke={mid} stroke-width="2.4" stroke-linecap="round" />
+        <line x1="29" y1="46" x2="45" y2="46" stroke={light} stroke-width="2.4" stroke-linecap="round" />
+        {/* Medalla / insignia */}
+        <circle cx="62" cy="58" r="14" fill={strong} />
+        <circle cx="62" cy="58" r="8" fill="#fff" />
+        <path d="M62 54l1.3 2.7 3 .4-2.2 2.1.5 3-2.6-1.4-2.6 1.4.5-3-2.2-2.1 3-.4L62 54Z" fill={strong} />
+        <path d="M55 70l-3 10 10-5 10 5-3-10" fill={mid} />
+      </g>
+    )
+  }
+
+  {
+    name === 'diagnostico' && (
+      <g>
+        {/* Documento + lupa (revisión inicial) */}
+        <rect x="26" y="22" width="36" height="46" rx="6" fill="#fff" stroke={mid} stroke-width="2" />
+        <line x1="33" y1="33" x2="55" y2="33" stroke={mid} stroke-width="2.4" stroke-linecap="round" />
+        <line x1="33" y1="41" x2="50" y2="41" stroke={light} stroke-width="2.4" stroke-linecap="round" />
+        <line x1="33" y1="49" x2="46" y2="49" stroke={light} stroke-width="2.4" stroke-linecap="round" />
+        <circle cx="57" cy="60" r="12" fill="#fff" stroke={strong} stroke-width="3" />
+        <path d="M52 60l3.4 3.4 6-6.4" stroke={strong} stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+        <line x1="65" y1="68" x2="73" y2="76" stroke={strong} stroke-width="4" stroke-linecap="round" />
+      </g>
+    )
+  }
+
+  {
+    name === 'marca' && (
+      <g>
+        {/* Paleta de color + pincel (personalización de marca) */}
+        <ellipse cx="46" cy="52" rx="22" ry="18" fill="#fff" stroke={strong} stroke-width="2.5" />
+        <circle cx="38" cy="46" r="3.2" fill={strong} />
+        <circle cx="48" cy="43" r="3.2" fill={mid} />
+        <circle cx="57" cy="49" r="3.2" fill={strong} />
+        <circle cx="40" cy="58" r="3.2" fill={mid} />
+        <circle cx="52" cy="61" r="4.5" fill={light} stroke={mid} stroke-width="1.4" />
+        <rect x="60" y="24" width="4.5" height="22" rx="2.2" fill={mid} transform="rotate(38 62 35)" />
+        <path d="M70 55l6 6" stroke={strong} stroke-width="3" stroke-linecap="round" />
+        <path d="M68 50l8 8-3 3-8-8Z" fill={strong} transform="rotate(38 72 54)" />
+      </g>
+    )
+  }
+
+  {
+    name === 'cursos' && (
+      <g>
+        {/* Cursos apilados + subida */}
+        <rect x="26" y="58" width="40" height="9" rx="2.5" fill={strong} />
+        <rect x="28" y="48" width="36" height="9" rx="2.5" fill={mid} />
+        <rect x="30" y="38" width="32" height="9" rx="2.5" fill={strong} />
+        <circle cx="66" cy="34" r="13" fill={strong} />
+        <path d="M66 27l6 7h-3.6v6.6h-4.8V34H60l6-7Z" fill="#fff" />
+      </g>
+    )
+  }
+
+  {
+    name === 'operacion' && (
+      <g>
+        {/* Plataforma operando (tendencia al alza) + check */}
+        <rect x="20" y="24" width="56" height="40" rx="5" fill="#fff" stroke={mid} stroke-width="2" />
+        <rect x="20" y="24" width="56" height="10" rx="5" fill={strong} />
+        <polyline points="28,56 38,48 46,52 58,40" fill="none" stroke={strong} stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="58" cy="40" r="3" fill={mid} />
+        <circle cx="64" cy="66" r="12" fill={strong} />
+        <path d="M59 66l3.4 3.4 6-6.4" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+    )
+  }
+
+  {
+    name === 'soporte' && (
+      <g>
+        {/* Burbujas de conversación (soporte del equipo) */}
+        <path d="M22 28h34a6 6 0 0 1 6 6v14a6 6 0 0 1-6 6H40l-10 8v-8h-8a6 6 0 0 1-6-6V34a6 6 0 0 1 6-6Z" fill={strong} />
+        <circle cx="33" cy="41" r="2.6" fill="#fff" />
+        <circle cx="42" cy="41" r="2.6" fill="#fff" />
+        <circle cx="51" cy="41" r="2.6" fill="#fff" />
+        <path d="M66 50h10a4 4 0 0 1 4 4v8a4 4 0 0 1-4 4h-2v5l-6-5h-2a4 4 0 0 1-4-4v-8a4 4 0 0 1 4-4Z" fill={mid} />
+      </g>
+    )
+  }
+
+  {
+    name === 'actualizaciones' && (
+      <g>
+        {/* Escudo + flechas de actualización (normativa y seguridad) */}
+        <path d="M48 20l20 7v13c0 13-9 20-20 24-11-4-20-11-20-24V27l20-7Z" fill={strong} />
+        <path d="M54 42a8 8 0 1 0 1.4 7.6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" />
+        <path d="M54 36v7h-7" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+      </g>
+    )
+  }
+
+  {
+    name === 'roadmap' && (
+      <g>
+        {/* Chip / IA + destello (roadmap con IA y agentes) */}
+        <rect x="32" y="32" width="32" height="32" rx="8" fill={strong} />
+        <rect x="40" y="40" width="16" height="16" rx="4" fill="#fff" />
+        <g stroke={mid} stroke-width="3" stroke-linecap="round">
+          <line x1="42" y1="26" x2="42" y2="32" />
+          <line x1="54" y1="26" x2="54" y2="32" />
+          <line x1="42" y1="64" x2="42" y2="70" />
+          <line x1="54" y1="64" x2="54" y2="70" />
+          <line x1="26" y1="42" x2="32" y2="42" />
+          <line x1="26" y1="54" x2="32" y2="54" />
+          <line x1="64" y1="42" x2="70" y2="42" />
+          <line x1="64" y1="54" x2="70" y2="54" />
+        </g>
+        <path d="M48 44l1.6 3.4 3.4.5-2.5 2.4.6 3.4-3.1-1.7-3.1 1.7.6-3.4-2.5-2.4 3.4-.5L48 44Z" fill={strong} />
+      </g>
+    )
+  }
+</svg>

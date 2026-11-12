@@ -1,36 +1,243 @@
 ---
 import Icon from './Icon.astro';
+import Illustration from './Illustration.astro';
 import SectionHeading from './SectionHeading.astro';
-import { problems } from '../content/copy';
+import { problems, problemsSection } from '../content/copy';
 ---
 
 <section id="problemas" class="bg-ink-50 py-16 sm:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <SectionHeading
-      eyebrow="Problemas que resuelve"
-      title="Lo que hoy te quita tiempo y te genera riesgo"
-      description="Cada tarjeta parte del problema real de tu OTEC y termina en cómo lo resuelve el LMS Certimedia."
+      eyebrow={problemsSection.eyebrow}
+      title={problemsSection.title}
+      description={problemsSection.description}
     />
 
-    <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {
-        problems.map((item, i) => (
-          <article
-            class="reveal flex flex-col rounded-card border border-ink-200 bg-white p-6 shadow-softer transition-shadow hover:shadow-soft"
-            style={`transition-delay: ${Math.min(i, 5) * 60}ms`}
-          >
-            <div class="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-xl bg-accent-50">
-              <Icon name={item.icon} class="h-6 w-6 text-accent-600" />
+    <!--
+      Selector interactivo dolor → solución.
+      - Móvil: acordeón (JS inserta cada panel bajo su botón).
+      - Desktop (lg): dos columnas desacopladas — lista compacta a la izquierda,
+        panel independiente a la derecha (sin huecos en la lista).
+    -->
+    <div class="reveal mt-12 lg:flex lg:items-start lg:gap-6" data-problems>
+      <div
+        role="tablist"
+        aria-orientation="vertical"
+        aria-label="Problemas que resuelve el LMS Certimedia"
+        data-tablist
+        class="flex flex-col gap-2 lg:w-[22rem] lg:shrink-0"
+      >
+        {
+          problems.map((item, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`ptab-${i}`}
+              aria-controls={`ppanel-${i}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+              data-ptab={i}
+              class="group flex items-center gap-3 rounded-xl border border-ink-200 bg-white/50 px-4 py-3.5 text-left transition-all duration-200"
+            >
+              <span
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-50 text-accent-600 transition-colors"
+                data-ptab-iconwrap
+              >
+                <Icon name={item.icon} class="h-5 w-5" />
+              </span>
+              <span class="flex-1 text-sm font-semibold text-ink-800">{item.tag}</span>
+              <Icon name="arrow-right" class="h-4 w-4 shrink-0 -translate-x-1 opacity-0 transition-all" />
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="mt-3 lg:mt-0 lg:min-w-0 lg:flex-1" data-panelhost>
+        {
+          problems.map((item, i) => (
+            <div
+              role="tabpanel"
+              id={`ppanel-${i}`}
+              aria-labelledby={`ptab-${i}`}
+              data-ppanel={i}
+              tabindex="0"
+              class:list={[
+                'rounded-card border border-ink-200 bg-white p-6 shadow-soft sm:p-8',
+                { hidden: i !== 0 },
+              ]}
+            >
+              <div class="flex items-center gap-4">
+                <Illustration name={item.illustration} class="h-16 w-16 shrink-0 sm:h-20 sm:w-20" />
+                <div>
+                  <p class="text-xs font-semibold uppercase tracking-wide text-accent-600">
+                    Problema {i + 1} de {problems.length}
+                  </p>
+                  <h3 class="text-lg font-bold text-ink-900">{item.tag}</h3>
+                </div>
+              </div>
+
+              <div class="mt-6 grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-stretch">
+                <div class="rounded-xl border border-red-100 bg-red-50/60 p-4">
+                  <p class="mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-red-500">
+                    <Icon name="alert" class="h-4 w-4" />
+                    El dolor hoy
+                  </p>
+                  <p class="text-sm leading-relaxed text-ink-700">{item.pain}</p>
+                </div>
+
+                <div class="flex items-center justify-center" aria-hidden="true">
+                  <span class="flex h-8 w-8 items-center justify-center rounded-full bg-accent-100 text-accent-700">
+                    <Icon name="arrow-right" class="h-4 w-4 rotate-90 sm:rotate-0" />
+                  </span>
+                </div>
+
+                <div class="rounded-xl border border-accent-200 bg-accent-50 p-4">
+                  <p class="mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-accent-700">
+                    <Icon name="spark" class="h-4 w-4" />
+                    Cómo lo resuelve el LMS
+                  </p>
+                  <p class="text-sm leading-relaxed text-ink-700">{item.solution}</p>
+                </div>
+              </div>
+
+              <div class="mt-5 flex items-center gap-2 border-t border-ink-100 pt-4">
+                <Icon name="check" class="h-4 w-4 shrink-0 text-accent-600" />
+                <span class="text-sm font-medium text-ink-600">
+                  Resultado: <span class="font-semibold text-ink-900">{item.result}</span>
+                </span>
+              </div>
             </div>
-            <p class="text-sm font-semibold text-ink-900">{item.pain}</p>
-            <p class="mb-1.5 mt-3 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-accent-600">
-              <Icon name="arrow-right" class="h-3.5 w-3.5" />
-              Cómo lo resuelve el LMS
-            </p>
-            <p class="text-sm leading-relaxed text-ink-600">{item.solution}</p>
-          </article>
-        ))
-      }
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="reveal mt-8 text-center">
+      <a
+        href="#contacto"
+        data-track="cta_problemas"
+        class="inline-flex items-center justify-center gap-2 rounded-full border border-accent-200 bg-white px-5 py-2.5 text-sm font-semibold text-accent-700 transition-colors hover:border-accent-400 hover:bg-accent-50"
+      >
+        Revisemos tu caso en una demo
+        <Icon name="arrow-right" class="h-4 w-4" />
+      </a>
     </div>
   </div>
 </section>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    [data-ppanel].is-entering {
+      animation: problemFade 0.28s ease-out;
+    }
+  }
+  @keyframes problemFade {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    const root = document.querySelector('[data-problems]');
+    if (!root) return;
+
+    const tablist = root.querySelector('[data-tablist]');
+    const panelHost = root.querySelector('[data-panelhost]');
+    const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
+    const panels = Array.from(root.querySelectorAll('[role="tabpanel"]'));
+    if (!tablist || !panelHost || tabs.length === 0) return;
+
+    const mq = window.matchMedia('(max-width: 1023px)');
+    let current = 0;
+
+    // Acordeón (móvil) vs. tabs de 2 columnas (desktop): mismo DOM, reubicando paneles.
+    function applyLayout() {
+      if (mq.matches) {
+        // Móvil: cada panel justo después de su botón.
+        tabs.forEach((tab, i) => tab.insertAdjacentElement('afterend', panels[i]));
+      } else {
+        // Desktop: todos los paneles de vuelta en su columna.
+        panels.forEach((panel) => panelHost.appendChild(panel));
+      }
+    }
+
+    function select(index, { focus = false, animate = true } = {}) {
+      current = index;
+      tabs.forEach((tab, i) => {
+        const selected = i === index;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.setAttribute('tabindex', selected ? '0' : '-1');
+
+        const iconWrap = tab.querySelector('[data-ptab-iconwrap]');
+        const chevron = tab.querySelector(':scope > svg');
+
+        tab.classList.toggle('border-accent-500', selected);
+        tab.classList.toggle('bg-white', selected);
+        tab.classList.toggle('shadow-softer', selected);
+        tab.classList.toggle('border-ink-200', !selected);
+        tab.classList.toggle('bg-white/50', !selected);
+        tab.classList.toggle('hover:border-accent-200', !selected);
+        tab.classList.toggle('hover:bg-white', !selected);
+
+        iconWrap?.classList.toggle('bg-accent-600', selected);
+        iconWrap?.classList.toggle('text-white', selected);
+        iconWrap?.classList.toggle('bg-accent-50', !selected);
+        iconWrap?.classList.toggle('text-accent-600', !selected);
+
+        chevron?.classList.toggle('opacity-100', selected);
+        chevron?.classList.toggle('translate-x-0', selected);
+        chevron?.classList.toggle('opacity-0', !selected);
+        chevron?.classList.toggle('-translate-x-1', !selected);
+
+        if (focus && selected) tab.focus();
+      });
+
+      panels.forEach((panel, i) => {
+        const selected = i === index;
+        panel.classList.toggle('hidden', !selected);
+        if (selected && animate) {
+          panel.classList.remove('is-entering');
+          void panel.offsetWidth; // reinicia la animación
+          panel.classList.add('is-entering');
+        }
+      });
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => {
+        select(i);
+        if (mq.matches) tab.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+      tab.addEventListener('keydown', (event) => {
+        let next = null;
+        if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (i + 1) % tabs.length;
+        else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = tabs.length - 1;
+        if (next !== null) {
+          event.preventDefault();
+          select(next, { focus: true });
+        }
+      });
+    });
+
+    root.querySelectorAll('[data-ppanel]').forEach((panel) => {
+      panel.addEventListener('animationend', () => panel.classList.remove('is-entering'));
+    });
+
+    mq.addEventListener('change', () => {
+      applyLayout();
+      select(current, { animate: false });
+    });
+
+    applyLayout();
+    select(0, { animate: false });
+  })();
+</script>

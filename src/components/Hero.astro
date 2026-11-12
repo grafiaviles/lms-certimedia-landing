@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
-import DashboardMockup from './DashboardMockup.astro';
+import Avatar from './Avatar.astro';
+import HeroCarousel from './HeroCarousel.astro';
 import { hero } from '../content/copy';
 ---
 
@@ -46,10 +47,21 @@ import { hero } from '../content/copy';
             {hero.ctaSecondary.label}
           </a>
         </div>
+
+        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:gap-4 lg:justify-start">
+          <div class="flex -space-x-3">
+            {
+              hero.people.avatars.map((_, i) => (
+                <Avatar variant={i} class="h-11 w-11 rounded-full ring-2 ring-white" />
+              ))
+            }
+          </div>
+          <p class="max-w-xs text-sm text-ink-600">{hero.people.caption}</p>
+        </div>
       </div>
 
       <div class="relative z-10 reveal">
-        <DashboardMockup />
+        <HeroCarousel />
       </div>
     </div>
   </div>
