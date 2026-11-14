@@ -22,7 +22,8 @@ interface Props {
     | 'arrow-right'
     | 'play'
     | 'alert'
-    | 'spark';
+    | 'spark'
+    | 'calendar';
   class?: string;
   id?: string;
 }
@@ -57,6 +58,7 @@ const paths: Record<Props['name'], string> = {
   play: 'M8 5.5v13l11-6.5-11-6.5Z',
   alert: 'M12 9v4m0 4h.01M10.3 3.9 2.4 17.5A2 2 0 0 0 4.1 20.5h15.8a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z',
   spark: 'M12 3v4m0 10v4m9-9h-4M7 12H3m14.5-6.5-2.8 2.8M8.3 15.7l-2.8 2.8m13 0-2.8-2.8M8.3 8.3 5.5 5.5',
+  calendar: 'M8 3v3M16 3v3M4 9h16M6 5h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z',
 };
 ---
 

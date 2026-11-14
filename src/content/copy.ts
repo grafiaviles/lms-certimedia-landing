@@ -16,11 +16,10 @@ export const site = {
     'Plataforma de aprendizaje gestionada para OTECs chilenas: gestión proactiva SENCE, asistencia auditable, dashboard multi-empresa y diplomas automáticos. Agenda una asesoría gratis.',
 };
 
-// CTA flotante de WhatsApp (presente en todo el sitio).
+// CTA flotante (presente en todo el sitio): lleva a la agenda de César.
 export const whatsapp = {
-  phone: '56993819841',
-  message: 'Hola César, me interesa la plataforma para mi OTEC. Me gustaría agendar una demo.',
-  label: 'Escríbenos por WhatsApp',
+  url: 'https://meetings.hubspot.com/cesar-aviles-cuevas',
+  label: 'Agenda una reunión con César',
   bubble: 'Hablemos',
 };
 
@@ -145,7 +144,7 @@ export const solution = {
       app: productNames.campus,
       tagline: 'Aprendizaje',
       description:
-        'El campus donde tus alumnos aprenden: toman cursos con módulos y evaluaciones, avanzan a su ritmo y tú sigues su progreso y notas en tiempo real. Al cerrar cada curso, la certificación se emite sola.',
+        'El campus donde tus alumnos aprenden: toman cursos con módulos y evaluaciones, avanzan a su ritmo y tú sigues su progreso y notas en tiempo real, con certificación automática al cerrar cada curso.',
       bullets: [
         'Creación de cursos (módulos y evaluaciones)',
         'Evaluaciones online',
