@@ -127,7 +127,7 @@ export const problems = [
     tag: 'Diplomas y certificados',
     pain: 'Diplomas y certificados hechos a mano.',
     solution:
-      'Diplomas en PDF automáticos e insignias digitales verificables (Open Badges), con flujos de correo automáticos.',
+      'Diplomas en PDF automáticos e insignias digitales verificables, con flujos de correo automáticos.',
     result: 'Certificación automática',
     icon: 'award',
     illustration: 'diplomas',
@@ -145,13 +145,13 @@ export const solution = {
       app: productNames.campus,
       tagline: 'Aprendizaje',
       description:
-        'Tus alumnos toman tus cursos y, al finalizar, reciben diplomas en PDF automáticos e insignias digitales verificables (Open Badges), con flujos de correo automáticos.',
+        'El campus donde tus alumnos aprenden: toman cursos con módulos y evaluaciones, avanzan a su ritmo y tú sigues su progreso y notas en tiempo real. Al cerrar cada curso, la certificación se emite sola.',
       bullets: [
         'Creación de cursos (módulos y evaluaciones)',
         'Evaluaciones online',
         'Seguimiento de alumnos (avance y notas)',
         'Diplomas en PDF automáticos',
-        'Insignias Open Badges verificables',
+        'Insignias digitales verificables',
         'Flujos de correo automáticos',
       ],
       icon: 'badge',
@@ -164,7 +164,7 @@ export const solution = {
       floatingCard: {
         icon: 'award',
         title: 'Diploma emitido',
-        subtitle: 'Open Badge verificable',
+        subtitle: 'Insignia digital verificable',
       },
       people: { label: '18 alumnos activos', variants: [0, 1, 2, 3] },
       statCard: { label: 'Avance promedio', value: '68%', icon: 'bar-chart' },
