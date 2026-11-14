@@ -8,11 +8,28 @@ export const site = {
   email: 'caviles@certimedia.cl',
   phone: '+56 9 9381 9841',
   phoneHref: '+56993819841',
-  address: 'Providencia, Santiago, Chile',
+  address: 'Antonio Bellet 193, OF 1210, Santiago, Chile',
+  addressMapUrl: 'https://maps.google.com/?q=Antonio+Bellet+193+OF+1210+Santiago+Chile',
   // SEO: mantener la frase "LMS para OTEC con integración SENCE" en title/meta/OG.
   title: 'LMS para OTEC con integración SENCE | Certimedia',
   description:
     'Plataforma de aprendizaje gestionada para OTECs chilenas: gestión proactiva SENCE, asistencia auditable, dashboard multi-empresa y diplomas automáticos. Agenda una asesoría gratis.',
+};
+
+// CTA flotante de WhatsApp (presente en todo el sitio).
+export const whatsapp = {
+  phone: '56993819841',
+  message: 'Hola César, me interesa la plataforma para mi OTEC. Me gustaría agendar una demo.',
+  label: 'Escríbenos por WhatsApp',
+  bubble: 'Hablemos',
+};
+
+// Persona de contacto que "gestiona" (se muestra en el CTA final).
+export const contactPerson = {
+  name: 'César Avilés',
+  // TODO(cargo): confirmar el cargo exacto de César.
+  role: 'Asesor de implementación · Certimedia',
+  avatar: '/cesar-aviles.png',
 };
 
 // Nombres de las dos aplicaciones de la plataforma (editables sin tocar componentes).

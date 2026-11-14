@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
-import { finalCta } from '../content/copy';
+import { finalCta, contactPerson } from '../content/copy';
+import { asset } from '../lib/asset';
 ---
 
 <section class="bg-accent-700 py-16 sm:py-20">
@@ -15,5 +16,26 @@ import { finalCta } from '../content/copy';
       {finalCta.cta.label}
       <Icon name="arrow-right" class="h-5 w-5" />
     </a>
+
+    <div class="mt-10 flex items-center justify-center gap-3">
+      <span class="relative shrink-0">
+        <img
+          src={asset(contactPerson.avatar)}
+          alt={contactPerson.name}
+          width="48"
+          height="48"
+          loading="lazy"
+          class="h-12 w-12 rounded-full object-cover ring-2 ring-white/70"
+        />
+        <span
+          class="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-accent-700 bg-green-400"
+          aria-hidden="true"
+        ></span>
+      </span>
+      <div class="text-left">
+        <p class="text-sm font-semibold text-white">{contactPerson.name}</p>
+        <p class="text-xs text-accent-100">{contactPerson.role}</p>
+      </div>
+    </div>
   </div>
 </section>

@@ -33,9 +33,16 @@ const year = new Date().getFullYear();
             <Icon name="phone" class="h-4 w-4 shrink-0 text-accent-400" />
             <a href={`tel:${site.phoneHref}`} class="hover:text-white">{site.phone}</a>
           </li>
-          <li class="flex items-center gap-2.5">
-            <Icon name="map-pin" class="h-4 w-4 shrink-0 text-accent-400" />
-            <span>{site.address}</span>
+          <li class="flex items-start gap-2.5">
+            <Icon name="map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-accent-400" />
+            <a
+              href={site.addressMapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-white"
+            >
+              {site.address}
+            </a>
           </li>
         </ul>
       </div>
