@@ -27,7 +27,7 @@ export const whatsapp = {
 // Persona de contacto que "gestiona" (se muestra en el CTA final).
 export const contactPerson = {
   name: 'César Avilés',
-  role: 'Asesor de implementación · Certimedia',
+  role: 'Business Manager en Certimedia',
   avatar: '/cesar-aviles.png',
 };
 
