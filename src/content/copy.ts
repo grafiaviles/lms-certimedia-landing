@@ -57,7 +57,7 @@ export const hero = {
   eyebrow: 'Plataforma de operación para OTECs',
   title: 'Menos carga operativa. Más tiempo para vender cursos.',
   subtitle:
-    'Tus alumnos aprenden en tu campus. Tu equipo gestiona cohortes, empresas y reportería SENCE desde un solo panel. Todo con tu marca, operando en 1 a 2 semanas.',
+    'Tus alumnos aprenden en tu campus. Tu equipo gestiona cohortes, empresas y reportería SENCE desde un solo panel. Todo con tu marca, operando en 2 semanas.',
   ctaPrimary: { label: 'Agenda tu asesoría gratis', href: '#contacto' },
   ctaSecondary: { label: 'Ver cómo funciona', href: '#como-funciona' },
   microcopy: '1 hora, sin costo y sin compromiso.',
@@ -268,7 +268,7 @@ export const features = {
 export const howItWorks = {
   eyebrow: 'Cómo funciona',
   title: 'De la primera conversación a tu plataforma operando',
-  note: 'La puesta en marcha toma entre 1 y 2 semanas.',
+  note: 'La puesta en marcha toma 2 semanas.',
   steps: [
     {
       title: 'Diagnóstico',
@@ -398,7 +398,7 @@ export const faq = {
     },
     {
       question: '¿Cuánto demora la puesta en marcha?',
-      answer: 'Entre 1 y 2 semanas, siguiendo las 4 etapas de implementación.',
+      answer: '2 semanas, siguiendo las 4 etapas de implementación.',
     },
     {
       question: '¿Mis clientes pueden ver el avance de su equipo?',

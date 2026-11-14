@@ -23,7 +23,14 @@ const showPlaceholders = import.meta.env.DEV;
         solution.blocks.map((block, i) => {
           const flipped = i % 2 === 1;
           return (
-            <div class="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+            <div
+              class:list={[
+                'grid items-center gap-8 lg:gap-16',
+                flipped
+                  ? 'lg:grid-cols-[minmax(0,1.18fr)_minmax(0,1fr)]'
+                  : 'lg:grid-cols-[minmax(0,1fr)_minmax(0,1.18fr)]',
+              ]}
+            >
               {/* Texto */}
               <div class:list={['reveal', { 'lg:order-2': flipped }]}>
                 <div class="mb-4 inline-flex items-center gap-2.5 rounded-full bg-accent-50 py-1.5 pl-1.5 pr-4">
@@ -96,8 +103,8 @@ const showPlaceholders = import.meta.env.DEV;
                 {/* Tarjeta superpuesta (abajo, lado interno). */}
                 <div
                   class:list={[
-                    'absolute bottom-[-18px] z-20 hidden items-center gap-3 rounded-xl border border-ink-100 bg-white p-3 shadow-soft sm:flex',
-                    flipped ? 'right-6' : 'left-6',
+                    'absolute bottom-[-24px] z-20 hidden items-center gap-3 rounded-xl border border-ink-100 bg-white p-3.5 shadow-soft sm:flex',
+                    flipped ? 'right-10' : 'left-10',
                   ]}
                 >
                   <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-600 text-white">
@@ -112,8 +119,8 @@ const showPlaceholders = import.meta.env.DEV;
                 {/* Chip de avatares (arriba, lado externo). */}
                 <div
                   class:list={[
-                    'absolute top-[-16px] z-20 hidden items-center gap-2 rounded-full border border-ink-100 bg-white py-1.5 pl-2 pr-3.5 shadow-soft sm:flex',
-                    flipped ? 'left-6' : 'right-6',
+                    'absolute top-[-22px] z-20 hidden items-center gap-2 rounded-full border border-ink-100 bg-white py-1.5 pl-2 pr-4 shadow-soft sm:flex',
+                    flipped ? 'left-8' : 'right-8',
                   ]}
                 >
                   <div class="flex -space-x-2">
@@ -124,19 +131,19 @@ const showPlaceholders = import.meta.env.DEV;
                   <span class="text-xs font-semibold text-ink-700">{block.people.label}</span>
                 </div>
 
-                {/* Mini stat flotante (medio, lado interno). */}
+                {/* Mini stat flotante (medio, lado externo, sobresale). */}
                 <div
                   class:list={[
-                    'absolute top-10 z-20 hidden items-center gap-2.5 rounded-xl border border-ink-100 bg-white px-3.5 py-2.5 shadow-soft lg:flex',
-                    flipped ? 'right-[-20px]' : 'left-[-20px]',
+                    'absolute top-1/2 z-20 hidden -translate-y-1/2 items-center gap-3 rounded-xl border border-ink-100 bg-white px-4 py-3 shadow-soft lg:flex',
+                    flipped ? 'right-[-28px]' : 'left-[-28px]',
                   ]}
                 >
-                  <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-50 text-accent-600">
-                    <Icon name={block.statCard.icon} class="h-5 w-5" />
+                  <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-accent-50 text-accent-600">
+                    <Icon name={block.statCard.icon} class="h-6 w-6" />
                   </span>
                   <div>
-                    <p class="text-[11px] text-ink-500">{block.statCard.label}</p>
-                    <p class="text-base font-bold text-ink-900">{block.statCard.value}</p>
+                    <p class="text-xs text-ink-500">{block.statCard.label}</p>
+                    <p class="text-xl font-bold text-ink-900">{block.statCard.value}</p>
                   </div>
                 </div>
               </div>
