@@ -239,6 +239,15 @@ export const features = {
         'Hosting confiable',
       ],
     },
+    {
+      title: 'Integración IA',
+      illustration: 'roadmap',
+      items: [
+        'Asistente de IA para consultas de los alumnos',
+        'Apoyo al equipo de gestión',
+        'Integrado en Campus y Control',
+      ],
+    },
   ],
 };
 

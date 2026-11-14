@@ -30,7 +30,7 @@ const showPlaceholders = import.meta.env.DEV;
                     <Icon name={block.icon} class="h-4 w-4" />
                   </span>
                   <span class="text-xs font-semibold uppercase tracking-wide text-accent-700">
-                    Aplicación {String(i + 1).padStart(2, '0')}
+                    Experiencia {i + 1}
                   </span>
                 </div>
 
@@ -86,7 +86,7 @@ const showPlaceholders = import.meta.env.DEV;
                       height={block.imageHeight}
                       loading="lazy"
                       decoding="async"
-                      class="block h-auto w-full opacity-0 transition-opacity duration-500"
+                      class="block h-auto w-full object-cover object-top opacity-0 transition-opacity duration-500 lg:h-[30rem]"
                       data-platform-img
                     />
                   </div>
