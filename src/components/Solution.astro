@@ -63,7 +63,7 @@ const showPlaceholders = import.meta.env.DEV;
                     <span class="h-2.5 w-2.5 rounded-full bg-ink-300" />
                   </div>
 
-                  <div class="relative bg-ink-50">
+                  <div class="relative flex items-center justify-center bg-ink-50 lg:min-h-[26rem]">
                     {/* Placeholder visible solo en desarrollo; en producción no se renderiza. */}
                     {showPlaceholders && (
                       <div
@@ -86,7 +86,7 @@ const showPlaceholders = import.meta.env.DEV;
                       height={block.imageHeight}
                       loading="lazy"
                       decoding="async"
-                      class="block h-auto w-full object-cover object-top opacity-0 transition-opacity duration-500 lg:h-[30rem]"
+                      class="block h-auto w-full opacity-0 transition-opacity duration-500"
                       data-platform-img
                     />
                   </div>
