@@ -11,15 +11,17 @@ const href = `https://wa.me/${whatsapp.phone}?text=${encodeURIComponent(whatsapp
   rel="noopener noreferrer"
   data-track="cta_whatsapp"
   aria-label={whatsapp.label}
-  class="group fixed bottom-5 right-5 z-50 flex items-center gap-2.5 focus-visible:outline-none sm:bottom-6 sm:right-6"
+  class="group fixed bottom-5 right-5 z-50 block focus-visible:outline-none sm:bottom-6 sm:right-6"
 >
+  <!-- Tooltip "Hablemos": arriba del avatar, visible solo al hacer hover/foco. -->
   <span
-    class="rounded-2xl rounded-br-sm bg-white px-3.5 py-2 text-sm font-semibold text-ink-800 shadow-soft ring-1 ring-ink-200/60 transition-transform group-hover:-translate-y-0.5"
+    class="pointer-events-none absolute bottom-full right-0 mb-2.5 translate-y-1 whitespace-nowrap rounded-2xl rounded-br-sm bg-white px-3.5 py-2 text-sm font-semibold text-ink-800 opacity-0 shadow-soft ring-1 ring-ink-200/60 transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100"
+    role="tooltip"
   >
     {whatsapp.bubble}
   </span>
 
-  <span class="relative shrink-0">
+  <span class="relative block shrink-0">
     <img
       src={asset(contactPerson.avatar)}
       alt={contactPerson.name}
