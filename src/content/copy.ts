@@ -161,6 +161,11 @@ export const solution = {
       imageHeight: 884,
       imageAlt:
         'Avance de los alumnos por curso en Campus, con evaluaciones y asistencia.',
+      floatingCard: {
+        icon: 'award',
+        title: 'Diploma emitido',
+        subtitle: 'Open Badge verificable',
+      },
     },
     {
       app: productNames.control,
@@ -182,6 +187,11 @@ export const solution = {
       imageHeight: 821,
       imageAlt:
         'Reportes y trazabilidad en Control, con cumplimiento SENCE, asistencia y alertas de cierre.',
+      floatingCard: {
+        icon: 'bell',
+        title: 'Declaración Jurada SENCE',
+        subtitle: 'Cierra en 12 días',
+      },
     },
   ],
 };

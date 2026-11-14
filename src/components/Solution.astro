@@ -55,7 +55,7 @@ const showPlaceholders = import.meta.env.DEV;
               </div>
 
               {/* Imagen real de la plataforma, en un marco tipo ventana. */}
-              <div class:list={['reveal', { 'lg:order-1': flipped }]}>
+              <div class:list={['reveal relative', { 'lg:order-1': flipped }]}>
                 <figure class="overflow-hidden rounded-card border border-ink-200 bg-white shadow-soft">
                   <div class="flex items-center gap-1.5 border-b border-ink-100 bg-ink-50 px-4 py-2.5">
                     <span class="h-2.5 w-2.5 rounded-full bg-ink-300" />
@@ -63,7 +63,7 @@ const showPlaceholders = import.meta.env.DEV;
                     <span class="h-2.5 w-2.5 rounded-full bg-ink-300" />
                   </div>
 
-                  <div class="relative flex items-center justify-center bg-ink-50 lg:min-h-[26rem]">
+                  <div class="relative flex items-center justify-center bg-white lg:min-h-[24rem]">
                     {/* Placeholder visible solo en desarrollo; en producción no se renderiza. */}
                     {showPlaceholders && (
                       <div
@@ -91,6 +91,22 @@ const showPlaceholders = import.meta.env.DEV;
                     />
                   </div>
                 </figure>
+
+                {/* Tarjeta superpuesta para dar profundidad y llenar el espacio. */}
+                <div
+                  class:list={[
+                    'absolute bottom-[-18px] z-10 hidden items-center gap-3 rounded-xl border border-ink-100 bg-white p-3 shadow-soft sm:flex',
+                    flipped ? 'right-5' : 'left-5',
+                  ]}
+                >
+                  <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-600 text-white">
+                    <Icon name={block.floatingCard.icon} class="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p class="text-sm font-semibold text-ink-900">{block.floatingCard.title}</p>
+                    <p class="text-xs text-ink-500">{block.floatingCard.subtitle}</p>
+                  </div>
+                </div>
               </div>
             </div>
           );
