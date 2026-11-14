@@ -166,6 +166,8 @@ export const solution = {
         title: 'Diploma emitido',
         subtitle: 'Open Badge verificable',
       },
+      people: { label: '18 alumnos activos', variants: [0, 1, 2, 3] },
+      statCard: { label: 'Avance promedio', value: '68%', icon: 'bar-chart' },
     },
     {
       app: productNames.control,
@@ -192,6 +194,8 @@ export const solution = {
         title: 'Declaración Jurada SENCE',
         subtitle: 'Cierra en 12 días',
       },
+      people: { label: '8 empresas cliente', variants: [1, 2, 3, 4] },
+      statCard: { label: 'Asistencia SENCE', value: '96%', icon: 'clipboard-check' },
     },
   ],
 };

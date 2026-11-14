@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import Illustration from './Illustration.astro';
+import Avatar from './Avatar.astro';
 import SectionHeading from './SectionHeading.astro';
 import { solution } from '../content/copy';
 import { asset } from '../lib/asset';
@@ -92,11 +93,11 @@ const showPlaceholders = import.meta.env.DEV;
                   </div>
                 </figure>
 
-                {/* Tarjeta superpuesta para dar profundidad y llenar el espacio. */}
+                {/* Tarjeta superpuesta (abajo, lado interno). */}
                 <div
                   class:list={[
-                    'absolute bottom-[-18px] z-10 hidden items-center gap-3 rounded-xl border border-ink-100 bg-white p-3 shadow-soft sm:flex',
-                    flipped ? 'right-5' : 'left-5',
+                    'absolute bottom-[-18px] z-20 hidden items-center gap-3 rounded-xl border border-ink-100 bg-white p-3 shadow-soft sm:flex',
+                    flipped ? 'right-6' : 'left-6',
                   ]}
                 >
                   <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-600 text-white">
@@ -105,6 +106,37 @@ const showPlaceholders = import.meta.env.DEV;
                   <div>
                     <p class="text-sm font-semibold text-ink-900">{block.floatingCard.title}</p>
                     <p class="text-xs text-ink-500">{block.floatingCard.subtitle}</p>
+                  </div>
+                </div>
+
+                {/* Chip de avatares (arriba, lado externo). */}
+                <div
+                  class:list={[
+                    'absolute top-[-16px] z-20 hidden items-center gap-2 rounded-full border border-ink-100 bg-white py-1.5 pl-2 pr-3.5 shadow-soft sm:flex',
+                    flipped ? 'left-6' : 'right-6',
+                  ]}
+                >
+                  <div class="flex -space-x-2">
+                    {block.people.variants.map((v) => (
+                      <Avatar variant={v} class="h-7 w-7 rounded-full ring-2 ring-white" />
+                    ))}
+                  </div>
+                  <span class="text-xs font-semibold text-ink-700">{block.people.label}</span>
+                </div>
+
+                {/* Mini stat flotante (medio, lado interno). */}
+                <div
+                  class:list={[
+                    'absolute top-10 z-20 hidden items-center gap-2.5 rounded-xl border border-ink-100 bg-white px-3.5 py-2.5 shadow-soft lg:flex',
+                    flipped ? 'right-[-20px]' : 'left-[-20px]',
+                  ]}
+                >
+                  <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent-50 text-accent-600">
+                    <Icon name={block.statCard.icon} class="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p class="text-[11px] text-ink-500">{block.statCard.label}</p>
+                    <p class="text-base font-bold text-ink-900">{block.statCard.value}</p>
                   </div>
                 </div>
               </div>
