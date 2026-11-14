@@ -147,7 +147,9 @@ export const solution = {
       description:
         'Tus alumnos toman tus cursos y, al finalizar, reciben diplomas en PDF automáticos e insignias digitales verificables (Open Badges), con flujos de correo automáticos.',
       bullets: [
-        'Cursos y alumnos en tu campus',
+        'Creación de cursos (módulos y evaluaciones)',
+        'Evaluaciones online',
+        'Seguimiento de alumnos (avance y notas)',
         'Diplomas en PDF automáticos',
         'Insignias Open Badges verificables',
         'Flujos de correo automáticos',
@@ -166,11 +168,12 @@ export const solution = {
       description:
         'Tu equipo gestiona cohortes y empresas, y lleva la reportería SENCE (asistencia, Declaración Jurada y reportes para fiscalización) con alertas antes de cada cierre, en un dashboard multi-empresa.',
       bullets: [
+        'Integración directa con SENCE (asistencia automática)',
         'Gestión proactiva de Declaraciones Juradas',
         'Alertas antes de cada fecha crítica',
         'Reportes válidos para fiscalización',
+        'Historial completo auditable',
         'Dashboard multi-empresa',
-        'Gestión de cohortes y empresas',
       ],
       icon: 'dashboard',
       illustration: 'visibilidad',
@@ -179,6 +182,62 @@ export const solution = {
       imageHeight: 821,
       imageAlt:
         'Reportes y trazabilidad en Control, con cumplimiento SENCE, asistencia y alertas de cierre.',
+    },
+  ],
+};
+
+export const features = {
+  eyebrow: 'Características',
+  title: 'Todo lo que incluye la plataforma',
+  description:
+    'Las funcionalidades con las que tu OTEC opera cursos, cumple con SENCE y entrega evidencia.',
+  groups: [
+    {
+      title: 'Cumplimiento SENCE',
+      illustration: 'plazos',
+      items: [
+        'Integración directa con SENCE (asistencia automática)',
+        'Reportes válidos para fiscalización',
+        'Configuración según SENCE vigente',
+      ],
+    },
+    {
+      title: 'Asistencia y actividad',
+      illustration: 'asistencia',
+      items: [
+        'Registro de asistencia automático conectado a SENCE',
+        'Tiempo de conexión',
+        'Avance del curso',
+        'Actividades realizadas',
+      ],
+    },
+    {
+      title: 'Cursos y aprendizaje',
+      illustration: 'cursos',
+      items: [
+        'Creación de cursos (módulos, evaluaciones)',
+        'Seguimiento de alumnos (avance, notas)',
+        'Evaluaciones online',
+        'Certificados o diplomas automáticos emitidos desde la plataforma',
+      ],
+    },
+    {
+      title: 'Reportería y evidencia',
+      illustration: 'visibilidad',
+      items: [
+        'Reporte de asistencia por alumno',
+        '% de avance por curso',
+        'Historial completo auditable',
+      ],
+    },
+    {
+      title: 'Administración y seguridad',
+      illustration: 'plataforma',
+      items: [
+        'Control de usuarios (admin, relator, alumno)',
+        'Respaldo de información',
+        'Hosting confiable',
+      ],
     },
   ],
 };

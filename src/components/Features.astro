@@ -1,0 +1,42 @@
+---
+import Icon from './Icon.astro';
+import Illustration from './Illustration.astro';
+import SectionHeading from './SectionHeading.astro';
+import { features } from '../content/copy';
+---
+
+<section id="caracteristicas" class="bg-ink-50 py-16 sm:py-24">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <SectionHeading
+      eyebrow={features.eyebrow}
+      title={features.title}
+      description={features.description}
+    />
+
+    <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        features.groups.map((group, i) => (
+          <article
+            class="reveal flex flex-col rounded-card border border-ink-200 bg-white p-6 shadow-softer"
+            style={`transition-delay: ${Math.min(i, 5) * 60}ms`}
+          >
+            <div class="flex items-center gap-3">
+              <Illustration name={group.illustration} class="h-14 w-14 shrink-0" />
+              <h3 class="text-base font-semibold text-ink-900">{group.title}</h3>
+            </div>
+            <ul class="mt-4 space-y-2.5">
+              {group.items.map((item) => (
+                <li class="flex items-start gap-2.5">
+                  <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-100 text-accent-700">
+                    <Icon name="check" class="h-3.5 w-3.5" />
+                  </span>
+                  <span class="text-sm leading-relaxed text-ink-700">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
