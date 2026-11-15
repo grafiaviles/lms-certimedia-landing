@@ -16,11 +16,12 @@ export const site = {
     'Plataforma de aprendizaje gestionada para OTECs chilenas: gestión proactiva SENCE, asistencia auditable, dashboard multi-empresa y diplomas automáticos. Agenda una asesoría gratis.',
 };
 
-// CTA flotante (presente en todo el sitio): lleva a la agenda de César.
+// CTA flotante (presente en todo el sitio): lleva al formulario de contacto.
+// `url` es la agenda de HubSpot, reutilizada por ContactForm para el iframe incrustado.
 export const whatsapp = {
   url: 'https://meetings.hubspot.com/cesar-aviles-cuevas',
-  label: 'Agenda una reunión con César',
-  bubble: 'Hablemos',
+  label: 'Agenda una demo',
+  bubble: 'Agenda una demo',
 };
 
 // Persona de contacto que "gestiona" (se muestra en el CTA final).
@@ -361,6 +362,37 @@ export const contactForm = {
     { value: '501-1000', label: '501 a 1.000' },
     { value: '1000+', label: 'Más de 1.000' },
     { value: 'no-se', label: 'Aún no lo sé' },
+  ],
+  // Opciones cruzadas con los dolores de la sección "Problemas" de la landing.
+  problemaOptions: [
+    { value: '', label: 'Selecciona una opción' },
+    { value: 'sence', label: 'Cumplir los plazos y Declaraciones Juradas SENCE' },
+    { value: 'asistencia', label: 'Automatizar la asistencia y los reportes de fiscalización' },
+    { value: 'visibilidad', label: 'Dar visibilidad a mis clientes sobre el avance de su gente' },
+    { value: 'carga', label: 'Reducir la carga operativa de cargar cursos y armar cohortes' },
+    { value: 'marca', label: 'Tener una plataforma propia, con mi marca y dominio' },
+    { value: 'certificados', label: 'Automatizar diplomas y certificados' },
+    { value: 'otro', label: 'Otro' },
+  ],
+  presupuestoOptions: [
+    { value: '', label: 'Selecciona un rango' },
+    { value: 'sin-definir', label: 'Aún no tengo un presupuesto definido' },
+    { value: '<300000', label: 'Menos de $300.000 CLP al mes' },
+    { value: '300000-700000', label: '$300.000 a $700.000 CLP al mes' },
+    { value: '700000-1500000', label: '$700.000 a $1.500.000 CLP al mes' },
+    { value: '1500000+', label: 'Más de $1.500.000 CLP al mes' },
+  ],
+  decisorOptions: [
+    { value: '', label: 'Selecciona una opción' },
+    { value: 'yo', label: 'Yo decido' },
+    { value: 'compartida', label: 'La decisión es compartida con otra persona' },
+    { value: 'otro', label: 'Otra persona decide; yo evalúo la propuesta' },
+  ],
+  inicioOptions: [
+    { value: '', label: 'Selecciona un rango' },
+    { value: 'lo-antes-posible', label: 'Lo antes posible' },
+    { value: 'este-trimestre', label: 'Dentro de este trimestre' },
+    { value: 'sin-fecha', label: 'Aún estoy evaluando, sin fecha definida' },
   ],
   states: {
     loading: 'Enviando...',

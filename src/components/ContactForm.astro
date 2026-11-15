@@ -145,6 +145,86 @@ const meetingsUrl = whatsapp.url;
           </div>
 
           <div class="sm:col-span-2">
+            <label for="problema_principal" class="block text-sm font-medium text-ink-700">
+              ¿Qué problema quieres resolver primero? *
+            </label>
+            <select
+              id="problema_principal"
+              name="problema_principal"
+              required
+              class="mt-1.5 block w-full rounded-lg border border-ink-200 bg-white px-3.5 py-2.5 text-ink-900 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
+              aria-describedby="problema_principal-error"
+            >
+              {
+                contactForm.problemaOptions.map((option) => (
+                  <option value={option.value}>{option.label}</option>
+                ))
+              }
+            </select>
+            <p id="problema_principal-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+          </div>
+
+          <div>
+            <label for="presupuesto" class="block text-sm font-medium text-ink-700">
+              Presupuesto mensual contemplado *
+            </label>
+            <select
+              id="presupuesto"
+              name="presupuesto"
+              required
+              class="mt-1.5 block w-full rounded-lg border border-ink-200 bg-white px-3.5 py-2.5 text-ink-900 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
+              aria-describedby="presupuesto-error"
+            >
+              {
+                contactForm.presupuestoOptions.map((option) => (
+                  <option value={option.value}>{option.label}</option>
+                ))
+              }
+            </select>
+            <p id="presupuesto-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+          </div>
+
+          <div>
+            <label for="inicio_estimado" class="block text-sm font-medium text-ink-700">
+              ¿Cuándo te gustaría comenzar? *
+            </label>
+            <select
+              id="inicio_estimado"
+              name="inicio_estimado"
+              required
+              class="mt-1.5 block w-full rounded-lg border border-ink-200 bg-white px-3.5 py-2.5 text-ink-900 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
+              aria-describedby="inicio_estimado-error"
+            >
+              {
+                contactForm.inicioOptions.map((option) => (
+                  <option value={option.value}>{option.label}</option>
+                ))
+              }
+            </select>
+            <p id="inicio_estimado-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+          </div>
+
+          <div class="sm:col-span-2">
+            <label for="decisor_compra" class="block text-sm font-medium text-ink-700">
+              ¿Quién decide la compra en tu OTEC? *
+            </label>
+            <select
+              id="decisor_compra"
+              name="decisor_compra"
+              required
+              class="mt-1.5 block w-full rounded-lg border border-ink-200 bg-white px-3.5 py-2.5 text-ink-900 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
+              aria-describedby="decisor_compra-error"
+            >
+              {
+                contactForm.decisorOptions.map((option) => (
+                  <option value={option.value}>{option.label}</option>
+                ))
+              }
+            </select>
+            <p id="decisor_compra-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+          </div>
+
+          <div class="sm:col-span-2">
             <label for="message" class="block text-sm font-medium text-ink-700">
               Mensaje (opcional)
             </label>
@@ -211,7 +291,33 @@ const meetingsUrl = whatsapp.url;
         el: document.getElementById('personas_anio'),
         errorEl: document.getElementById('personas_anio-error'),
       },
+      problema_principal: {
+        el: document.getElementById('problema_principal'),
+        errorEl: document.getElementById('problema_principal-error'),
+      },
+      presupuesto: {
+        el: document.getElementById('presupuesto'),
+        errorEl: document.getElementById('presupuesto-error'),
+      },
+      inicio_estimado: {
+        el: document.getElementById('inicio_estimado'),
+        errorEl: document.getElementById('inicio_estimado-error'),
+      },
+      decisor_compra: {
+        el: document.getElementById('decisor_compra'),
+        errorEl: document.getElementById('decisor_compra-error'),
+      },
     };
+
+    // Selects obligatorios que solo necesitan "¿hay un valor elegido?".
+    const REQUIRED_SELECTS = [
+      'cursos_anio',
+      'personas_anio',
+      'problema_principal',
+      'presupuesto',
+      'inicio_estimado',
+      'decisor_compra',
+    ];
 
     const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const PHONE_RE = /^[0-9+()\s-]{8,}$/;
@@ -254,19 +360,15 @@ const meetingsUrl = whatsapp.url;
         setFieldError(fields.otec, '');
       }
 
-      if (!fields.cursos_anio.el.value) {
-        setFieldError(fields.cursos_anio, 'Selecciona un rango.');
-        valid = false;
-      } else {
-        setFieldError(fields.cursos_anio, '');
-      }
-
-      if (!fields.personas_anio.el.value) {
-        setFieldError(fields.personas_anio, 'Selecciona un rango.');
-        valid = false;
-      } else {
-        setFieldError(fields.personas_anio, '');
-      }
+      REQUIRED_SELECTS.forEach((key) => {
+        const field = fields[key];
+        if (!field.el.value) {
+          setFieldError(field, 'Selecciona una opción.');
+          valid = false;
+        } else {
+          setFieldError(field, '');
+        }
+      });
 
       return valid;
     }
@@ -309,6 +411,10 @@ const meetingsUrl = whatsapp.url;
         otec: fields.otec.el.value.trim(),
         cursos_anio: fields.cursos_anio.el.value,
         personas_anio: fields.personas_anio.el.value,
+        problema_principal: fields.problema_principal.el.value,
+        presupuesto: fields.presupuesto.el.value,
+        inicio_estimado: fields.inicio_estimado.el.value,
+        decisor_compra: fields.decisor_compra.el.value,
         message: document.getElementById('message').value.trim(),
         source: 'landing-certimedia',
         // Campos de control de FormSubmit (ignorados por otros endpoints).
