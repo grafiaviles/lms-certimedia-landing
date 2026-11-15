@@ -1,4 +1,5 @@
 ---
+import Icon from './Icon.astro';
 import { contactForm, whatsapp } from '../content/copy';
 
 // Endpoint del formulario, resuelto en build time desde la variable de entorno.
@@ -20,7 +21,10 @@ const meetingsUrl = whatsapp.url;
       <p class="mt-2 text-sm font-medium text-accent-700">{contactForm.disclaimer}</p>
     </div>
 
-    <div class="reveal mt-10 rounded-card border border-ink-200 bg-white p-6 shadow-soft sm:p-8">
+    <div
+      id="contact-form-card"
+      class="reveal mt-10 rounded-card border border-ink-200 bg-white p-6 shadow-soft sm:p-8"
+    >
       <form id="contact-form" novalidate>
         <!-- Honeypot anti-spam: oculto para personas, visible para bots que autocompletan todo.
              clip-path en vez de left:-9999px para no generar overflow horizontal en la página. -->
@@ -39,7 +43,22 @@ const meetingsUrl = whatsapp.url;
           />
         </div>
 
-        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <!-- Indicador de progreso del wizard (2 pasos). -->
+        <div class="mb-6">
+          <p id="step-label" class="mb-2 text-xs font-semibold uppercase tracking-wide text-accent-600">
+            Paso 1 de 2 · Tus datos de contacto
+          </p>
+          <div class="h-1.5 w-full overflow-hidden rounded-full bg-ink-100">
+            <div
+              id="step-progress"
+              class="h-full w-1/2 rounded-full bg-accent-600 transition-all duration-500 ease-out"
+            >
+            </div>
+          </div>
+        </div>
+
+        {/* Paso 1 · Tus datos de contacto */}
+        <div data-step-panel="1" class="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div>
             <label for="name" class="block text-sm font-medium text-ink-700">Nombre *</label>
             <input
@@ -143,7 +162,10 @@ const meetingsUrl = whatsapp.url;
             </select>
             <p id="personas_anio-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
           </div>
+        </div>
 
+        {/* Paso 2 · Tu proyecto (oculto hasta avanzar) */}
+        <div data-step-panel="2" class="hidden grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div class="sm:col-span-2">
             <label for="problema_principal" class="block text-sm font-medium text-ink-700">
               ¿Qué problema quieres resolver primero? *
@@ -245,14 +267,37 @@ const meetingsUrl = whatsapp.url;
         >
         </div>
 
-        <button
-          type="submit"
-          id="submit-button"
-          data-track="form_submit"
-          class="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3.5 text-base font-semibold text-white shadow-soft transition-colors hover:bg-accent-700 disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          <span id="submit-label">{contactForm.submitLabel}</span>
-        </button>
+        {/* Paso 1: acción "Siguiente" */}
+        <div id="step1-actions" class="mt-6">
+          <button
+            type="button"
+            id="step1-next"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3.5 text-base font-semibold text-white shadow-soft transition-colors hover:bg-accent-700"
+          >
+            Siguiente
+            <Icon name="arrow-right" class="h-5 w-5" />
+          </button>
+        </div>
+
+        {/* Paso 2: acciones "Atrás" + enviar (oculto hasta avanzar) */}
+        <div id="step2-actions" class="mt-6 hidden flex-col gap-3 sm:flex-row sm:items-center">
+          <button
+            type="button"
+            id="step2-back"
+            class="inline-flex items-center justify-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3.5 text-sm font-semibold text-ink-700 transition-colors hover:border-ink-300 sm:order-1"
+          >
+            <Icon name="arrow-right" class="h-4 w-4 rotate-180" />
+            Atrás
+          </button>
+          <button
+            type="submit"
+            id="submit-button"
+            data-track="form_submit"
+            class="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3.5 text-base font-semibold text-white shadow-soft transition-colors hover:bg-accent-700 disabled:cursor-not-allowed disabled:opacity-60 sm:order-2"
+          >
+            <span id="submit-label">{contactForm.submitLabel}</span>
+          </button>
+        </div>
       </form>
 
       {/* Agenda incrustada: se muestra al enviar el formulario (prellenada). */}
@@ -309,8 +354,9 @@ const meetingsUrl = whatsapp.url;
       },
     };
 
-    // Selects obligatorios que solo necesitan "¿hay un valor elegido?".
-    const REQUIRED_SELECTS = [
+    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const PHONE_RE = /^[0-9+()\s-]{8,}$/;
+    const SELECT_KEYS = [
       'cursos_anio',
       'personas_anio',
       'problema_principal',
@@ -319,9 +365,6 @@ const meetingsUrl = whatsapp.url;
       'decisor_compra',
     ];
 
-    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const PHONE_RE = /^[0-9+()\s-]{8,}$/;
-
     function setFieldError(field, message) {
       field.el.classList.toggle('border-red-400', Boolean(message));
       field.el.setAttribute('aria-invalid', message ? 'true' : 'false');
@@ -329,49 +372,105 @@ const meetingsUrl = whatsapp.url;
       field.errorEl.classList.toggle('hidden', !message);
     }
 
-    function validate() {
-      let valid = true;
-
-      if (!fields.name.el.value.trim()) {
-        setFieldError(fields.name, 'Ingresa tu nombre.');
-        valid = false;
-      } else {
-        setFieldError(fields.name, '');
-      }
-
-      if (!EMAIL_RE.test(fields.email.el.value.trim())) {
-        setFieldError(fields.email, 'Ingresa un correo válido.');
-        valid = false;
-      } else {
-        setFieldError(fields.email, '');
-      }
-
-      if (!PHONE_RE.test(fields.phone.el.value.trim())) {
-        setFieldError(fields.phone, 'Ingresa un teléfono válido.');
-        valid = false;
-      } else {
-        setFieldError(fields.phone, '');
-      }
-
-      if (!fields.otec.el.value.trim()) {
-        setFieldError(fields.otec, 'Ingresa el nombre de tu OTEC.');
-        valid = false;
-      } else {
-        setFieldError(fields.otec, '');
-      }
-
-      REQUIRED_SELECTS.forEach((key) => {
-        const field = fields[key];
-        if (!field.el.value) {
-          setFieldError(field, 'Selecciona una opción.');
-          valid = false;
-        } else {
-          setFieldError(field, '');
+    const TEXT_VALIDATORS = {
+      name: () => {
+        if (!fields.name.el.value.trim()) {
+          setFieldError(fields.name, 'Ingresa tu nombre.');
+          return false;
         }
-      });
+        setFieldError(fields.name, '');
+        return true;
+      },
+      email: () => {
+        if (!EMAIL_RE.test(fields.email.el.value.trim())) {
+          setFieldError(fields.email, 'Ingresa un correo válido.');
+          return false;
+        }
+        setFieldError(fields.email, '');
+        return true;
+      },
+      phone: () => {
+        if (!PHONE_RE.test(fields.phone.el.value.trim())) {
+          setFieldError(fields.phone, 'Ingresa un teléfono válido.');
+          return false;
+        }
+        setFieldError(fields.phone, '');
+        return true;
+      },
+      otec: () => {
+        if (!fields.otec.el.value.trim()) {
+          setFieldError(fields.otec, 'Ingresa el nombre de tu OTEC.');
+          return false;
+        }
+        setFieldError(fields.otec, '');
+        return true;
+      },
+    };
 
+    function validateSelect(key) {
+      const field = fields[key];
+      if (!field.el.value) {
+        setFieldError(field, 'Selecciona una opción.');
+        return false;
+      }
+      setFieldError(field, '');
+      return true;
+    }
+
+    function validateKey(key) {
+      if (TEXT_VALIDATORS[key]) return TEXT_VALIDATORS[key]();
+      if (SELECT_KEYS.includes(key)) return validateSelect(key);
+      return true;
+    }
+
+    const STEP1_KEYS = ['name', 'email', 'phone', 'otec', 'cursos_anio', 'personas_anio'];
+    const STEP2_KEYS = ['problema_principal', 'presupuesto', 'inicio_estimado', 'decisor_compra'];
+
+    function validateKeys(keys) {
+      let valid = true;
+      keys.forEach((key) => {
+        if (!validateKey(key)) valid = false;
+      });
       return valid;
     }
+
+    function validate() {
+      return validateKeys(STEP1_KEYS.concat(STEP2_KEYS));
+    }
+
+    // --- Wizard de 2 pasos ---
+    const step1Panel = document.querySelector('[data-step-panel="1"]');
+    const step2Panel = document.querySelector('[data-step-panel="2"]');
+    const step1Actions = document.getElementById('step1-actions');
+    const step2Actions = document.getElementById('step2-actions');
+    const step1NextBtn = document.getElementById('step1-next');
+    const step2BackBtn = document.getElementById('step2-back');
+    const stepLabel = document.getElementById('step-label');
+    const stepProgress = document.getElementById('step-progress');
+    const formCard = document.getElementById('contact-form-card');
+    const STEP_LABELS = ['Paso 1 de 2 · Tus datos de contacto', 'Paso 2 de 2 · Tu proyecto'];
+
+    function goToStep(step) {
+      const isStep1 = step === 1;
+      step1Panel?.classList.toggle('hidden', !isStep1);
+      step2Panel?.classList.toggle('hidden', isStep1);
+      step1Actions?.classList.toggle('hidden', !isStep1);
+      step2Actions?.classList.toggle('hidden', isStep1);
+      if (stepLabel) stepLabel.textContent = STEP_LABELS[step - 1];
+      if (stepProgress) stepProgress.style.width = isStep1 ? '50%' : '100%';
+      banner.classList.add('hidden');
+      formCard?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    step1NextBtn?.addEventListener('click', () => {
+      if (validateKeys(STEP1_KEYS)) {
+        goToStep(2);
+      } else {
+        step1Panel?.querySelector('[aria-invalid="true"]')?.focus();
+      }
+    });
+
+    step2BackBtn?.addEventListener('click', () => goToStep(1));
 
     function showBanner(kind, message) {
       banner.textContent = message;
@@ -401,6 +500,8 @@ const meetingsUrl = whatsapp.url;
       }
 
       if (!validate()) {
+        const step1HasError = STEP1_KEYS.some((key) => fields[key].el.getAttribute('aria-invalid') === 'true');
+        if (step1HasError) goToStep(1);
         return;
       }
 
