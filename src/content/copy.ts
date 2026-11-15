@@ -413,6 +413,7 @@ export const contactForm = {
     { value: 'este-trimestre', label: 'Dentro de este trimestre' },
     { value: 'sin-fecha', label: 'Aún estoy evaluando, sin fecha definida' },
   ],
+  dncLabel: 'Ya cuento con un DNC o NDS realizado',
   states: {
     loading: 'Enviando...',
     success: '¡Listo! Te contactaremos a la brevedad para coordinar tu demo.',
