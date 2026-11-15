@@ -314,7 +314,6 @@ export const comparison = {
       ],
     },
   ],
-  highlightLabel: 'Resaltar a Certimedia',
   footnote:
     'Comparación entre categorías generales de solución; las funciones varían según cada proveedor.',
 };
