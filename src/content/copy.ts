@@ -274,24 +274,28 @@ export const howItWorks = {
   steps: [
     {
       title: 'Diagnóstico',
+      shortLabel: 'Diagnóstico',
       description:
         'Revisamos cómo opera tu OTEC hoy: cursos, cohortes y requisitos SENCE.',
       illustration: 'diagnostico',
     },
     {
       title: 'Implementación y personalización de marca',
+      shortLabel: 'Personalización',
       description:
         'Configuramos tu plataforma con tu dominio, tus logos y tus colores.',
       illustration: 'marca',
     },
     {
       title: 'Carga de cursos y cohortes',
+      shortLabel: 'Carga',
       description:
         'Subimos tus contenidos y armamos tus cohortes según el modelo que elijas.',
       illustration: 'cursos',
     },
     {
       title: 'Operación y soporte continuo',
+      shortLabel: 'Operación',
       description:
         'Tu plataforma queda operando, con el equipo de Certimedia disponible para apoyarte.',
       illustration: 'operacion',

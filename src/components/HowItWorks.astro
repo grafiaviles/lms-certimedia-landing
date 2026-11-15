@@ -45,9 +45,9 @@ import { howItWorks } from '../content/copy';
               </span>
               <span
                 data-hiw-label
-                class="hidden max-w-[6rem] text-center text-xs font-medium text-ink-400 transition-colors duration-300 sm:block"
+                class="max-w-[5.5rem] text-center text-sm font-semibold text-ink-400 transition-colors duration-300 sm:max-w-[7rem] sm:text-base"
               >
-                {step.title}
+                {step.shortLabel}
               </span>
             </button>
           ))
@@ -108,6 +108,8 @@ import { howItWorks } from '../content/copy';
         dot?.classList.toggle('bg-accent-500', active);
         dot?.classList.toggle('border-accent-500', active);
         dot?.classList.toggle('text-white', active);
+        dot?.classList.toggle('scale-110', active);
+        dot?.classList.toggle('shadow-[0_0_0_6px_rgb(var(--accent-500)/0.2)]', active);
         dot?.classList.toggle('bg-ink-900', !active);
         dot?.classList.toggle('border-white/20', !active);
         dot?.classList.toggle('text-white/50', !active);
