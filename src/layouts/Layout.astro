@@ -10,6 +10,8 @@ interface Props {
 
 const { title = site.title, description = site.description } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? site.url);
+// URL absoluta: obligatoria para que WhatsApp/LinkedIn/Facebook/Slack puedan rastrear la imagen.
+const ogImageURL = new URL(asset('og-image.png'), Astro.site ?? site.url);
 
 // JSON-LD Organization: solo datos reales entregados en el brief (sin métricas ni certificaciones inventadas).
 const organizationJsonLd = {
@@ -44,12 +46,25 @@ const organizationJsonLd = {
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:locale" content="es_CL" />
     <meta property="og:site_name" content={site.name} />
-    <!-- TODO(marketing): agregar og:image (1200x630) con una pieza gráfica real de marca. -->
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:secure_url" content={ogImageURL} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="620" />
+    <meta
+      property="og:image:alt"
+      content="Certimedia — Plataforma de gestión y capacitación para OTECs. Menos carga operativa, más tiempo para vender cursos."
+    />
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <meta
+      name="twitter:image:alt"
+      content="Certimedia — Plataforma de gestión y capacitación para OTECs. Menos carga operativa, más tiempo para vender cursos."
+    />
 
     <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
     <!-- TODO(marketing): sumar favicon.ico / apple-touch-icon para navegadores que no soportan SVG. -->

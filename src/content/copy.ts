@@ -12,8 +12,9 @@ export const site = {
   addressMapUrl: 'https://maps.google.com/?q=Antonio+Bellet+193+OF+1210+Santiago+Chile',
   // SEO: mantener la frase "LMS para OTEC con integración SENCE" en title/meta/OG.
   title: 'LMS para OTEC con integración SENCE | Certimedia',
+  // Meta description: acotada a ~155 caracteres (buena práctica SEO para no truncarse en buscadores).
   description:
-    'Plataforma de aprendizaje gestionada para OTECs chilenas: gestión proactiva SENCE, asistencia auditable, dashboard multi-empresa y diplomas automáticos. Agenda una asesoría gratis.',
+    'Plataforma de gestión y capacitación para OTECs chilenas: cumplimiento SENCE, asistencia auditable y diplomas automáticos. Agenda una asesoría gratis.',
 };
 
 // CTA flotante (presente en todo el sitio): lleva al formulario de contacto.
@@ -54,7 +55,7 @@ export const nav = {
 };
 
 export const hero = {
-  eyebrow: 'Plataforma de operación para OTECs',
+  eyebrow: 'Plataforma de Gestión y Capacitación para OTECs',
   title: 'Menos carga operativa. Más tiempo para vender cursos.',
   subtitle:
     'Tus alumnos aprenden en tu campus. Tu equipo gestiona cohortes, empresas y reportería SENCE desde un solo panel. Todo con tu marca, operando en 2 semanas.',
@@ -457,5 +458,5 @@ export const finalCta = {
 export const footer = {
   cta: { label: 'Agenda una demo gratis', href: '#contacto' },
   description:
-    'Plataforma de operación para OTECs chilenas: Campus para el aprendizaje y Control para la gestión SENCE, cohortes y reportería.',
+    'Plataforma de Gestión y Capacitación para OTECs chilenas: Campus para el aprendizaje y Control para la gestión SENCE, cohortes y reportería.',
 };
