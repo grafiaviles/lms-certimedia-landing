@@ -268,37 +268,33 @@ export const features = {
 };
 
 export const howItWorks = {
-  eyebrow: 'Cómo funciona',
-  title: 'De la primera conversación a tu plataforma operando',
+  eyebrow: 'Cómo partimos',
+  title: 'De la demo a la operación continua',
   note: 'La puesta en marcha toma 2 semanas.',
   steps: [
     {
-      title: 'Diagnóstico',
+      title: 'Demo y diagnóstico',
       shortLabel: 'Diagnóstico',
-      description:
-        'Revisamos cómo opera tu OTEC hoy: cursos, cohortes y requisitos SENCE.',
+      description: 'Vemos tu operación actual y qué necesitas evidenciar.',
       illustration: 'diagnostico',
     },
     {
-      title: 'Implementación y personalización de marca',
-      shortLabel: 'Personalización',
-      description:
-        'Configuramos tu plataforma con tu dominio, tus logos y tus colores.',
+      title: 'Configuración',
+      shortLabel: 'Configuración',
+      description: 'Aula con tu marca, estructura de cursos y dashboard.',
       illustration: 'marca',
     },
     {
-      title: 'Carga de cursos y cohortes',
-      shortLabel: 'Carga',
-      description:
-        'Subimos tus contenidos y armamos tus cohortes según el modelo que elijas.',
+      title: 'Piloto',
+      shortLabel: 'Piloto',
+      description: 'Primer curso real con acompañamiento de nuestro equipo.',
       illustration: 'cursos',
     },
     {
-      title: 'Operación y soporte continuo',
+      title: 'Operación continua',
       shortLabel: 'Operación',
-      description:
-        'Tu plataforma queda operando, con el equipo de Certimedia disponible para apoyarte.',
-      illustration: 'operacion',
+      description: 'Suscripción mensual con soporte incluido.',
+      illustration: 'soporte',
     },
   ],
 };
