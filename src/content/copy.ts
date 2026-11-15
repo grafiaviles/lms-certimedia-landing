@@ -56,11 +56,11 @@ export const nav = {
 };
 
 export const hero = {
-  eyebrow: 'LMS y gestión SENCE, hechos solo para OTECs',
+  eyebrow: 'LMS y Gestión SENCE para OTECs',
   title: 'Menos carga operativa. Más tiempo para vender cursos.',
   subtitle:
     'Tus alumnos aprenden en tu campus. Tu equipo gestiona cohortes, empresas y reportería SENCE desde un solo panel. Todo con tu marca, operando en 2 semanas.',
-  ctaPrimary: { label: 'Agenda un diagnóstico para tu OTEC', href: '#contacto' },
+  ctaPrimary: { label: 'Agenda un diagnóstico', href: '#contacto' },
   ctaSecondary: { label: 'Ver cómo funciona', href: '#como-funciona' },
   microcopy: '1 hora, sin costo y sin compromiso.',
 };
