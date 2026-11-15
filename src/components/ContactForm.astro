@@ -1,9 +1,10 @@
 ---
-import { contactForm } from '../content/copy';
+import { contactForm, whatsapp } from '../content/copy';
 
 // Endpoint del formulario, resuelto en build time desde la variable de entorno.
 // Vacío = envío simulado (modo desarrollo). Ver README y .env.example.
 const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+const meetingsUrl = whatsapp.url;
 ---
 
 <section id="contacto" class="bg-white py-16 sm:py-24">
@@ -173,11 +174,21 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
           <span id="submit-label">{contactForm.submitLabel}</span>
         </button>
       </form>
+
+      {/* Agenda incrustada: se muestra al enviar el formulario (prellenada). */}
+      <div id="meetings-embed" class="hidden">
+        <div class="mb-5 text-center">
+          <p class="text-sm font-semibold uppercase tracking-wide text-accent-600">¡Gracias!</p>
+          <p class="mt-1 text-xl font-bold text-ink-900">Elige un horario con César</p>
+          <p class="mt-1 text-sm text-ink-500">Agenda de 1 hora, sin costo y sin compromiso.</p>
+        </div>
+        <div id="meetings-slot" class="min-h-[640px]"></div>
+      </div>
     </div>
   </div>
 </section>
 
-<script define:vars={{ states: contactForm.states, FORM_ENDPOINT: formEndpoint, delivery: contactForm.delivery }}>
+<script define:vars={{ states: contactForm.states, FORM_ENDPOINT: formEndpoint, delivery: contactForm.delivery, MEETINGS_URL: meetingsUrl }}>
   (function () {
     const form = document.getElementById('contact-form');
     const banner = document.getElementById('form-banner');
@@ -325,9 +336,8 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
           }
         }
 
-        showBanner('success', states.success);
-        form.reset();
         window.trackEvent?.('form_submit_success', { form: 'contacto' });
+        showMeetings(payload.name, payload.email);
       } catch (error) {
         console.error('[contact-form] Error al enviar el formulario', error);
         showBanner('error', states.error);
@@ -336,5 +346,32 @@ const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
         setLoading(false);
       }
     });
+
+    // Muestra la agenda de HubSpot incrustada (prellenada) tras enviar el formulario.
+    function showMeetings(name, email) {
+      const wrap = document.getElementById('meetings-embed');
+      const slot = document.getElementById('meetings-slot');
+      if (!wrap || !slot || !MEETINGS_URL) {
+        showBanner('success', states.success);
+        return;
+      }
+      const params = new URLSearchParams({ embed: 'true' });
+      if (email) params.set('email', email);
+      if (name) params.set('firstName', name);
+
+      const iframe = document.createElement('iframe');
+      iframe.src = `${MEETINGS_URL}?${params.toString()}`;
+      iframe.title = 'Agenda una reunión con César';
+      iframe.loading = 'lazy';
+      iframe.style.width = '100%';
+      iframe.style.minHeight = '700px';
+      iframe.style.border = '0';
+      slot.innerHTML = '';
+      slot.appendChild(iframe);
+
+      form.classList.add('hidden');
+      wrap.classList.remove('hidden');
+      wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   })();
 </script>
