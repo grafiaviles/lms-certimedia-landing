@@ -329,11 +329,11 @@ const meetingsUrl = whatsapp.url;
         </div>
 
         {/* Paso 2: acciones "Atrás" + enviar (oculto hasta avanzar) */}
-        <div id="step2-actions" class="mt-6 hidden flex-col gap-3 sm:flex-row sm:items-center">
+        <div id="step2-actions" class="mt-6 hidden flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <button
             type="button"
             id="step2-back"
-            class="inline-flex items-center justify-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3.5 text-sm font-semibold text-ink-700 transition-colors hover:border-ink-300 sm:order-1"
+            class="inline-flex items-center justify-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3.5 text-sm font-semibold text-ink-700 transition-colors hover:border-ink-300"
           >
             <Icon name="arrow-right" class="h-4 w-4 rotate-180" />
             Atrás
@@ -342,7 +342,7 @@ const meetingsUrl = whatsapp.url;
             type="submit"
             id="submit-button"
             data-track="form_submit"
-            class="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3.5 text-base font-semibold text-white shadow-soft transition-colors hover:bg-accent-700 disabled:cursor-not-allowed disabled:opacity-60 sm:order-2"
+            class="inline-flex items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3.5 text-base font-semibold text-white shadow-soft transition-colors hover:bg-accent-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <span id="submit-label">{contactForm.submitLabel}</span>
           </button>
