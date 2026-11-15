@@ -338,19 +338,19 @@ export const support = {
       title: 'Soporte del equipo Certimedia',
       description:
         'Un equipo disponible para resolver dudas y problemas operativos de tu plataforma.',
-      illustration: 'soporte',
+      icon: 'message-circle',
     },
     {
       title: 'Actualizaciones normativas y de seguridad',
       description:
         'La plataforma se mantiene al día con los cambios normativos de SENCE y con parches de seguridad.',
-      illustration: 'actualizaciones',
+      icon: 'shield-check',
     },
     {
       title: 'Roadmap con IA y agentes',
       description:
         'Seguimos incorporando funciones de inteligencia artificial y agentes para hacer tu operación cada vez más simple.',
-      illustration: 'roadmap',
+      icon: 'cpu',
     },
   ],
 };
