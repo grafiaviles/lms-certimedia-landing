@@ -48,6 +48,7 @@ export const nav = {
   links: [
     { href: '#problemas', label: 'Problemas' },
     { href: '#solucion', label: 'Solución' },
+    { href: '#caracteristicas', label: 'Características' },
     { href: '#como-funciona', label: 'Cómo funciona' },
     { href: '#faq', label: 'FAQ' },
   ],
@@ -304,14 +305,27 @@ export const serviceModel = {
   options: [
     {
       title: 'Autogestionado',
+      shortLabel: 'Auto',
+      tagline: 'Tú llevas el control',
       description:
         'Tú subes y administras tus propios cursos, cohortes y alumnos, con toda la plataforma a tu disposición.',
+      icon: 'settings',
     },
     {
       title: 'Gestionado',
+      shortLabel: 'Gestionado',
+      tagline: 'Certimedia opera por ti',
       description:
         'Certimedia carga tus contenidos, configura las cohortes y te deja todo listo para operar.',
+      icon: 'shield-check',
     },
+  ],
+  // Tabla "quién lo hace": derivada literalmente de las dos descripciones de arriba
+  // (no agrega tareas ni datos nuevos, solo las ordena en una comparación).
+  tasks: [
+    { label: 'Cargar los cursos', auto: 'tu', managed: 'certimedia' },
+    { label: 'Configurar las cohortes', auto: 'tu', managed: 'certimedia' },
+    { label: 'Administrar alumnos y seguimiento', auto: 'tu', managed: 'tu' },
   ],
   closing: 'Te ayudamos a elegir el modelo en la demo.',
 };
