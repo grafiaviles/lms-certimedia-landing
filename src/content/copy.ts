@@ -21,8 +21,8 @@ export const site = {
 // `url` es la agenda de HubSpot, reutilizada por ContactForm para el iframe incrustado.
 export const whatsapp = {
   url: 'https://meetings.hubspot.com/cesar-aviles-cuevas',
-  label: 'Agenda una demo',
-  bubble: 'Agenda una demo',
+  label: 'Agenda un diagnóstico',
+  bubble: 'Agenda un diagnóstico',
 };
 
 // Persona de contacto que "gestiona" (se muestra en el CTA final).
@@ -52,17 +52,29 @@ export const nav = {
     { href: '#como-funciona', label: 'Cómo funciona' },
     { href: '#faq', label: 'FAQ' },
   ],
-  cta: 'Agenda una demo',
+  cta: 'Agenda un diagnóstico',
 };
 
 export const hero = {
-  eyebrow: 'Plataforma de Gestión y Capacitación para OTECs',
+  eyebrow: 'LMS y gestión SENCE, hechos solo para OTECs',
   title: 'Menos carga operativa. Más tiempo para vender cursos.',
   subtitle:
     'Tus alumnos aprenden en tu campus. Tu equipo gestiona cohortes, empresas y reportería SENCE desde un solo panel. Todo con tu marca, operando en 2 semanas.',
-  ctaPrimary: { label: 'Agenda tu asesoría gratis', href: '#contacto' },
+  ctaPrimary: { label: 'Agenda un diagnóstico para tu OTEC', href: '#contacto' },
   ctaSecondary: { label: 'Ver cómo funciona', href: '#como-funciona' },
   microcopy: '1 hora, sin costo y sin compromiso.',
+};
+
+// Franja de cifras bajo el hero (prueba social). Los 4 chips de abajo se mantienen
+// como segunda línea, más discreta.
+export const socialProof = {
+  stats: [
+    { value: 50, prefix: '+', label: 'empresas confían en Certimedia' },
+    { value: 15000, label: 'profesionales certificados' },
+    { value: 200, prefix: '+', label: 'cursos disponibles' },
+    { value: 94.5, suffix: '%', decimals: 1, label: 'tasa de certificación' },
+  ],
+  note: 'Cifras de Certimedia como proveedor de capacitación.',
 };
 
 export const credibility = [
@@ -147,14 +159,30 @@ export const solution = {
       app: productNames.campus,
       tagline: 'Aprendizaje',
       description:
-        'El campus donde tus alumnos aprenden: toman cursos con módulos y evaluaciones, avanzan a su ritmo y tú sigues su progreso y notas en tiempo real, con certificación automática al cerrar cada curso.',
+        'Avance, notas y asistencia SENCE de cada alumno en un solo panel, con alertas de baja dedicación mientras el curso aún está en marcha.',
       bullets: [
-        'Creación de cursos (módulos y evaluaciones)',
-        'Evaluaciones online',
-        'Seguimiento de alumnos (avance y notas)',
-        'Diplomas en PDF automáticos',
-        'Insignias digitales verificables',
-        'Flujos de correo automáticos',
+        {
+          title: 'Alerta de baja dedicación',
+          description:
+            'Identifica a quien se atrasa y filtra solo esos alumnos para contactarlos a tiempo.',
+        },
+        {
+          title: 'Asistencia SENCE por sesión',
+          description: 'La ves por alumno, sin planillas.',
+        },
+        {
+          title: 'Reporte semanal a tu cliente',
+          description: 'Lo programas una vez y le llega a cada empresa.',
+        },
+        {
+          title: 'Diploma e insignia al aprobar',
+          description:
+            'El PDF y la insignia verificable (Open Badges) salen automáticos, con correos en cada etapa.',
+        },
+        {
+          title: 'Todo con tu marca',
+          description: 'El campus usa tu dominio, tu logo y tus colores.',
+        },
       ],
       icon: 'badge',
       illustration: 'diplomas',
@@ -163,13 +191,9 @@ export const solution = {
       imageHeight: 884,
       imageAlt:
         'Avance de los alumnos por curso en Campus, con evaluaciones y asistencia.',
-      floatingCard: {
-        icon: 'award',
-        title: 'Diploma emitido',
-        subtitle: 'Insignia digital verificable',
-      },
-      people: { label: '18 alumnos activos', variants: [0, 1, 2, 3] },
-      statCard: { label: 'Avance promedio', value: '68%', icon: 'bar-chart' },
+      floatingCardIcon: 'award',
+      statCardIcon: 'bar-chart',
+      peopleVariants: [0, 1, 2, 3],
     },
     {
       app: productNames.control,
@@ -191,15 +215,108 @@ export const solution = {
       imageHeight: 821,
       imageAlt:
         'Reportes y trazabilidad en Control, con cumplimiento SENCE, asistencia y alertas de cierre.',
-      floatingCard: {
-        icon: 'bell',
-        title: 'Declaración Jurada SENCE',
-        subtitle: 'Cierra en 12 días',
-      },
-      people: { label: '8 empresas cliente', variants: [1, 2, 3, 4] },
-      statCard: { label: 'Asistencia SENCE', value: '96%', icon: 'clipboard-check' },
+      floatingCardIcon: 'bell',
+      statCardIcon: 'clipboard-check',
+      peopleVariants: [1, 2, 3, 4],
     },
   ],
+};
+
+export const beforeAfter = {
+  eyebrow: 'Lo que cambia',
+  title: 'Lo que cambia en tu operación',
+  rows: [
+    {
+      before: 'Cuadrar planillas de asistencia al cierre',
+      after: 'Asistencia por alumno y por sesión registrada automáticamente',
+    },
+    {
+      before: 'Enterarte tarde del plazo SENCE',
+      after: 'Alertas preventivas antes de cada cierre de Declaración Jurada',
+    },
+    {
+      before: 'Armar reportes para cada empresa cliente',
+      after: 'Reporte semanal programado y dashboard en vivo',
+    },
+    {
+      before: 'Descubrir al final quién no avanzó',
+      after: 'Alerta de baja dedicación mientras el curso sigue',
+    },
+    {
+      before: 'Emitir diplomas a mano',
+      after: 'Diploma PDF e insignia emitidos al aprobar',
+    },
+  ],
+  cta: { label: 'Revisemos tu caso en una demo', href: '#contacto' },
+};
+
+export const comparison = {
+  eyebrow: 'Comparación',
+  title: '¿Por qué una plataforma para OTEC?',
+  subtitle: 'Comparación por tipo de solución, no por proveedor.',
+  topics: ['Todo', 'SENCE', 'Operación', 'Clientes'],
+  columns: ['Suite corporativa de RR. HH.', 'Moodle propio o integrador', 'Certimedia'],
+  rows: [
+    {
+      label: 'Pensada para OTEC',
+      topic: 'Operación',
+      cells: [
+        'Enfocada en RR. HH. de empresas',
+        'Plataforma genérica que se adapta',
+        'Diseñada para operar una OTEC',
+      ],
+    },
+    {
+      label: 'Asistencia y cierre SENCE',
+      topic: 'SENCE',
+      cells: [
+        'Declaran cumplimiento; el detalle varía',
+        'Suele requerir plugin o módulo adicional',
+        'Registro automático conectado a SENCE y alertas de cierre',
+      ],
+      detail:
+        'El registro automático reduce errores de digitación y queda disponible para cualquier fiscalización.',
+    },
+    {
+      label: 'Quién opera la plataforma',
+      topic: 'Operación',
+      cells: [
+        'Onboarding inicial; luego operas tú',
+        'Tú o tu equipo técnico',
+        'Opción gestionada: Certimedia carga cursos y configura cohortes',
+      ],
+      detail:
+        'La opción gestionada es ideal si tu equipo no tiene tiempo de cargar cursos y armar cohortes.',
+    },
+    {
+      label: 'Panel para tus empresas cliente',
+      topic: 'Clientes',
+      cells: ['No siempre incluido', 'Requiere desarrollo a medida', 'Dashboard multi-empresa en vivo'],
+    },
+    {
+      label: 'Alertas para actuar a tiempo',
+      topic: 'Operación',
+      cells: [
+        'Depende de la configuración',
+        'Depende de la configuración',
+        'Alerta de baja dedicación y aviso antes de cada cierre',
+      ],
+      detail:
+        'Las alertas de baja dedicación llegan mientras el curso sigue en marcha, no al final.',
+    },
+    {
+      label: 'Diplomas e insignias verificables',
+      topic: 'Operación',
+      cells: [
+        'Certificados de participación',
+        'Con plugin adicional',
+        'Diploma PDF e insignias Open Badges automáticos',
+      ],
+    },
+  ],
+  highlightLabel: 'Resaltar a Certimedia',
+  footnote:
+    'Comparación entre categorías generales de solución; las funciones varían según cada proveedor.',
 };
 
 export const features = {
@@ -225,6 +342,7 @@ export const features = {
         'Tiempo de conexión',
         'Avance del curso',
         'Actividades realizadas',
+        'Alerta de baja dedicación por alumno',
       ],
     },
     {
@@ -235,6 +353,8 @@ export const features = {
         'Seguimiento de alumnos (avance, notas)',
         'Evaluaciones online',
         'Certificados o diplomas automáticos emitidos desde la plataforma',
+        'Insignias digitales verificables (Open Badges)',
+        'Flujos de correo automáticos',
       ],
     },
     {
@@ -244,6 +364,8 @@ export const features = {
         'Reporte de asistencia por alumno',
         '% de avance por curso',
         'Historial completo auditable',
+        'Dashboard multi-empresa en vivo para tus clientes',
+        'Reporte semanal programado a la empresa cliente',
       ],
     },
     {
@@ -252,16 +374,17 @@ export const features = {
       items: [
         'Control de usuarios (admin, relator, alumno)',
         'Respaldo de información',
-        'Hosting confiable',
+        'Servidores dedicados (infraestructura exclusiva para tu plataforma)',
+        'Dominio propio, logotipos y colores corporativos',
       ],
     },
     {
       title: 'Integración IA',
       illustration: 'roadmap',
       items: [
-        'Asistente de IA para consultas de los alumnos',
-        'Apoyo al equipo de gestión',
-        'Integrado en Campus y Control',
+        { text: 'Asistente de IA para consultas de los alumnos', status: 'roadmap' },
+        { text: 'Apoyo al equipo de gestión', status: 'roadmap' },
+        'Disponible próximamente en Campus y Control',
       ],
     },
   ],
@@ -356,12 +479,12 @@ export const support = {
 };
 
 export const contactForm = {
-  eyebrow: 'Agenda tu demo',
+  eyebrow: 'Agenda un diagnóstico',
   title: 'Hablemos de tu OTEC',
   description:
     'Cuéntanos de tu OTEC y te contactamos para coordinar una demo o asesoría gratuita de 1 hora.',
   disclaimer: 'Sin costo, sin compromiso.',
-  submitLabel: 'Agenda una demo gratis',
+  submitLabel: 'Agenda un diagnóstico',
   cursosOptions: [
     { value: '', label: 'Selecciona un rango' },
     { value: '1-5', label: '1 a 5' },
@@ -487,11 +610,11 @@ export const faq = {
 export const finalCta = {
   title: 'Deja de perseguir plazos SENCE a mano.',
   subtitle: 'Agenda una demo gratuita de 1 hora y revisemos tu caso.',
-  cta: { label: 'Agenda una demo gratis', href: '#contacto' },
+  cta: { label: 'Agenda un diagnóstico', href: '#contacto' },
 };
 
 export const footer = {
-  cta: { label: 'Agenda una demo gratis', href: '#contacto' },
+  cta: { label: 'Agenda un diagnóstico', href: '#contacto' },
   description:
     'Plataforma de Gestión y Capacitación para OTECs chilenas: Campus para el aprendizaje y Control para la gestión SENCE, cohortes y reportería.',
 };

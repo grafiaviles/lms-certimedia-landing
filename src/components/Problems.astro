@@ -158,22 +158,46 @@ import { problems, problemsSection } from '../content/copy';
     let current = 0;
 
     // Acordeón (móvil) vs. tabs de 2 columnas (desktop): mismo DOM, reubicando paneles.
+    // En móvil el patrón deja de ser un tablist real (el panel queda intercalado entre
+    // botones), así que los roles ARIA cambian a un patrón de disclosure/acordeón.
     function applyLayout() {
       if (mq.matches) {
         // Móvil: cada panel justo después de su botón.
         tabs.forEach((tab, i) => tab.insertAdjacentElement('afterend', panels[i]));
+        tablist?.removeAttribute('role');
+        tablist?.removeAttribute('aria-orientation');
+        tabs.forEach((tab) => {
+          tab.removeAttribute('role');
+          tab.removeAttribute('aria-selected');
+        });
+        panels.forEach((panel) => panel.removeAttribute('role'));
       } else {
         // Desktop: todos los paneles de vuelta en su columna.
         panels.forEach((panel) => panelHost.appendChild(panel));
+        tablist?.setAttribute('role', 'tablist');
+        tablist?.setAttribute('aria-orientation', 'vertical');
+        tabs.forEach((tab) => {
+          tab.setAttribute('role', 'tab');
+          tab.removeAttribute('aria-expanded');
+        });
+        panels.forEach((panel) => panel.setAttribute('role', 'tabpanel'));
       }
     }
 
     function select(index, { focus = false, animate = true } = {}) {
       current = index;
+      const mobile = mq.matches;
       tabs.forEach((tab, i) => {
         const selected = i === index;
-        tab.setAttribute('aria-selected', String(selected));
-        tab.setAttribute('tabindex', selected ? '0' : '-1');
+        if (mobile) {
+          // Patrón disclosure: todas las cabeceras son accesibles por Tab,
+          // cada una indica si su panel está abierto.
+          tab.setAttribute('aria-expanded', String(selected));
+          tab.setAttribute('tabindex', '0');
+        } else {
+          tab.setAttribute('aria-selected', String(selected));
+          tab.setAttribute('tabindex', selected ? '0' : '-1');
+        }
 
         const iconWrap = tab.querySelector('[data-ptab-iconwrap]');
         const chevron = tab.querySelector(':scope > svg');

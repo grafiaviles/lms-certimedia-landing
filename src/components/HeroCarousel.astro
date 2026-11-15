@@ -1,10 +1,19 @@
 ---
 import Icon from './Icon.astro';
 import Avatar from './Avatar.astro';
+import {
+  demoOtecName,
+  demoGlobal,
+  demoCohortesVigentes,
+  demoAvancePromedioGlobal,
+  demoCohorteDestacada,
+} from '../content/demoData';
 
 // Mockup del hero que rota entre los componentes principales del software.
 // Todo HTML/CSS/SVG (sin imágenes externas). Auto-rota, pausa al pasar el mouse/teclado
 // y respeta prefers-reduced-motion.
+// Todos los números vienen de `demoData` (una sola fuente), para que no se contradigan
+// entre slides ni con el resto de la landing.
 const slides = [
   { id: 'panel', title: 'Control · Panel general' },
   { id: 'metricas', title: 'Control · Reportes y trazabilidad' },
@@ -12,29 +21,8 @@ const slides = [
   { id: 'cohorte', title: 'Campus · Cohorte y personas' },
 ];
 
-const cohorte = [
-  { name: 'Camila Rojas', value: 85 },
-  { name: 'Valentina Soto', value: 64 },
-  { name: 'Josefa Vega', value: 100 },
-  { name: 'Tomás Reyes', value: 47 },
-  { name: 'Diego Muñoz', value: 20 },
-];
-
-// KPIs de negocio (datos demo ilustrativos).
-const metricas = [
-  { value: '2', label: 'Cohortes vigentes', note: '2 en curso', tone: 'ink' },
-  { value: '10', label: 'Alumnos en curso', note: 'en cohortes activas', tone: 'ink' },
-  { value: '50%', label: 'Avance promedio', note: 'módulos completados', tone: 'accent' },
-  { value: '3', label: 'En riesgo', note: 'avance bajo 30%', tone: 'amber' },
-];
-
-// Cumplimiento SENCE del 75% de asistencia (datos demo ilustrativos).
-const cumplimiento = [
-  { name: 'Camila Rojas', asis: '7 de 8 · 88%', ok: true },
-  { name: 'Diego Muñoz', asis: '2 de 8 · 25%', ok: false },
-  { name: 'Josefa Vega', asis: '6 de 8 · 75%', ok: true },
-  { name: 'Tomás Reyes', asis: '4 de 8 · 50%', ok: false },
-];
+const { diasParaCierre, cohortesPendientes } = demoGlobal.declaracionJurada;
+const cohorteDestacada = demoCohorteDestacada;
 ---
 
 <div class="mx-auto w-full max-w-md" data-hero-carousel>
@@ -46,51 +34,49 @@ const cumplimiento = [
       <span class="ml-2 flex-1 truncate text-xs font-medium text-ink-500" data-carousel-title>
         {slides[0].title}
       </span>
-      <span class="shrink-0 rounded-full bg-ink-200 px-2 py-0.5 text-[10px] font-medium text-ink-500">
+      <span class="shrink-0 rounded-full bg-ink-200 px-2 py-0.5 text-[10px] font-medium text-ink-600">
         Datos de ejemplo
       </span>
     </div>
 
     <div class="relative h-[416px]">
-      {/* Slide 1 · Panel general */}
+      {/* Slide 1 · Panel general (alcance: todas las cohortes) */}
       <div class="absolute inset-0 space-y-4 p-4 transition-opacity duration-500 sm:p-5" data-slide="0">
         <div class="flex items-start gap-3 rounded-xl border border-accent-200 bg-accent-50 p-3">
           <Icon name="bell" class="mt-0.5 h-5 w-5 shrink-0 text-accent-700" />
           <div>
             <p class="text-sm font-semibold text-accent-800">Declaración Jurada SENCE</p>
-            <p class="text-xs text-accent-700">Cierra en 5 días · 3 cohortes pendientes</p>
+            <p class="text-xs text-accent-700">
+              Cierra en {diasParaCierre} días · {cohortesPendientes} cohortes pendientes
+            </p>
           </div>
         </div>
         <div class="grid grid-cols-3 gap-3">
           <div class="rounded-xl border border-ink-100 p-3">
             <p class="text-xs text-ink-500">Asistencia</p>
-            <p class="mt-1 text-xl font-bold text-ink-900">96%</p>
+            <p class="mt-1 text-xl font-bold text-ink-900">{demoGlobal.asistenciaSencePromedio}%</p>
           </div>
           <div class="rounded-xl border border-ink-100 p-3">
             <p class="text-xs text-ink-500">Cohortes</p>
-            <p class="mt-1 text-xl font-bold text-ink-900">12</p>
+            <p class="mt-1 text-xl font-bold text-ink-900">{demoGlobal.cohortesTotal}</p>
           </div>
           <div class="rounded-xl border border-ink-100 p-3">
             <p class="text-xs text-ink-500">Empresas</p>
-            <p class="mt-1 text-xl font-bold text-ink-900">8</p>
+            <p class="mt-1 text-xl font-bold text-ink-900">{demoGlobal.empresasCliente}</p>
           </div>
         </div>
         <div class="rounded-xl border border-ink-100 p-4">
-          <p class="mb-3 text-xs font-medium text-ink-500">Avance por cohorte</p>
+          <p class="mb-3 text-xs font-medium text-ink-500">Avance por cohorte vigente</p>
           <div class="space-y-2.5">
             {
-              [
-                { label: 'Prevención de riesgos', value: 82 },
-                { label: 'Excel intermedio', value: 64 },
-                { label: 'Atención a cliente', value: 45 },
-              ].map((row) => (
+              demoCohortesVigentes.map((row) => (
                 <div>
                   <div class="mb-1 flex items-center justify-between text-xs text-ink-600">
-                    <span>{row.label}</span>
-                    <span class="font-medium text-ink-800">{row.value}%</span>
+                    <span>{row.nombre}</span>
+                    <span class="font-medium text-ink-800">{row.avance}%</span>
                   </div>
                   <div class="h-2 overflow-hidden rounded-full bg-ink-100">
-                    <div class="h-full rounded-full bg-accent-500" style={`width: ${row.value}%`} />
+                    <div class="h-full rounded-full bg-accent-500" style={`width: ${row.avance}%`} />
                   </div>
                 </div>
               ))
@@ -99,7 +85,7 @@ const cumplimiento = [
         </div>
       </div>
 
-      {/* Slide 2 · Métricas del negocio (Reportes y trazabilidad) */}
+      {/* Slide 2 · Métricas del negocio (alcance: todas las cohortes) */}
       <div
         class="pointer-events-none absolute inset-0 space-y-3 p-4 opacity-0 transition-opacity duration-500 sm:p-5"
         data-slide="1"
@@ -107,13 +93,38 @@ const cumplimiento = [
         <div class="flex items-center justify-between">
           <p class="text-sm font-semibold text-ink-900">Reportes y trazabilidad</p>
           <span class="rounded-full bg-accent-50 px-2.5 py-1 text-[11px] font-medium text-accent-700">
-            Vista OTEC
+            {demoOtecName}
           </span>
         </div>
 
         <div class="grid grid-cols-2 gap-2.5">
           {
-            metricas.map((m) => (
+            [
+              {
+                value: String(demoGlobal.cohortesVigentes),
+                label: 'Cohortes vigentes',
+                note: `de ${demoGlobal.cohortesTotal} en total`,
+                tone: 'ink',
+              },
+              {
+                value: String(demoGlobal.alumnosEnCurso),
+                label: 'Alumnos en curso',
+                note: 'en cohortes activas',
+                tone: 'ink',
+              },
+              {
+                value: `${demoAvancePromedioGlobal}%`,
+                label: 'Avance promedio',
+                note: 'módulos completados',
+                tone: 'accent',
+              },
+              {
+                value: String(cohorteDestacada.enRiesgoCount),
+                label: 'En riesgo',
+                note: 'avance bajo 30%',
+                tone: 'amber',
+              },
+            ].map((m) => (
               <div class="rounded-xl border border-ink-100 p-3">
                 <p
                   class:list={[
@@ -135,11 +146,11 @@ const cumplimiento = [
             <p class="text-xs font-semibold text-ink-800">Asistencia SENCE</p>
             <p class="text-[11px] text-ink-500">promedio de sesiones registradas</p>
           </div>
-          <p class="text-2xl font-bold text-accent-700">55%</p>
+          <p class="text-2xl font-bold text-accent-700">{demoGlobal.asistenciaSencePromedio}%</p>
         </div>
       </div>
 
-      {/* Slide · Cumplimiento SENCE */}
+      {/* Slide · Cumplimiento SENCE (alcance: cohorte destacada) */}
       <div
         class="pointer-events-none absolute inset-0 space-y-3 p-4 opacity-0 transition-opacity duration-500 sm:p-5"
         data-slide="sence"
@@ -147,31 +158,36 @@ const cumplimiento = [
         <div class="flex items-center justify-between">
           <p class="text-sm font-semibold text-ink-900">Cumplimiento SENCE</p>
           <span class="rounded-full bg-accent-50 px-2.5 py-1 text-[11px] font-medium text-accent-700">
-            Estrategias de Adopción de IA
+            {cohorteDestacada.nombre}
           </span>
         </div>
 
         <div class="rounded-xl border border-accent-200 bg-accent-50 p-3">
           <p class="text-xs leading-relaxed text-accent-800">
-            <span class="font-bold">2 de 6</span> alumnos cumplen hoy el 75% de asistencia · Cierre en 12 días
+            <span class="font-bold">
+              {cohorteDestacada.cumplenCount} de {cohorteDestacada.alumnos.length}
+            </span>{' '}
+            alumnos cumplen hoy el {cohorteDestacada.umbralAsistencia}% de asistencia
           </p>
         </div>
 
         <div class="space-y-2">
           {
-            cumplimiento.map((r) => (
+            cohorteDestacada.alumnos.map((r) => (
               <div class="flex items-center justify-between rounded-xl border border-ink-100 px-3 py-2.5">
                 <div class="min-w-0">
-                  <p class="truncate text-sm font-medium text-ink-800">{r.name}</p>
-                  <p class="text-[11px] text-ink-500">Asistencia {r.asis}</p>
+                  <p class="truncate text-sm font-medium text-ink-800">{r.nombre}</p>
+                  <p class="text-[11px] text-ink-500">
+                    Asistencia {r.sesionesAsistidas} de {cohorteDestacada.totalSesiones} · {r.asistenciaPct}%
+                  </p>
                 </div>
                 <span
                   class:list={[
                     'shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold',
-                    r.ok ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600',
+                    r.cumpleAsistencia ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-600',
                   ]}
                 >
-                  {r.ok ? 'Cumple' : 'No cumple'}
+                  {r.cumpleAsistencia ? 'Cumple' : 'No cumple'}
                 </span>
               </div>
             ))
@@ -179,26 +195,26 @@ const cumplimiento = [
         </div>
       </div>
 
-      {/* Slide 3 · Cohorte y personas */}
+      {/* Slide 3 · Cohorte y personas (alcance: cohorte destacada) */}
       <div
         class="pointer-events-none absolute inset-0 space-y-3 p-4 opacity-0 transition-opacity duration-500 sm:p-5"
         data-slide="2"
       >
         <div class="flex items-center justify-between">
-          <p class="text-sm font-semibold text-ink-900">Estrategias de Adopción de IA</p>
-          <span class="text-xs text-ink-500">6 personas</span>
+          <p class="text-sm font-semibold text-ink-900">{cohorteDestacada.nombre}</p>
+          <span class="text-xs text-ink-500">{cohorteDestacada.alumnos.length} personas</span>
         </div>
         {
-          cohorte.map((p, idx) => (
+          cohorteDestacada.alumnos.map((p, idx) => (
             <div class="flex items-center gap-3 rounded-xl border border-ink-100 p-2.5">
               <Avatar variant={idx} class="h-9 w-9 shrink-0 rounded-full" />
               <div class="min-w-0 flex-1">
                 <div class="mb-1 flex items-center justify-between gap-2">
-                  <span class="truncate text-sm font-medium text-ink-800">{p.name}</span>
-                  <span class="shrink-0 text-xs font-semibold text-ink-700">{p.value}%</span>
+                  <span class="truncate text-sm font-medium text-ink-800">{p.nombre}</span>
+                  <span class="shrink-0 text-xs font-semibold text-ink-700">{p.avance}%</span>
                 </div>
                 <div class="h-1.5 overflow-hidden rounded-full bg-ink-100">
-                  <div class="h-full rounded-full bg-accent-500" style={`width: ${p.value}%`} />
+                  <div class="h-full rounded-full bg-accent-500" style={`width: ${p.avance}%`} />
                 </div>
               </div>
             </div>
@@ -209,8 +225,8 @@ const cumplimiento = [
     </div>
   </div>
 
-  {/* Indicadores / controles */}
-  <div class="mt-4 flex items-center justify-center gap-2" role="tablist" aria-label="Vistas del producto">
+  {/* Indicadores / controles: botón con área táctil de 24px mínimo, indicador visual más chico adentro. */}
+  <div class="mt-4 flex items-center justify-center gap-1" role="tablist" aria-label="Vistas del producto">
     {
       slides.map((s, i) => (
         <button
@@ -219,8 +235,16 @@ const cumplimiento = [
           aria-selected={i === 0 ? 'true' : 'false'}
           aria-label={s.title}
           data-dot={i}
-          class="h-2 rounded-full bg-ink-300 transition-all duration-300"
-        />
+          class="flex h-6 w-6 items-center justify-center"
+        >
+          <span
+            data-dot-visual
+            class:list={[
+              'h-2 rounded-full transition-all duration-300',
+              i === 0 ? 'w-6 bg-accent-600' : 'w-2 bg-ink-300',
+            ]}
+          />
+        </button>
       ))
     }
   </div>
@@ -257,11 +281,12 @@ const cumplimiento = [
       });
       dots.forEach((dot, i) => {
         const active = i === index;
+        const visual = dot.querySelector('[data-dot-visual]');
         dot.setAttribute('aria-selected', String(active));
-        dot.classList.toggle('w-6', active);
-        dot.classList.toggle('bg-accent-600', active);
-        dot.classList.toggle('w-2', !active);
-        dot.classList.toggle('bg-ink-300', !active);
+        visual?.classList.toggle('w-6', active);
+        visual?.classList.toggle('bg-accent-600', active);
+        visual?.classList.toggle('w-2', !active);
+        visual?.classList.toggle('bg-ink-300', !active);
       });
       if (titleEl) titleEl.textContent = titles[index];
     }

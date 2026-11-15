@@ -1,33 +1,129 @@
 ---
 import Icon from './Icon.astro';
-import { credibility } from '../content/copy';
+import { socialProof, credibility } from '../content/copy';
+import { clientLogos } from '../content/demoData';
+import { asset } from '../lib/asset';
 
 const icons = ['shield-check', 'settings', 'sence', 'bell'] as const;
+const showLogoPlaceholder = import.meta.env.DEV && clientLogos.length === 0;
 ---
 
 <section class="border-y border-ink-200/70 bg-white py-10" aria-label="Respaldo de la plataforma">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <ul class="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-4 sm:gap-x-6">
+    {/* Cifras de Certimedia, con animación de conteo al entrar en pantalla. */}
+    <ul class="reveal grid grid-cols-2 gap-x-4 gap-y-6 text-center sm:grid-cols-4 sm:gap-x-6">
       {
-        credibility.map((item, i) => (
-          <li
-            class="reveal group relative flex flex-col items-center gap-3 text-center sm:flex-row sm:text-left"
-            style={`transition-delay: ${i * 80}ms`}
-          >
-            {i > 0 && (
+        socialProof.stats.map((stat) => (
+          <li>
+            <p class="text-3xl font-bold tracking-tight text-accent-600 sm:text-4xl">
               <span
-                class="absolute -left-3 top-1/2 hidden h-8 w-px -translate-y-1/2 bg-ink-200 sm:block"
-                aria-hidden="true"
-              />
-            )}
-            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-accent-600 shadow-soft ring-1 ring-ink-100 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:text-white group-hover:shadow-[0_10px_20px_-8px_rgb(var(--accent-600)/0.45)]">
-              <span class="absolute inset-0 scale-0 rounded-xl bg-accent-600 transition-transform duration-300 ease-out group-hover:scale-100" />
-              <Icon name={icons[i % icons.length]} class="relative z-10 h-5 w-5" />
-            </span>
-            <span class="text-sm font-medium leading-snug text-ink-700">{item}</span>
+                data-stat
+                data-value={stat.value}
+                data-prefix={stat.prefix ?? ''}
+                data-suffix={stat.suffix ?? ''}
+                data-decimals={stat.decimals ?? 0}
+              >
+                {stat.prefix ?? ''}0{stat.suffix ?? ''}
+              </span>
+            </p>
+            <p class="mt-1 text-sm font-medium leading-snug text-ink-600">{stat.label}</p>
           </li>
         ))
       }
     </ul>
+    <p class="mt-4 text-center text-xs text-ink-500">{socialProof.note}</p>
+
+    {/* Chips anteriores, como segunda línea más discreta. */}
+    <ul class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 border-t border-ink-100 pt-6">
+      {
+        credibility.map((item, i) => (
+          <li class="flex items-center gap-2 text-xs font-medium text-ink-500">
+            <Icon name={icons[i % icons.length]} class="h-4 w-4 shrink-0 text-ink-400" />
+            {item}
+          </li>
+        ))
+      }
+    </ul>
+
+    {/* Logos de clientes: solo se renderiza si `clientLogos` trae datos reales. */}
+    {
+      clientLogos.length > 0 && (
+        <ul class="mt-6 flex flex-wrap items-center justify-center gap-8 border-t border-ink-100 pt-6">
+          {clientLogos.map((logo) => (
+            <li class="opacity-70 grayscale transition-opacity hover:opacity-100">
+              <img src={asset(logo.src)} alt={logo.alt} class="h-6 w-auto sm:h-8" />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+    {
+      showLogoPlaceholder && (
+        <p class="mt-6 border-t border-dashed border-ink-200 pt-6 text-center text-xs font-medium text-ink-500">
+          Logos de clientes (pendiente)
+        </p>
+      )
+    }
   </div>
 </section>
+
+<script>
+  (function () {
+    const stats = Array.from(document.querySelectorAll('[data-stat]'));
+    if (stats.length === 0) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function format(value, decimals, prefix, suffix) {
+      const rounded = decimals > 0 ? value : Math.round(value);
+      const text = rounded.toLocaleString('es-CL', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      });
+      return `${prefix}${text}${suffix}`;
+    }
+
+    function animate(el) {
+      const target = parseFloat(el.dataset.value || '0');
+      const decimals = parseInt(el.dataset.decimals || '0', 10);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+
+      if (reduceMotion) {
+        el.textContent = format(target, decimals, prefix, suffix);
+        return;
+      }
+
+      const duration = 1200;
+      const start = performance.now();
+
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = format(target * eased, decimals, prefix, suffix);
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      stats.forEach(animate);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animate(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    stats.forEach((el) => observer.observe(el));
+  })();
+</script>

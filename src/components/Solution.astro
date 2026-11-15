@@ -3,8 +3,13 @@ import Icon from './Icon.astro';
 import Illustration from './Illustration.astro';
 import Avatar from './Avatar.astro';
 import SectionHeading from './SectionHeading.astro';
+import RoadmapBadge from './RoadmapBadge.astro';
 import { solution } from '../content/copy';
 import { asset } from '../lib/asset';
+import { demoFloatingCards, demoStatCards, demoPeopleChips } from '../content/demoData';
+
+// Clave de datos de ejemplo por bloque ('Campus' -> 'campus', 'Control' -> 'control').
+const demoKey = (app: string) => app.toLowerCase();
 
 // Los placeholders de captura solo se muestran en desarrollo.
 const showPlaceholders = import.meta.env.DEV;
@@ -22,6 +27,10 @@ const showPlaceholders = import.meta.env.DEV;
       {
         solution.blocks.map((block, i) => {
           const flipped = i % 2 === 1;
+          const key = demoKey(block.app);
+          const floatingCard = demoFloatingCards[key];
+          const statCard = demoStatCards[key];
+          const peopleChip = demoPeopleChips[key];
           return (
             <div
               class:list={[
@@ -50,15 +59,29 @@ const showPlaceholders = import.meta.env.DEV;
                 </p>
                 <p class="mt-3 text-base leading-relaxed text-ink-600">{block.description}</p>
 
-                <ul class="mt-5 space-y-2.5">
-                  {block.bullets.map((point) => (
-                    <li class="flex items-start gap-2.5">
-                      <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-100 text-accent-700">
-                        <Icon name="check" class="h-3.5 w-3.5" />
-                      </span>
-                      <span class="text-sm font-medium text-ink-700">{point}</span>
-                    </li>
-                  ))}
+                <ul class="mt-5 space-y-3">
+                  {block.bullets.map((point) => {
+                    const isRich = typeof point === 'object';
+                    const isRoadmap = isRich && point.status === 'roadmap';
+                    return (
+                      <li class="flex items-start gap-2.5">
+                        <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-100 text-accent-700">
+                          <Icon name="check" class="h-3.5 w-3.5" />
+                        </span>
+                        {isRich ? (
+                          <span class="text-sm text-ink-700">
+                            <span class="flex flex-wrap items-center font-semibold text-ink-900">
+                              {point.title}
+                              {isRoadmap && <RoadmapBadge />}
+                            </span>
+                            <span class="leading-relaxed">{point.description}</span>
+                          </span>
+                        ) : (
+                          <span class="text-sm font-medium text-ink-700">{point}</span>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
 
@@ -103,16 +126,19 @@ const showPlaceholders = import.meta.env.DEV;
                 {/* Tarjeta superpuesta (abajo, lado interno). */}
                 <div
                   class:list={[
-                    'absolute bottom-[-24px] z-20 hidden items-center gap-3 rounded-xl border border-ink-100 bg-white p-3.5 shadow-soft sm:flex',
+                    'absolute bottom-[-24px] z-20 hidden items-start gap-3 rounded-xl border border-ink-100 bg-white p-3.5 shadow-soft sm:flex',
                     flipped ? 'right-10' : 'left-10',
                   ]}
                 >
                   <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-accent-600 text-white">
-                    <Icon name={block.floatingCard.icon} class="h-5 w-5" />
+                    <Icon name={block.floatingCardIcon} class="h-5 w-5" />
                   </span>
                   <div>
-                    <p class="text-sm font-semibold text-ink-900">{block.floatingCard.title}</p>
-                    <p class="text-xs text-ink-500">{block.floatingCard.subtitle}</p>
+                    <p class="text-[10px] font-semibold uppercase tracking-wide text-accent-600">
+                      {floatingCard.scope}
+                    </p>
+                    <p class="text-sm font-semibold text-ink-900">{floatingCard.title}</p>
+                    <p class="text-xs text-ink-500">{floatingCard.subtitle}</p>
                   </div>
                 </div>
 
@@ -124,11 +150,11 @@ const showPlaceholders = import.meta.env.DEV;
                   ]}
                 >
                   <div class="flex -space-x-2">
-                    {block.people.variants.map((v) => (
+                    {block.peopleVariants.map((v) => (
                       <Avatar variant={v} class="h-7 w-7 rounded-full ring-2 ring-white" />
                     ))}
                   </div>
-                  <span class="text-xs font-semibold text-ink-700">{block.people.label}</span>
+                  <span class="text-xs font-semibold text-ink-700">{peopleChip.label}</span>
                 </div>
 
                 {/* Mini stat flotante (abajo, lado externo). */}
@@ -139,11 +165,11 @@ const showPlaceholders = import.meta.env.DEV;
                   ]}
                 >
                   <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-accent-50 text-accent-600">
-                    <Icon name={block.statCard.icon} class="h-6 w-6" />
+                    <Icon name={block.statCardIcon} class="h-6 w-6" />
                   </span>
                   <div>
-                    <p class="text-xs text-ink-500">{block.statCard.label}</p>
-                    <p class="text-xl font-bold text-ink-900">{block.statCard.value}</p>
+                    <p class="text-xs text-ink-500">{statCard.label}</p>
+                    <p class="text-xl font-bold text-ink-900">{statCard.value}</p>
                   </div>
                 </div>
               </div>
