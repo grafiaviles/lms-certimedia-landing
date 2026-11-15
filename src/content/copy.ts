@@ -442,6 +442,26 @@ export const faq = {
       answer:
         'Soporte del equipo Certimedia, actualizaciones normativas y de seguridad, y un roadmap continuo que incorpora IA y agentes.',
     },
+    {
+      question: '¿Qué pasa si cambian las normas de SENCE?',
+      answer:
+        'La plataforma se mantiene al día con los cambios normativos de SENCE y con parches de seguridad, como parte del soporte continuo de Certimedia.',
+    },
+    {
+      question: '¿Mis datos y los de mis alumnos están seguros?',
+      answer:
+        'Sí. La plataforma incluye control de usuarios por rol (administrador, relator, alumno), respaldo de información y hosting confiable.',
+    },
+    {
+      question: '¿Qué incluye la asesoría gratuita?',
+      answer:
+        'En la reunión de 1 hora revisamos cómo opera tu OTEC hoy, te mostramos Campus y Control en vivo, y te ayudamos a elegir entre el modelo autogestionado o gestionado según tu caso.',
+    },
+    {
+      question: '¿Quiénes somos?',
+      answer:
+        'Certimedia Technologies SpA es una empresa chilena especializada en capacitaciones y certificaciones digitales. Construimos Campus y Control pensando en cómo opera una OTEC en Chile, no como un LMS genérico. Operamos desde Providencia, Santiago.',
+    },
     // TODO(contenido): el brief pide una pregunta "¿Puedo migrar mis cursos actuales?",
     // pero no se entregó información verificada sobre el proceso o alcance de la migración.
     // Para no inventar una respuesta visible en la página, esta pregunta queda fuera del
