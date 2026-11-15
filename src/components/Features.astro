@@ -24,20 +24,14 @@ import { features } from '../content/copy';
           >
             <button
               type="button"
-              aria-expanded={i === 0 ? 'true' : 'false'}
+              aria-expanded="true"
               aria-controls={`ffcontent-${i}`}
               data-ftoggle
               class="flex w-full items-center gap-3 p-6 text-left"
             >
               <Illustration name={group.illustration} class="h-14 w-14 shrink-0" />
               <h3 class="flex-1 text-base font-semibold text-ink-900">{group.title}</h3>
-              <span
-                data-fchevron
-                class:list={[
-                  'shrink-0 text-ink-400 transition-transform duration-300',
-                  { 'rotate-180': i === 0 },
-                ]}
-              >
+              <span data-fchevron class="rotate-180 shrink-0 text-ink-400 transition-transform duration-300">
                 <Icon name="chevron-down" class="h-5 w-5" />
               </span>
             </button>
@@ -45,7 +39,7 @@ import { features } from '../content/copy';
               id={`ffcontent-${i}`}
               data-fcontent
               class="grid transition-[grid-template-rows] duration-300 ease-out"
-              style={`grid-template-rows: ${i === 0 ? '1fr' : '0fr'};`}
+              style="grid-template-rows: 1fr;"
             >
               <div class="overflow-hidden">
                 <ul class="space-y-2.5 px-6 pb-6">
