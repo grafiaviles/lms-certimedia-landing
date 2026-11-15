@@ -3,9 +3,12 @@ import Icon from './Icon.astro';
 import Illustration from './Illustration.astro';
 import SectionHeading from './SectionHeading.astro';
 import { features } from '../content/copy';
+
+// Un ícono de pestaña por grupo (distinto de las ilustraciones grandes del panel).
+const tabIcons = ['sence', 'clipboard-check', 'award', 'bar-chart', 'settings', 'cpu'] as const;
 ---
 
-<section id="caracteristicas" class="bg-ink-50 py-16 sm:py-24">
+<section id="caracteristicas" class="bg-white py-16 sm:py-24">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <SectionHeading
       eyebrow={features.eyebrow}
@@ -13,30 +16,150 @@ import { features } from '../content/copy';
       description={features.description}
     />
 
-    <div class="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-2">
-      {
-        features.groups.map((group, i) => (
-          <article
-            class="reveal flex flex-col rounded-card border border-ink-200 bg-white p-6 shadow-softer"
-            style={`transition-delay: ${Math.min(i, 5) * 60}ms`}
-          >
-            <div class="flex items-center gap-3">
-              <Illustration name={group.illustration} class="h-14 w-14 shrink-0" />
-              <h3 class="text-base font-semibold text-ink-900">{group.title}</h3>
+    {/* Selector de pestañas (sin cards): chips horizontales + un panel con el detalle. */}
+    <div class="reveal mt-12" data-features>
+      <div
+        role="tablist"
+        aria-label="Categorías de características"
+        data-ftablist
+        class="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap sm:justify-center sm:overflow-visible sm:pb-0 [&::-webkit-scrollbar]:hidden"
+      >
+        {
+          features.groups.map((group, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`ftab-${i}`}
+              aria-controls={`fpanel-${i}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+              data-ftab={i}
+              class="inline-flex shrink-0 items-center gap-2 rounded-full border px-4 py-2.5 text-sm font-semibold transition-all duration-200"
+            >
+              <Icon name={tabIcons[i % tabIcons.length]} class="h-4 w-4" />
+              {group.title}
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="relative mt-6" data-fpanelhost>
+        {
+          features.groups.map((group, i) => (
+            <div
+              role="tabpanel"
+              id={`fpanel-${i}`}
+              aria-labelledby={`ftab-${i}`}
+              data-fpanel={i}
+              tabindex="0"
+              class:list={[
+                'rounded-card border border-ink-200 bg-ink-50/60 p-6 sm:p-8',
+                { hidden: i !== 0 },
+              ]}
+            >
+              <div class="flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-7">
+                <Illustration name={group.illustration} class="h-16 w-16 shrink-0" />
+                <div class="flex-1">
+                  <h3 class="text-lg font-bold text-ink-900">{group.title}</h3>
+                  <ul class="mt-4 grid gap-x-6 gap-y-2.5 sm:grid-cols-2">
+                    {group.items.map((item) => (
+                      <li class="flex items-start gap-2.5">
+                        <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-100 text-accent-700">
+                          <Icon name="check" class="h-3.5 w-3.5" />
+                        </span>
+                        <span class="text-sm leading-relaxed text-ink-700">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
-            <ul class="mt-4 space-y-2.5">
-              {group.items.map((item) => (
-                <li class="flex items-start gap-2.5">
-                  <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-100 text-accent-700">
-                    <Icon name="check" class="h-3.5 w-3.5" />
-                  </span>
-                  <span class="text-sm leading-relaxed text-ink-700">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))
-      }
+          ))
+        }
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  @media (prefers-reduced-motion: no-preference) {
+    [data-fpanel].is-entering {
+      animation: featureFade 0.28s ease-out;
+    }
+  }
+  @keyframes featureFade {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  (function () {
+    const root = document.querySelector('[data-features]');
+    if (!root) return;
+
+    const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
+    const panels = Array.from(root.querySelectorAll('[role="tabpanel"]'));
+    if (tabs.length === 0) return;
+
+    function select(index, { focus = false } = {}) {
+      tabs.forEach((tab, i) => {
+        const selected = i === index;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.setAttribute('tabindex', selected ? '0' : '-1');
+
+        tab.classList.toggle('border-accent-600', selected);
+        tab.classList.toggle('bg-accent-600', selected);
+        tab.classList.toggle('text-white', selected);
+        tab.classList.toggle('shadow-soft', selected);
+        tab.classList.toggle('border-ink-200', !selected);
+        tab.classList.toggle('bg-white', !selected);
+        tab.classList.toggle('text-ink-600', !selected);
+        tab.classList.toggle('hover:border-accent-200', !selected);
+        tab.classList.toggle('hover:text-accent-700', !selected);
+
+        if (focus && selected) tab.focus();
+      });
+
+      panels.forEach((panel, i) => {
+        const selected = i === index;
+        panel.classList.toggle('hidden', !selected);
+        if (selected) {
+          panel.classList.remove('is-entering');
+          void panel.offsetWidth;
+          panel.classList.add('is-entering');
+        }
+      });
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => {
+        select(i);
+        tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      });
+      tab.addEventListener('keydown', (event) => {
+        let next = null;
+        if (event.key === 'ArrowRight') next = (i + 1) % tabs.length;
+        else if (event.key === 'ArrowLeft') next = (i - 1 + tabs.length) % tabs.length;
+        else if (event.key === 'Home') next = 0;
+        else if (event.key === 'End') next = tabs.length - 1;
+        if (next !== null) {
+          event.preventDefault();
+          select(next, { focus: true });
+        }
+      });
+    });
+
+    panels.forEach((panel) => {
+      panel.addEventListener('animationend', () => panel.classList.remove('is-entering'));
+    });
+
+    select(0);
+  })();
+</script>

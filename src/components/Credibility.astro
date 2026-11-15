@@ -5,14 +5,26 @@ import { credibility } from '../content/copy';
 const icons = ['shield-check', 'settings', 'sence', 'bell'] as const;
 ---
 
-<section class="border-y border-ink-200/70 bg-white py-8" aria-label="Respaldo de la plataforma">
+<section class="border-y border-ink-200/70 bg-white py-10" aria-label="Respaldo de la plataforma">
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <ul class="grid grid-cols-2 gap-6 text-center sm:grid-cols-4 sm:gap-8">
+    <ul class="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-4 sm:gap-x-6">
       {
         credibility.map((item, i) => (
-          <li class="flex flex-col items-center gap-2 sm:flex-row sm:justify-center sm:gap-2.5">
-            <Icon name={icons[i % icons.length]} class="h-5 w-5 shrink-0 text-accent-600" />
-            <span class="text-sm font-medium text-ink-600">{item}</span>
+          <li
+            class="reveal group relative flex flex-col items-center gap-3 text-center sm:flex-row sm:text-left"
+            style={`transition-delay: ${i * 80}ms`}
+          >
+            {i > 0 && (
+              <span
+                class="absolute -left-3 top-1/2 hidden h-8 w-px -translate-y-1/2 bg-ink-200 sm:block"
+                aria-hidden="true"
+              />
+            )}
+            <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-accent-600 shadow-soft ring-1 ring-ink-100 transition-all duration-300 ease-out group-hover:-translate-y-1 group-hover:text-white group-hover:shadow-[0_10px_20px_-8px_rgb(var(--accent-600)/0.45)]">
+              <span class="absolute inset-0 scale-0 rounded-xl bg-accent-600 transition-transform duration-300 ease-out group-hover:scale-100" />
+              <Icon name={icons[i % icons.length]} class="relative z-10 h-5 w-5" />
+            </span>
+            <span class="text-sm font-medium leading-snug text-ink-700">{item}</span>
           </li>
         ))
       }
