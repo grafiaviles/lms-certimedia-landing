@@ -33,12 +33,12 @@ const showLogoPlaceholder = import.meta.env.DEV && clientLogos.length === 0;
     </ul>
     <p class="mt-4 text-center text-xs text-ink-500">{socialProof.note}</p>
 
-    {/* Chips anteriores, como segunda línea más discreta. */}
-    <ul class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 border-t border-ink-100 pt-6">
+    {/* Chips anteriores, como segunda línea más discreta (franja +20%, íconos más grandes en azul corporativo). */}
+    <ul class="mt-7 flex flex-wrap items-center justify-center gap-x-7 gap-y-3.5 border-t border-ink-100 pt-7">
       {
         credibility.map((item, i) => (
-          <li class="flex items-center gap-2 text-xs font-medium text-ink-500">
-            <Icon name={icons[i % icons.length]} class="h-4 w-4 shrink-0 text-ink-400" />
+          <li class="flex items-center gap-2.5 text-sm font-medium text-ink-500">
+            <Icon name={icons[i % icons.length]} class="h-5 w-5 shrink-0 text-accent-600" />
             {item}
           </li>
         ))

@@ -42,15 +42,6 @@ const showPlaceholders = import.meta.env.DEV;
             >
               {/* Texto */}
               <div class:list={['reveal', { 'lg:order-2': flipped }]}>
-                <div class="mb-4 inline-flex items-center gap-2.5 rounded-full bg-accent-50 py-1.5 pl-1.5 pr-4">
-                  <span class="flex h-7 w-7 items-center justify-center rounded-full bg-accent-600 text-white">
-                    <Icon name={block.icon} class="h-4 w-4" />
-                  </span>
-                  <span class="text-xs font-semibold uppercase tracking-wide text-accent-700">
-                    Experiencia {i + 1}
-                  </span>
-                </div>
-
                 <h3 class="text-2xl font-bold tracking-tight text-ink-900 sm:text-3xl">
                   {block.app}
                 </h3>
