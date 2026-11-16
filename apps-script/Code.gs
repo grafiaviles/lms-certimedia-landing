@@ -1,22 +1,29 @@
 /**
- * Certimedia · Leads Scoring Sheet
+ * Certimedia \u00b7 Leads Scoring Sheet
  * ---------------------------------
- * Convierte cada envío del formulario de la landing (lms-certimedia-landing)
- * en una fila clasificada automáticamente (Verde / Amarillo / Rojo, 0-100 pts).
+ * Convierte cada env\u00edo del formulario de la landing (lms-certimedia-landing)
+ * en una fila clasificada autom\u00e1ticamente (Verde / Amarillo / Rojo, 0-100 pts).
  *
- * INSTALACIÓN: ver README.md en esta misma carpeta.
+ * INSTALACI\u00d3N: ver README.md en esta misma carpeta.
  *   1. Pega este archivo completo en un proyecto de Apps Script ligado a un
  *      Google Sheet en blanco (Extensiones > Apps Script).
- *   2. Ejecuta la función setup() una sola vez (autoriza los permisos pedidos).
- *   3. Implementa > Nueva implementación > Aplicación web, ejecutar como "Yo",
+ *   2. Ejecuta la funci\u00f3n setup() una sola vez (autoriza los permisos pedidos).
+ *   3. Implementa > Nueva implementaci\u00f3n > Aplicaci\u00f3n web, ejecutar como "Yo",
  *      acceso "Cualquier usuario". Copia la URL /exec resultante.
  *   4. Esa URL va en la variable de entorno PUBLIC_LEADS_ENDPOINT del sitio.
  *
  * Los nombres de campo y valores (cursos_anio, personas_anio, problema_principal,
- * decisor_compra, presupuesto, inicio_estimado, dnc_realizado) están tomados
+ * decisor_compra, presupuesto, inicio_estimado, dnc_realizado) est\u00e1n tomados
  * tal cual de src/components/ContactForm.astro y src/content/copy.ts del
  * repo de la landing. Si esas opciones cambian en el sitio, actualiza las
- * tablas OPCIONES_* más abajo para que sigan coincidiendo.
+ * tablas OPCIONES_* m\u00e1s abajo para que sigan coincidiendo.
+ *
+ * NOTA: este archivo se guarda en ASCII puro (tildes como \uXXXX) a proposito,
+ * para que copiar y pegar el archivo completo en el editor de Apps Script
+ * nunca se corrompa por un problema de codificacion del portapapeles/navegador.
+ * JavaScript interpreta \uXXXX como el caracter Unicode real, asi que el texto
+ * que ve la gente en el Sheet sale con tildes normales; solo el codigo fuente
+ * (y los comentarios) se ven con \uXXXX en vez de tildes si lo abres en un editor.
  */
 
 // ============================================================================
@@ -26,19 +33,19 @@
 const SHEET_LEADS = 'Leads';
 const SHEET_CONFIG = 'Config';
 const SHEET_DASHBOARD = 'Dashboard';
-const SHEET_GUIA = 'Guía';
+const SHEET_GUIA = 'Gu\u00eda';
 
-// Encabezados de la pestaña Leads, en orden (columna A → AC).
+// Encabezados de la pesta\u00f1a Leads, en orden (columna A \u2192 AC).
 const LEADS_HEADERS = [
   'Fecha y hora', // A
   'Nombre', // B
   'Correo', // C
-  'Teléfono', // D
+  'Tel\u00e9fono', // D
   'OTEC', // E
-  'Cursos/año', // F
-  'Personas/año', // G
+  'Cursos/a\u00f1o', // F
+  'Personas/a\u00f1o', // G
   'Problema principal', // H
-  'Quién decide', // I
+  'Qui\u00e9n decide', // I
   'Presupuesto mensual', // J
   'Inicio estimado', // K
   'Mensaje', // L
@@ -53,16 +60,16 @@ const LEADS_HEADERS = [
   'PUNTAJE', // U
   'NIVEL', // V
   'Regla aplicada', // W
-  'Acción recomendada', // X
+  'Acci\u00f3n recomendada', // X
   'Responsable', // Y
   'Estado', // Z
   'Primer contacto', // AA
-  'Próximo seguimiento', // AB
+  'Pr\u00f3ximo seguimiento', // AB
   'Notas', // AC
 ];
-const COL = {}; // se completa en LEADS_HEADERS.forEach más abajo -> {A:1,...}
+const COL = {}; // se completa en LEADS_HEADERS.forEach m\u00e1s abajo -> {A:1,...}
 LEADS_HEADERS.forEach((_, i) => (COL[i] = i + 1));
-// Índices con nombre (1-based) para que el resto del código sea legible.
+// \u00cdndices con nombre (1-based) para que el resto del c\u00f3digo sea legible.
 const C_FECHA = 1,
   C_NOMBRE = 2,
   C_CORREO = 3,
@@ -93,28 +100,28 @@ const C_FECHA = 1,
   C_PROX_SEGUIMIENTO = 28,
   C_NOTAS = 29;
 
-const MAX_FILA_FORMATO = 5000; // rango estático para validaciones/formato condicional
-const ESTADOS = ['Nuevo', 'Contactado', 'Demo agendada', 'Propuesta enviada', 'Ganado', 'Perdido', 'En nutrición'];
-const RESPONSABLES = ['César', 'Claudio'];
+const MAX_FILA_FORMATO = 5000; // rango est\u00e1tico para validaciones/formato condicional
+const ESTADOS = ['Nuevo', 'Contactado', 'Demo agendada', 'Propuesta enviada', 'Ganado', 'Perdido', 'En nutrici\u00f3n'];
+const RESPONSABLES = ['C\u00e9sar', 'Claudio'];
 
-// Traducción código → etiqueta legible. Debe coincidir con src/content/copy.ts.
+// Traducci\u00f3n c\u00f3digo \u2192 etiqueta legible. Debe coincidir con src/content/copy.ts.
 const OPCIONES_CURSOS = {
   '1-5': '1 a 5',
   '6-20': '6 a 20',
   '21-50': '21 a 50',
-  '50+': 'Más de 50',
-  'no-se': 'Aún no lo sé',
+  '50+': 'M\u00e1s de 50',
+  'no-se': 'A\u00fan no lo s\u00e9',
 };
 const OPCIONES_PERSONAS = {
   '<100': 'Menos de 100',
   '100-500': '100 a 500',
   '501-1000': '501 a 1.000',
-  '1000+': 'Más de 1.000',
-  'no-se': 'Aún no lo sé',
+  '1000+': 'M\u00e1s de 1.000',
+  'no-se': 'A\u00fan no lo s\u00e9',
 };
 const OPCIONES_PROBLEMA = {
   sence: 'Cumplir los plazos y Declaraciones Juradas SENCE',
-  asistencia: 'Automatizar la asistencia y los reportes de fiscalización',
+  asistencia: 'Automatizar la asistencia y los reportes de fiscalizaci\u00f3n',
   visibilidad: 'Dar visibilidad a mis clientes sobre el avance de su gente',
   carga: 'Reducir la carga operativa de cargar cursos y armar cohortes',
   marca: 'Tener una plataforma propia, con mi marca y dominio',
@@ -123,24 +130,24 @@ const OPCIONES_PROBLEMA = {
 };
 const OPCIONES_DECISOR = {
   yo: 'Yo decido',
-  compartida: 'La decisión es compartida con otra persona',
-  otro: 'Otra persona decide; yo evalúo la propuesta',
+  compartida: 'La decisi\u00f3n es compartida con otra persona',
+  otro: 'Otra persona decide; yo eval\u00fao la propuesta',
 };
 const OPCIONES_PRESUPUESTO = {
-  'sin-definir': 'Aún no tengo un presupuesto definido',
+  'sin-definir': 'A\u00fan no tengo un presupuesto definido',
   '<300000': 'Menos de $300.000 CLP al mes',
   '300000-700000': '$300.000 a $700.000 CLP al mes',
   '700000-1500000': '$700.000 a $1.500.000 CLP al mes',
-  '1500000+': 'Más de $1.500.000 CLP al mes',
+  '1500000+': 'M\u00e1s de $1.500.000 CLP al mes',
 };
 const OPCIONES_INICIO = {
   'lo-antes-posible': 'Lo antes posible',
   'este-trimestre': 'Dentro de este trimestre',
-  'sin-fecha': 'Aún estoy evaluando, sin fecha definida',
+  'sin-fecha': 'A\u00fan estoy evaluando, sin fecha definida',
 };
 
 // ============================================================================
-// SETUP — ejecutar una sola vez
+// SETUP \u2014 ejecutar una sola vez
 // ============================================================================
 
 function setup() {
@@ -151,7 +158,7 @@ function setup() {
   buildDashboardSheet_(ss);
   buildGuiaSheet_(ss);
 
-  // Deja la vista en Leads y quita cualquier hoja "Hoja 1" / "Sheet1" sobrante vacía.
+  // Deja la vista en Leads y quita cualquier hoja "Hoja 1" / "Sheet1" sobrante vac\u00eda.
   const sobrante = ss.getSheets().find((sh) => {
     const n = sh.getName();
     return (n === 'Hoja 1' || n === 'Sheet1') && sh.getLastRow() === 0 && sh.getLastColumn() === 0;
@@ -163,8 +170,8 @@ function setup() {
     crearVistasDeFiltro();
   } catch (err) {
     Logger.log(
-      'No se pudieron crear las vistas de filtro automáticamente (%s). ' +
-        'Activa el servicio avanzado "Google Sheets API" (ícono + junto a Servicios) ' +
+      'No se pudieron crear las vistas de filtro autom\u00e1ticamente (%s). ' +
+        'Activa el servicio avanzado "Google Sheets API" (\u00edcono + junto a Servicios) ' +
         'y vuelve a ejecutar crearVistasDeFiltro().',
       err
     );
@@ -178,11 +185,11 @@ function setup() {
 
   try {
     SpreadsheetApp.getUi().alert(
-      'Listo. Revisa las pestañas Leads, Config, Dashboard y Guía.\n\n' +
-        'Siguiente paso: Implementar > Nueva implementación > Aplicación web.'
+      'Listo. Revisa las pesta\u00f1as Leads, Config, Dashboard y Gu\u00eda.\n\n' +
+        'Siguiente paso: Implementar > Nueva implementaci\u00f3n > Aplicaci\u00f3n web.'
     );
   } catch (err) {
-    Logger.log('Setup completo (sin diálogo: no hay UI disponible en este contexto de ejecución).');
+    Logger.log('Setup completo (sin di\u00e1logo: no hay UI disponible en este contexto de ejecuci\u00f3n).');
   }
 }
 
@@ -237,26 +244,26 @@ function buildLeadsSheet_(ss) {
     .build();
   sh.getRange(2, C_RESPONSABLE, MAX_FILA_FORMATO, 1).setDataValidation(reglaResponsable);
 
-  // Protección de las columnas calculadas (puntos, puntaje, nivel, regla, acción, seguimiento).
+  // Protecci\u00f3n de las columnas calculadas (puntos, puntaje, nivel, regla, acci\u00f3n, seguimiento).
   const colsProtegidas = [
     [C_PTS_URGENCIA, C_ACCION - C_PTS_URGENCIA + 1], // O..X seguidas
   ];
   colsProtegidas.forEach(([col, n]) => {
     const rango = sh.getRange(2, col, MAX_FILA_FORMATO, n);
-    const proteccion = rango.protect().setDescription('Fórmulas de puntaje — no editar a mano, se calculan solas desde Config.');
+    const proteccion = rango.protect().setDescription('F\u00f3rmulas de puntaje \u2014 no editar a mano, se calculan solas desde Config.');
     proteccion.setWarningOnly(true);
   });
   const rangoSeguimiento = sh.getRange(2, C_PROX_SEGUIMIENTO, MAX_FILA_FORMATO, 1);
-  rangoSeguimiento.protect().setWarningOnly(true).setDescription('Fórmula — se calcula sola desde la fecha de llegada + SLA de Config.');
+  rangoSeguimiento.protect().setWarningOnly(true).setDescription('F\u00f3rmula \u2014 se calcula sola desde la fecha de llegada + SLA de Config.');
 
-  // Filtro básico sobre todo el rango de trabajo.
+  // Filtro b\u00e1sico sobre todo el rango de trabajo.
   const filtroExistente = sh.getFilter();
   if (filtroExistente) filtroExistente.remove();
   sh.getRange(1, 1, MAX_FILA_FORMATO, LEADS_HEADERS.length).createFilter();
 
   aplicarFormatoCondicionalLeads_(sh);
 
-  if (esNueva) Logger.log('Pestaña "Leads" creada.');
+  if (esNueva) Logger.log('Pesta\u00f1a "Leads" creada.');
 }
 
 function aplicarFormatoCondicionalLeads_(sh) {
@@ -266,7 +273,7 @@ function aplicarFormatoCondicionalLeads_(sh) {
 
   const reglas = [];
 
-  // Tinte suave en toda la fila según el nivel.
+  // Tinte suave en toda la fila seg\u00fan el nivel.
   reglas.push(
     SpreadsheetApp.newConditionalFormatRule()
       .whenFormulaSatisfied(`=$${letraNivel}2="Verde"`)
@@ -322,11 +329,11 @@ function aplicarFormatoCondicionalLeads_(sh) {
 }
 
 /**
- * El separador de argumentos dentro de una fórmula depende de la configuración
+ * El separador de argumentos dentro de una f\u00f3rmula depende de la configuraci\u00f3n
  * regional del Sheet, no del idioma de la interfaz: en locales donde la coma
- * es el separador decimal (es_CL, es_ES, pt_BR, fr_FR, de_DE, etc.) las fórmulas
- * usan ";" entre argumentos en vez de ",". Todas las fórmulas de este archivo
- * se escriben con "|" como separador neutro y se convierten aquí al separador
+ * es el separador decimal (es_CL, es_ES, pt_BR, fr_FR, de_DE, etc.) las f\u00f3rmulas
+ * usan ";" entre argumentos en vez de ",". Todas las f\u00f3rmulas de este archivo
+ * se escriben con "|" como separador neutro y se convierten aqu\u00ed al separador
  * real del Sheet antes de guardarlas, para que funcionen sin importar la cuenta.
  */
 let SEPARADOR_CACHE_ = null;
@@ -356,7 +363,7 @@ function colLetter_(col) {
   return letter;
 }
 
-/** Fórmulas de las columnas calculadas (O..X y AB) para una fila dada. */
+/** F\u00f3rmulas de las columnas calculadas (O..X y AB) para una fila dada. */
 function formulasFila_(fila) {
   const F = colLetter_(C_CURSOS) + fila;
   const G = colLetter_(C_PERSONAS) + fila;
@@ -381,10 +388,10 @@ function formulasFila_(fila) {
     [C_PTS_PRESUPUESTO]: `=IFERROR(VLOOKUP(${J}|RANGO_PRESUPUESTO|2|FALSE)|0)`,
     [C_PTS_VOLUMEN]: `=IFERROR(VLOOKUP(${F}|RANGO_CURSOS|2|FALSE)|0)+IFERROR(VLOOKUP(${G}|RANGO_PERSONAS|2|FALSE)|0)`,
     [C_PTS_ENCAJE]: `=IFERROR(VLOOKUP(${H}|RANGO_ENCAJE|2|FALSE)|0)`,
-    [C_PTS_DNC]: `=IF(${M}="Sí"|BONUS_DNC|0)`,
+    [C_PTS_DNC]: `=IF(${M}="S\u00ed"|BONUS_DNC|0)`,
     [C_PUNTAJE]: `=MIN(100|${O}+${P}+${Q}+${R}+${S}+${T})`,
-    [C_NIVEL]: `=LET(esR1|AND(${J}="Aún no tengo un presupuesto definido"|${K}="Aún estoy evaluando, sin fecha definida")|esR2|${I}="Otra persona decide; yo evalúo la propuesta"|base|IF(${U}>=UMBRAL_VERDE|"Verde"|IF(${U}>=UMBRAL_AMARILLO|"Amarillo"|"Rojo"))|ajustado|IF(esR2|IF(base="Verde"|"Amarillo"|base)|base)|IF(esR1|"Rojo"|ajustado))`,
-    [C_REGLA]: `=IF(AND(${J}="Aún no tengo un presupuesto definido"|${K}="Aún estoy evaluando, sin fecha definida")|"R1 · sin presupuesto + sin fecha → Rojo"|IF(AND(${I}="Otra persona decide; yo evalúo la propuesta"|${U}>=UMBRAL_VERDE)|"R2 · no es decisor → tope Amarillo"|"Sin ajuste"))`,
+    [C_NIVEL]: `=LET(esR1|AND(${J}="A\u00fan no tengo un presupuesto definido"|${K}="A\u00fan estoy evaluando, sin fecha definida")|esR2|${I}="Otra persona decide; yo eval\u00fao la propuesta"|base|IF(${U}>=UMBRAL_VERDE|"Verde"|IF(${U}>=UMBRAL_AMARILLO|"Amarillo"|"Rojo"))|ajustado|IF(esR2|IF(base="Verde"|"Amarillo"|base)|base)|IF(esR1|"Rojo"|ajustado))`,
+    [C_REGLA]: `=IF(AND(${J}="A\u00fan no tengo un presupuesto definido"|${K}="A\u00fan estoy evaluando, sin fecha definida")|"R1 \u00b7 sin presupuesto + sin fecha \u2192 Rojo"|IF(AND(${I}="Otra persona decide; yo eval\u00fao la propuesta"|${U}>=UMBRAL_VERDE)|"R2 \u00b7 no es decisor \u2192 tope Amarillo"|"Sin ajuste"))`,
     [C_ACCION]: `=IFS(${V}="Verde"|ACCION_VERDE|${V}="Amarillo"|ACCION_AMARILLO|${V}="Rojo"|ACCION_ROJO|TRUE|"")`,
     [C_PROX_SEGUIMIENTO]: `=IFS(${V}="Verde"|${A}+SLA_VERDE|${V}="Amarillo"|${A}+SLA_AMARILLO|${V}="Rojo"|${A}+SLA_ROJO|TRUE|"")`,
   };
@@ -396,10 +403,10 @@ function escribirFormulasFila_(sh, fila) {
 }
 
 /**
- * Vuelve a escribir las fórmulas (puntos, PUNTAJE, NIVEL, etc.) de todas las filas
- * con datos en "Leads". Úsala si ves #ERROR! en esas columnas — típicamente porque
- * las fórmulas se guardaron antes de corregir el separador de argumentos (,/;) para
- * la configuración regional de este Sheet. setup() ya la ejecuta sola.
+ * Vuelve a escribir las f\u00f3rmulas (puntos, PUNTAJE, NIVEL, etc.) de todas las filas
+ * con datos en "Leads". \u00dasala si ves #ERROR! en esas columnas \u2014 t\u00edpicamente porque
+ * las f\u00f3rmulas se guardaron antes de corregir el separador de argumentos (,/;) para
+ * la configuraci\u00f3n regional de este Sheet. setup() ya la ejecuta sola.
  */
 function repararFormulasLeads_(ss) {
   const sh = ss.getSheetByName(SHEET_LEADS);
@@ -408,7 +415,7 @@ function repararFormulasLeads_(ss) {
   for (let fila = 2; fila <= ultimaFila; fila++) {
     if (sh.getRange(fila, C_NOMBRE).getValue()) escribirFormulasFila_(sh, fila);
   }
-  Logger.log('Fórmulas de "Leads" recalculadas (filas 2 a %s).', ultimaFila);
+  Logger.log('F\u00f3rmulas de "Leads" recalculadas (filas 2 a %s).', ultimaFila);
 }
 
 /** Atajo para ejecutar repararFormulasLeads_ a mano desde el editor, sin correr setup() completo. */
@@ -423,15 +430,15 @@ function repararFormulas() {
 function buildConfigSheet_(ss) {
   let sh = ss.getSheetByName(SHEET_CONFIG);
   if (sh) {
-    Logger.log('Pestaña "Config" ya existe: no se reconstruye (para no perder tus ediciones).');
+    Logger.log('Pesta\u00f1a "Config" ya existe: no se reconstruye (para no perder tus ediciones).');
     return;
   }
   sh = ss.insertSheet(SHEET_CONFIG, 1);
 
-  sh.getRange(1, 1).setValue('CONFIGURACIÓN DEL PUNTAJE DE LEADS').setFontSize(14).setFontWeight('bold');
+  sh.getRange(1, 1).setValue('CONFIGURACI\u00d3N DEL PUNTAJE DE LEADS').setFontSize(14).setFontWeight('bold');
   sh.getRange(2, 1)
     .setValue(
-      'Edita los puntos, umbrales, SLA y textos de esta pestaña. Las fórmulas de "Leads" se recalculan solas al guardar.'
+      'Edita los puntos, umbrales, SLA y textos de esta pesta\u00f1a. Las f\u00f3rmulas de "Leads" se recalculan solas al guardar.'
     )
     .setFontStyle('italic')
     .setFontColor('#666666');
@@ -452,7 +459,7 @@ function buildConfigSheet_(ss) {
       fila++;
     });
     const rango = sh.getRange(inicio, 1, pares.length, 2);
-    fila++; // fila en blanco de separación
+    fila++; // fila en blanco de separaci\u00f3n
     return rango;
   }
 
@@ -467,21 +474,21 @@ function buildConfigSheet_(ss) {
   }
 
   const ss_ = ss;
-  const rUrgencia = agregarTabla('Urgencia de inicio (máx. 25 pts) — campo "¿Cuándo te gustaría comenzar?"', [
+  const rUrgencia = agregarTabla('Urgencia de inicio (m\u00e1x. 25 pts) \u2014 campo "\u00bfCu\u00e1ndo te gustar\u00eda comenzar?"', [
     [OPCIONES_INICIO['lo-antes-posible'], 25],
     [OPCIONES_INICIO['este-trimestre'], 15],
     [OPCIONES_INICIO['sin-fecha'], 3],
   ]);
   ss_.setNamedRange('RANGO_URGENCIA', rUrgencia);
 
-  const rDecisor = agregarTabla('Quién decide la compra (máx. 20 pts)', [
+  const rDecisor = agregarTabla('Qui\u00e9n decide la compra (m\u00e1x. 20 pts)', [
     [OPCIONES_DECISOR['yo'], 20],
     [OPCIONES_DECISOR['compartida'], 12],
     [OPCIONES_DECISOR['otro'], 5],
   ]);
   ss_.setNamedRange('RANGO_DECISOR', rDecisor);
 
-  const rPresupuesto = agregarTabla('Presupuesto mensual contemplado (máx. 20 pts)', [
+  const rPresupuesto = agregarTabla('Presupuesto mensual contemplado (m\u00e1x. 20 pts)', [
     [OPCIONES_PRESUPUESTO['sin-definir'], 6],
     [OPCIONES_PRESUPUESTO['<300000'], 12],
     [OPCIONES_PRESUPUESTO['300000-700000'], 18],
@@ -490,7 +497,7 @@ function buildConfigSheet_(ss) {
   ]);
   ss_.setNamedRange('RANGO_PRESUPUESTO', rPresupuesto);
 
-  const rCursos = agregarTabla('Volumen — cursos al año (parte de máx. 20 pts de volumen)', [
+  const rCursos = agregarTabla('Volumen \u2014 cursos al a\u00f1o (parte de m\u00e1x. 20 pts de volumen)', [
     [OPCIONES_CURSOS['1-5'], 4],
     [OPCIONES_CURSOS['6-20'], 8],
     [OPCIONES_CURSOS['21-50'], 10],
@@ -499,7 +506,7 @@ function buildConfigSheet_(ss) {
   ]);
   ss_.setNamedRange('RANGO_CURSOS', rCursos);
 
-  const rPersonas = agregarTabla('Volumen — personas al año (parte de máx. 20 pts de volumen)', [
+  const rPersonas = agregarTabla('Volumen \u2014 personas al a\u00f1o (parte de m\u00e1x. 20 pts de volumen)', [
     [OPCIONES_PERSONAS['<100'], 3],
     [OPCIONES_PERSONAS['100-500'], 6],
     [OPCIONES_PERSONAS['501-1000'], 9],
@@ -508,7 +515,7 @@ function buildConfigSheet_(ss) {
   ]);
   ss_.setNamedRange('RANGO_PERSONAS', rPersonas);
 
-  const rEncaje = agregarTabla('Encaje con el producto (máx. 15 pts) — "¿Qué problema quieres resolver primero?"', [
+  const rEncaje = agregarTabla('Encaje con el producto (m\u00e1x. 15 pts) \u2014 "\u00bfQu\u00e9 problema quieres resolver primero?"', [
     [OPCIONES_PROBLEMA['sence'], 15],
     [OPCIONES_PROBLEMA['asistencia'], 15],
     [OPCIONES_PROBLEMA['carga'], 15],
@@ -524,16 +531,16 @@ function buildConfigSheet_(ss) {
 
   sh.getRange(fila, 1, 1, 2).merge().setValue('Umbrales de nivel').setFontWeight('bold').setBackground('#e8eefc');
   fila++;
-  sh.getRange(fila, 1).setValue('Verde desde (puntaje mínimo)');
+  sh.getRange(fila, 1).setValue('Verde desde (puntaje m\u00ednimo)');
   const cVerde = sh.getRange(fila, 2).setValue(70);
   ss_.setNamedRange('UMBRAL_VERDE', cVerde);
   fila++;
-  sh.getRange(fila, 1).setValue('Amarillo desde (puntaje mínimo; menos que esto es Rojo)');
+  sh.getRange(fila, 1).setValue('Amarillo desde (puntaje m\u00ednimo; menos que esto es Rojo)');
   const cAmarillo = sh.getRange(fila, 2).setValue(45);
   ss_.setNamedRange('UMBRAL_AMARILLO', cAmarillo);
   fila += 2;
 
-  sh.getRange(fila, 1, 1, 2).merge().setValue('Seguimiento — días hasta el próximo contacto').setFontWeight('bold').setBackground('#e8eefc');
+  sh.getRange(fila, 1, 1, 2).merge().setValue('Seguimiento \u2014 d\u00edas hasta el pr\u00f3ximo contacto').setFontWeight('bold').setBackground('#e8eefc');
   fila++;
   sh.getRange(fila, 1).setValue('Verde');
   const cSlaVerde = sh.getRange(fila, 2).setValue(1);
@@ -548,7 +555,7 @@ function buildConfigSheet_(ss) {
   ss_.setNamedRange('SLA_ROJO', cSlaRojo);
   fila += 2;
 
-  sh.getRange(fila, 1, 1, 2).merge().setValue('Acción recomendada por nivel').setFontWeight('bold').setBackground('#e8eefc');
+  sh.getRange(fila, 1, 1, 2).merge().setValue('Acci\u00f3n recomendada por nivel').setFontWeight('bold').setBackground('#e8eefc');
   fila++;
   sh.getRange(fila, 1).setValue('Verde');
   const cAccionVerde = sh.getRange(fila, 2).setValue('Contactar hoy: llamar + WhatsApp, ofrecer agenda inmediata.');
@@ -557,11 +564,11 @@ function buildConfigSheet_(ss) {
   sh.getRange(fila, 1).setValue('Amarillo');
   const cAccionAmarillo = sh
     .getRange(fila, 2)
-    .setValue('Contactar en 1 a 3 días: correo personalizado + seguimiento telefónico.');
+    .setValue('Contactar en 1 a 3 d\u00edas: correo personalizado + seguimiento telef\u00f3nico.');
   ss_.setNamedRange('ACCION_AMARILLO', cAccionAmarillo);
   fila++;
   sh.getRange(fila, 1).setValue('Rojo');
-  const cAccionRojo = sh.getRange(fila, 2).setValue('Nutrir: sumar a secuencia de correo y revisar en 30 días.');
+  const cAccionRojo = sh.getRange(fila, 2).setValue('Nutrir: sumar a secuencia de correo y revisar en 30 d\u00edas.');
   ss_.setNamedRange('ACCION_ROJO', cAccionRojo);
   fila += 2;
 
@@ -573,7 +580,7 @@ function buildConfigSheet_(ss) {
   sh.getRange(1, 1, fila, 2).setWrap(true).setVerticalAlignment('middle');
   sh.getRange(4, 2, fila - 4, 1).setNumberFormat('0');
 
-  Logger.log('Pestaña "Config" creada con sus rangos con nombre.');
+  Logger.log('Pesta\u00f1a "Config" creada con sus rangos con nombre.');
 }
 
 // ---------------------------------------------------------------------------
@@ -582,14 +589,14 @@ function buildConfigSheet_(ss) {
 
 function buildDashboardSheet_(ss) {
   let sh = ss.getSheetByName(SHEET_DASHBOARD);
-  if (sh) ss.deleteSheet(sh); // el dashboard es solo fórmulas: se puede reconstruir sin perder nada
+  if (sh) ss.deleteSheet(sh); // el dashboard es solo f\u00f3rmulas: se puede reconstruir sin perder nada
   sh = ss.insertSheet(SHEET_DASHBOARD, 2);
 
   const L = `'${SHEET_LEADS}'`;
   const rango = (col) => `${L}!$${colLetter_(col)}$2:$${colLetter_(col)}$${MAX_FILA_FORMATO}`;
 
   sh.getRange(1, 1).setValue('DASHBOARD DE LEADS').setFontSize(14).setFontWeight('bold');
-  sh.getRange(2, 1).setValue('Se actualiza solo. No escribas a mano en esta pestaña.').setFontStyle('italic').setFontColor('#666666');
+  sh.getRange(2, 1).setValue('Se actualiza solo. No escribas a mano en esta pesta\u00f1a.').setFontStyle('italic').setFontColor('#666666');
 
   // --- Totales por nivel --------------------------------------------------
   sh.getRange(4, 1).setValue('Total de leads').setFontWeight('bold');
@@ -610,7 +617,7 @@ function buildDashboardSheet_(ss) {
   sh.getRange(11, 2).setFormula(
     f_(`=COUNTIFS(${rango(C_NIVEL)}|"Verde"|${rango(C_ESTADO)}|"Nuevo")`)
   );
-  sh.getRange(12, 1).setValue('… de esos, vencidos (>2h o de un día anterior)').setFontWeight('bold');
+  sh.getRange(12, 1).setValue('\u2026 de esos, vencidos (>2h o de un d\u00eda anterior)').setFontWeight('bold');
   sh.getRange(12, 2).setFormula(
     `=SUMPRODUCT((${rango(C_NIVEL)}="Verde")*(${rango(C_ESTADO)}="Nuevo")*((((NOW()-${rango(
       C_FECHA
@@ -668,7 +675,7 @@ function buildDashboardSheet_(ss) {
   sh.getRange(fila, 1).setValue('Leads por origen (UTM)').setFontWeight('bold');
   fila++;
   sh.getRange(fila, 1).setFormula(
-    f_(`=IFERROR(QUERY(${rango(C_ORIGEN)}|"select Col1, count(Col1) where Col1 is not null and Col1 <> '' group by Col1 label count(Col1) '' order by count(Col1) desc"|0)|"(sin datos aún)")`)
+    f_(`=IFERROR(QUERY(${rango(C_ORIGEN)}|"select Col1, count(Col1) where Col1 is not null and Col1 <> '' group by Col1 label count(Col1) '' order by count(Col1) desc"|0)|"(sin datos a\u00fan)")`)
   );
   fila += 10; // deja espacio para el derrame del QUERY
 
@@ -694,7 +701,7 @@ function buildDashboardSheet_(ss) {
   fila += 2;
 
   // --- Leads por semana (barras) --------------------------------------------
-  sh.getRange(fila, 1).setValue('Leads por semana (últimas 8 semanas)').setFontWeight('bold');
+  sh.getRange(fila, 1).setValue('Leads por semana (\u00faltimas 8 semanas)').setFontWeight('bold');
   fila++;
   const inicioSemanas = fila;
   sh.getRange(fila, 1, 1, 2).setValues([['Semana del', 'Leads']]).setFontWeight('bold');
@@ -731,18 +738,18 @@ function buildDashboardSheet_(ss) {
   sh.setColumnWidth(2, 100);
   sh.setColumnWidth(3, 70);
 
-  Logger.log('Pestaña "Dashboard" creada.');
+  Logger.log('Pesta\u00f1a "Dashboard" creada.');
 }
 
 /**
- * Vuelve a calcular la ventana de "últimas 8 semanas" del Dashboard tomando
- * como referencia la fecha de hoy. Ejecútala manualmente de vez en cuando, o
+ * Vuelve a calcular la ventana de "\u00faltimas 8 semanas" del Dashboard tomando
+ * como referencia la fecha de hoy. Ejec\u00fatala manualmente de vez en cuando, o
  * deja el disparador diario que crea setup() (ver crearTriggerDiario()).
  */
 function actualizarSemanasDashboard() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   if (!ss.getSheetByName(SHEET_DASHBOARD)) return;
-  buildDashboardSheet_(ss); // es barato de reconstruir: solo son fórmulas + 2 gráficos
+  buildDashboardSheet_(ss); // es barato de reconstruir: solo son f\u00f3rmulas + 2 gr\u00e1ficos
 }
 
 function crearTriggerDiario() {
@@ -752,7 +759,7 @@ function crearTriggerDiario() {
 }
 
 // ---------------------------------------------------------------------------
-// Hoja Guía
+// Hoja Gu\u00eda
 // ---------------------------------------------------------------------------
 
 function buildGuiaSheet_(ss) {
@@ -761,58 +768,58 @@ function buildGuiaSheet_(ss) {
   sh = ss.insertSheet(SHEET_GUIA, 3);
 
   const lineas = [
-    ['GUÍA RÁPIDA — CÓMO FUNCIONA ESTE SHEET', ''],
+    ['GU\u00cdA R\u00c1PIDA \u2014 C\u00d3MO FUNCIONA ESTE SHEET', ''],
     ['', ''],
-    ['1. De dónde vienen los leads', ''],
+    ['1. De d\u00f3nde vienen los leads', ''],
     [
       '',
-      'Cada vez que alguien completa el formulario de la landing (lms-certimedia-landing), el sitio envía los datos a la app web de este proyecto (función doPost). El script agrega una fila nueva en "Leads", calcula el puntaje y clasifica el nivel.',
+      'Cada vez que alguien completa el formulario de la landing (lms-certimedia-landing), el sitio env\u00eda los datos a la app web de este proyecto (funci\u00f3n doPost). El script agrega una fila nueva en "Leads", calcula el puntaje y clasifica el nivel.',
     ],
     ['', ''],
-    ['2. Cómo se calcula el puntaje (0 a 100)', ''],
+    ['2. C\u00f3mo se calcula el puntaje (0 a 100)', ''],
     ['', 'Urgencia de inicio: hasta 25 pts.'],
-    ['', 'Quién decide la compra: hasta 20 pts.'],
+    ['', 'Qui\u00e9n decide la compra: hasta 20 pts.'],
     ['', 'Presupuesto mensual: hasta 20 pts.'],
-    ['', 'Volumen (cursos + personas al año): hasta 20 pts.'],
+    ['', 'Volumen (cursos + personas al a\u00f1o): hasta 20 pts.'],
     ['', 'Encaje del problema principal con el producto: hasta 15 pts.'],
     ['', 'Bonus si ya tiene un DNC/NDS realizado: +5 pts.'],
     ['', 'El total nunca pasa de 100 (se usa MIN).'],
-    ['', 'Todos estos puntos se editan en la pestaña "Config", sin tocar código.'],
+    ['', 'Todos estos puntos se editan en la pesta\u00f1a "Config", sin tocar c\u00f3digo.'],
     ['', ''],
     ['3. Niveles', ''],
-    ['', 'Verde: 70 puntos o más. Contactar hoy.'],
-    ['', 'Amarillo: entre 45 y 69 puntos. Contactar en 1 a 3 días.'],
-    ['', 'Rojo: menos de 45 puntos. Sumar a nutrición y revisar en 30 días.'],
+    ['', 'Verde: 70 puntos o m\u00e1s. Contactar hoy.'],
+    ['', 'Amarillo: entre 45 y 69 puntos. Contactar en 1 a 3 d\u00edas.'],
+    ['', 'Rojo: menos de 45 puntos. Sumar a nutrici\u00f3n y revisar en 30 d\u00edas.'],
     ['', ''],
-    ['4. Reglas de ajuste (se aplican después del puntaje)', ''],
+    ['4. Reglas de ajuste (se aplican despu\u00e9s del puntaje)', ''],
     [
       '',
-      'R1: si el presupuesto es "Aún no tengo un presupuesto definido" Y el inicio es "sin fecha definida", el nivel baja a Rojo sin importar el puntaje.',
+      'R1: si el presupuesto es "A\u00fan no tengo un presupuesto definido" Y el inicio es "sin fecha definida", el nivel baja a Rojo sin importar el puntaje.',
     ],
-    ['', 'R2: si la decisión la toma "otra persona", el nivel no puede pasar de Amarillo (aunque el puntaje diera Verde).'],
-    ['', 'La columna "Regla aplicada" de cada fila indica cuál de las dos (si alguna) actuó.'],
+    ['', 'R2: si la decisi\u00f3n la toma "otra persona", el nivel no puede pasar de Amarillo (aunque el puntaje diera Verde).'],
+    ['', 'La columna "Regla aplicada" de cada fila indica cu\u00e1l de las dos (si alguna) actu\u00f3.'],
     ['', ''],
     ['5. Seguimiento', ''],
     [
       '',
-      '"Próximo seguimiento" = fecha de llegada del lead + los días que definas en Config para su nivel (por defecto Verde 1 día, Amarillo 3 días, Rojo 30 días corridos).',
+      '"Pr\u00f3ximo seguimiento" = fecha de llegada del lead + los d\u00edas que definas en Config para su nivel (por defecto Verde 1 d\u00eda, Amarillo 3 d\u00edas, Rojo 30 d\u00edas corridos).',
     ],
-    ['', 'Marca "Estado" y "Responsable" a mano en cada fila a medida que avanzas la gestión.'],
+    ['', 'Marca "Estado" y "Responsable" a mano en cada fila a medida que avanzas la gesti\u00f3n.'],
     ['', ''],
-    ['6. Qué es editable y qué no', ''],
-    ['', 'Editable sin tocar código: toda la pestaña "Config" (puntos, umbrales, SLA, textos de acción, correo de aviso).'],
+    ['6. Qu\u00e9 es editable y qu\u00e9 no', ''],
+    ['', 'Editable sin tocar c\u00f3digo: toda la pesta\u00f1a "Config" (puntos, umbrales, SLA, textos de acci\u00f3n, correo de aviso).'],
     [
       '',
-      'No editar a mano: las columnas de puntos, PUNTAJE, NIVEL, Regla aplicada, Acción recomendada y Próximo seguimiento en "Leads" (tienen fórmulas protegidas con advertencia).',
+      'No editar a mano: las columnas de puntos, PUNTAJE, NIVEL, Regla aplicada, Acci\u00f3n recomendada y Pr\u00f3ximo seguimiento en "Leads" (tienen f\u00f3rmulas protegidas con advertencia).',
     ],
     ['', ''],
-    ['7. Vistas de filtro sugeridas (pestaña Leads)', ''],
+    ['7. Vistas de filtro sugeridas (pesta\u00f1a Leads)', ''],
     ['', '"Verdes sin contactar": nivel = Verde y estado = Nuevo.'],
-    ['', '"Seguimientos de hoy o vencidos": próximo seguimiento ≤ hoy.'],
-    ['', '"Todos los activos": excluye Ganado, Perdido y En nutrición.'],
+    ['', '"Seguimientos de hoy o vencidos": pr\u00f3ximo seguimiento \u2264 hoy.'],
+    ['', '"Todos los activos": excluye Ganado, Perdido y En nutrici\u00f3n.'],
     ['', ''],
     ['8. Si algo se ve en 0 o #N/A', ''],
-    ['', 'Normalmente es porque una etiqueta en "Config" ya no coincide exactamente con la que llega del formulario. Revisa que el texto sea idéntico (mayúsculas, tildes, signos $).'],
+    ['', 'Normalmente es porque una etiqueta en "Config" ya no coincide exactamente con la que llega del formulario. Revisa que el texto sea id\u00e9ntico (may\u00fasculas, tildes, signos $).'],
   ];
 
   sh.getRange(1, 1, lineas.length, 2).setValues(lineas);
@@ -820,14 +827,14 @@ function buildGuiaSheet_(ss) {
   sh.setColumnWidth(1, 40);
   sh.setColumnWidth(2, 780);
   sh.getRange(1, 1, lineas.length, 2).setWrap(true).setVerticalAlignment('top');
-  // Negrita en los títulos numerados (columna A: "1. ...", "2. ...", etc.).
+  // Negrita en los t\u00edtulos numerados (columna A: "1. ...", "2. ...", etc.).
   lineas.forEach((linea, i) => {
     if (/^\d+\./.test(linea[0] || '')) {
       sh.getRange(i + 1, 1).setFontWeight('bold');
     }
   });
 
-  Logger.log('Pestaña "Guía" creada.');
+  Logger.log('Pesta\u00f1a "Gu\u00eda" creada.');
 }
 
 // ---------------------------------------------------------------------------
@@ -837,7 +844,7 @@ function buildGuiaSheet_(ss) {
 function crearVistasDeFiltro() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const sh = ss.getSheetByName(SHEET_LEADS);
-  if (!sh) throw new Error('No existe la pestaña Leads. Ejecuta setup() primero.');
+  if (!sh) throw new Error('No existe la pesta\u00f1a Leads. Ejecuta setup() primero.');
   const sheetId = sh.getSheetId();
   const nCols = LEADS_HEADERS.length;
 
@@ -885,7 +892,7 @@ function crearVistasDeFiltro() {
                 type: 'CUSTOM_FORMULA',
                 values: [
                   {
-                    userEnteredValue: f_(`=NOT(OR($${letraEstado}2="Ganado"|$${letraEstado}2="Perdido"|$${letraEstado}2="En nutrición"))`),
+                    userEnteredValue: f_(`=NOT(OR($${letraEstado}2="Ganado"|$${letraEstado}2="Perdido"|$${letraEstado}2="En nutrici\u00f3n"))`),
                   },
                 ],
               },
@@ -897,15 +904,15 @@ function crearVistasDeFiltro() {
   ];
 
   Sheets.Spreadsheets.batchUpdate({ requests: vistas }, ss.getId());
-  Logger.log('Vistas de filtro creadas (revísalas y ajusta "Todos los activos" a mano si hace falta excluir más estados).');
+  Logger.log('Vistas de filtro creadas (rev\u00edsalas y ajusta "Todos los activos" a mano si hace falta excluir m\u00e1s estados).');
 }
 
 // ============================================================================
-// WEBHOOK — recibe los leads de la landing
+// WEBHOOK \u2014 recibe los leads de la landing
 // ============================================================================
 
 function doGet() {
-  return ContentService.createTextOutput('Certimedia Leads API — OK').setMimeType(ContentService.MimeType.TEXT);
+  return ContentService.createTextOutput('Certimedia Leads API \u2014 OK').setMimeType(ContentService.MimeType.TEXT);
 }
 
 function doPost(e) {
@@ -915,17 +922,17 @@ function doPost(e) {
       return responder_({ ok: false, error: 'Sin datos en la solicitud.' });
     }
 
-    // Honeypot: si el bot completó este campo, se descarta en silencio.
+    // Honeypot: si el bot complet\u00f3 este campo, se descarta en silencio.
     if (datos.hp_check && String(datos.hp_check).trim()) {
       return responder_({ ok: true, skipped: 'honeypot' });
     }
 
     const ss = SpreadsheetApp.getActiveSpreadsheet();
     const sh = ss.getSheetByName(SHEET_LEADS);
-    if (!sh) return responder_({ ok: false, error: 'No existe la pestaña Leads. Ejecuta setup().' });
+    if (!sh) return responder_({ ok: false, error: 'No existe la pesta\u00f1a Leads. Ejecuta setup().' });
 
     const fila = sh.getLastRow() + 1;
-    const dnc = esVerdadero_(datos.dnc_realizado) ? 'Sí' : 'No';
+    const dnc = esVerdadero_(datos.dnc_realizado) ? 'S\u00ed' : 'No';
     const origen = formatearOrigen_(datos);
 
     const valores = [
@@ -983,7 +990,7 @@ function textoOVacio_(valor) {
 
 function esVerdadero_(valor) {
   const v = String(valor).trim().toLowerCase();
-  return v === 'sí' || v === 'si' || v === 'true' || v === 'on' || v === 'yes';
+  return v === 's\u00ed' || v === 'si' || v === 'true' || v === 'on' || v === 'yes';
 }
 
 function formatearOrigen_(datos) {
@@ -995,7 +1002,7 @@ function responder_(objeto) {
   return ContentService.createTextOutput(JSON.stringify(objeto)).setMimeType(ContentService.MimeType.JSON);
 }
 
-/** Aviso corto por correo a quien esté configurado en Config!CORREO_NOTIFICACION. */
+/** Aviso corto por correo a quien est\u00e9 configurado en Config!CORREO_NOTIFICACION. */
 function notificarLeadNuevo_(ss, sh, fila) {
   let correo = '';
   try {
@@ -1013,15 +1020,15 @@ function notificarLeadNuevo_(ss, sh, fila) {
   const accion = sh.getRange(fila, C_ACCION).getValue();
   const url = ss.getUrl();
 
-  const asunto = `Lead ${nivel} (${puntaje} pts) · ${otec || nombre}`;
+  const asunto = `Lead ${nivel} (${puntaje} pts) \u00b7 ${otec || nombre}`;
   const cuerpo =
     `Nuevo lead desde la landing de Certimedia.\n\n` +
     `Nombre: ${nombre}\nOTEC: ${otec}\nNivel: ${nivel}\nPuntaje: ${puntaje}\n` +
-    `Acción recomendada: ${accion}\n\nVer en el Sheet: ${url}`;
+    `Acci\u00f3n recomendada: ${accion}\n\nVer en el Sheet: ${url}`;
 
   try {
     MailApp.sendEmail(correo, asunto, cuerpo);
   } catch (err) {
-    Logger.log('No se pudo enviar el correo de notificación: %s', err);
+    Logger.log('No se pudo enviar el correo de notificaci\u00f3n: %s', err);
   }
 }

@@ -111,6 +111,15 @@ en todas las filas, incluidas las antiguas.
 La pestaña **Guía** (dentro del mismo Sheet) explica la lógica completa para
 cualquiera del equipo que no haya visto esto antes.
 
+## 4.1 Si ves símbolos raros (√ç, √Å, etc.) en vez de tildes
+
+Es un problema de codificación del portapapeles al pegar un archivo tan largo
+en el navegador (no de tu Sheet). Reemplazamos `Code.gs` para que el archivo
+viaje en ASCII puro y las tildes se reconstruyan solas al ejecutarse — ya no
+debería volver a pasar. Si ya te pasó: vuelve a copiar el `Code.gs` actual de
+este repo, reemplaza todo el contenido en el editor y ejecuta `setup()` de
+nuevo (ver sección 5.1 para por qué es seguro repetirlo).
+
 ## 5.1 Si ves `#ERROR!` en las columnas de puntaje o en el Dashboard
 
 Pasa si tu Sheet usa una configuración regional donde las fórmulas separan sus
