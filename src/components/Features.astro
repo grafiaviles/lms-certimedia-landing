@@ -14,80 +14,37 @@ import { features } from '../content/copy';
       description={features.description}
     />
 
-    {/* Cards expandibles: clic en el encabezado muestra/oculta el detalle. */}
-    <div class="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-2" data-feature-accordion>
+    <div class="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-2">
       {
         features.groups.map((group, i) => (
           <article
             class="reveal overflow-hidden rounded-card border border-ink-200 bg-white shadow-softer transition-all duration-200 hover:border-accent-200 hover:shadow-soft"
             style={`transition-delay: ${Math.min(i, 5) * 60}ms`}
-            data-fcard
           >
-            <button
-              type="button"
-              aria-expanded="true"
-              aria-controls={`ffcontent-${i}`}
-              data-ftoggle
-              class="flex w-full items-center gap-3 p-6 text-left"
-            >
+            <div class="flex w-full items-center gap-3 p-6 text-left">
               <Illustration name={group.illustration} class="h-14 w-14 shrink-0" />
               <h3 class="flex-1 text-base font-semibold text-ink-900">{group.title}</h3>
-              <span data-fchevron class="rotate-180 shrink-0 text-ink-400 transition-transform duration-300">
-                <Icon name="chevron-down" class="h-5 w-5" />
-              </span>
-            </button>
-            <div
-              id={`ffcontent-${i}`}
-              data-fcontent
-              class="grid transition-[grid-template-rows] duration-300 ease-out"
-              style="grid-template-rows: 1fr;"
-            >
-              <div class="overflow-hidden">
-                <ul class="space-y-2.5 px-6 pb-6">
-                  {group.items.map((item) => {
-                    const text = typeof item === 'string' ? item : item.text;
-                    const isRoadmap = typeof item === 'object' && item.status === 'roadmap';
-                    return (
-                      <li class="flex items-start gap-2.5">
-                        <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-100 text-accent-700">
-                          <Icon name="check" class="h-3.5 w-3.5" />
-                        </span>
-                        <span class="flex flex-wrap items-center text-sm leading-relaxed text-ink-700">
-                          {text}
-                          {isRoadmap && <RoadmapBadge />}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
             </div>
+            <ul class="space-y-2.5 px-6 pb-6">
+              {group.items.map((item) => {
+                const text = typeof item === 'string' ? item : item.text;
+                const isRoadmap = typeof item === 'object' && item.status === 'roadmap';
+                return (
+                  <li class="flex items-start gap-2.5">
+                    <span class="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-100 text-accent-700">
+                      <Icon name="check" class="h-3.5 w-3.5" />
+                    </span>
+                    <span class="flex flex-wrap items-center text-sm leading-relaxed text-ink-700">
+                      {text}
+                      {isRoadmap && <RoadmapBadge />}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
           </article>
         ))
       }
     </div>
   </div>
 </section>
-
-<script>
-  (function () {
-    const root = document.querySelector('[data-feature-accordion]');
-    if (!root) return;
-
-    const cards = Array.from(root.querySelectorAll('[data-fcard]'));
-
-    cards.forEach((card) => {
-      const toggle = card.querySelector('[data-ftoggle]');
-      const content = card.querySelector('[data-fcontent]');
-      const chevron = card.querySelector('[data-fchevron]');
-      if (!toggle || !content) return;
-
-      toggle.addEventListener('click', () => {
-        const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-        toggle.setAttribute('aria-expanded', String(!isOpen));
-        content.style.gridTemplateRows = isOpen ? '0fr' : '1fr';
-        chevron?.classList.toggle('rotate-180', !isOpen);
-      });
-    });
-  })();
-</script>

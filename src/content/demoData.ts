@@ -85,7 +85,6 @@ export const demoFloatingCards = {
   control: {
     scope: 'Todas las cohortes',
     title: `${demoGlobal.empresasCliente} empresas cliente`,
-    subtitle: `Asistencia SENCE ${demoGlobal.asistenciaSencePromedio}% · DJ cierra en ${demoGlobal.declaracionJurada.diasParaCierre} días`,
   },
 };
 
