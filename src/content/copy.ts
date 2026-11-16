@@ -380,25 +380,29 @@ export const howItWorks = {
     {
       title: 'Demo y diagnóstico',
       shortLabel: 'Diagnóstico',
-      description: 'Vemos tu operación actual y qué necesitas evidenciar.',
+      description:
+        'Revisamos cómo gestionas hoy tus cursos, tu reportería SENCE y qué necesitas evidenciar frente a tus clientes, para dimensionar la puesta en marcha.',
       illustration: 'diagnostico',
     },
     {
       title: 'Configuración',
       shortLabel: 'Configuración',
-      description: 'Aula con tu marca, estructura de cursos y dashboard.',
+      description:
+        'Dejamos tu aula operativa con tu dominio, logo y colores, más la estructura de cursos, cohortes y dashboard que tu equipo va a usar día a día.',
       illustration: 'marca',
     },
     {
       title: 'Piloto',
       shortLabel: 'Piloto',
-      description: 'Primer curso real con acompañamiento de nuestro equipo.',
+      description:
+        'Corremos tu primer curso real con acompañamiento de nuestro equipo, ajustando flujos y reportes antes de pasar a régimen.',
       illustration: 'cursos',
     },
     {
       title: 'Operación continua',
       shortLabel: 'Operación',
-      description: 'Suscripción mensual con soporte incluido.',
+      description:
+        'Pasas a suscripción mensual con soporte incluido: tu equipo opera el día a día y el nuestro responde cuando surgen dudas o imprevistos.',
       illustration: 'soporte',
     },
   ],
