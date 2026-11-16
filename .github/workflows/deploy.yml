@@ -32,6 +32,8 @@ jobs:
           # Entrega del formulario vía FormSubmit (destinatario principal).
           # La copia (CC) a clopez@ se envía desde el cliente (_cc).
           PUBLIC_FORM_ENDPOINT: https://formsubmit.co/ajax/caviles@certimedia.cl
+          # Sheet de scoring de leads (apps-script/README.md). Envío paralelo y silencioso.
+          PUBLIC_LEADS_ENDPOINT: https://script.google.com/macros/s/AKfycbxove-vCaDiTzZ6KBfKAhNH4Hh8tIld6PBRvrvB3qmF75Gi-ROL1SHHDC6if3PZ_PhUHA/exec
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
