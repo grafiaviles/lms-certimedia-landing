@@ -15,13 +15,16 @@ import { faq } from '../content/copy';
             <h3>
               <button
                 type="button"
-                class="flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold text-ink-900 sm:px-6"
+                class="group flex w-full items-center justify-between gap-4 px-5 py-4 text-left text-base font-semibold text-ink-900 transition-colors hover:text-accent-600 sm:px-6"
                 aria-expanded="false"
                 aria-controls={`faq-panel-${i}`}
                 data-faq-trigger
               >
                 <span>{item.question}</span>
-                <span data-faq-icon class="shrink-0 text-ink-500 transition-transform duration-200">
+                <span
+                  data-faq-icon
+                  class="shrink-0 text-ink-500 transition-transform duration-200 group-hover:text-accent-600"
+                >
                   <Icon name="chevron-down" class="h-5 w-5" />
                 </span>
               </button>
