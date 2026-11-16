@@ -69,10 +69,10 @@ export const hero = {
 // como segunda línea, más discreta.
 export const socialProof = {
   stats: [
-    { value: 50, prefix: '+', label: 'empresas confían en Certimedia' },
-    { value: 15000, label: 'profesionales certificados' },
-    { value: 200, prefix: '+', label: 'cursos disponibles' },
-    { value: 94.5, suffix: '%', decimals: 1, label: 'tasa de certificación' },
+    { value: 50, prefix: '+', label: 'Empresas confían en Certimedia' },
+    { value: 15000, label: 'Profesionales certificados' },
+    { value: 200, prefix: '+', label: 'Cursos disponibles' },
+    { value: 94.5, suffix: '%', decimals: 1, label: 'Tasa de certificación' },
   ],
   note: 'Cifras de Certimedia como proveedor de capacitación.',
 };

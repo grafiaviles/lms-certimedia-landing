@@ -98,6 +98,13 @@ export const demoPeopleChips = {
   control: { label: `${demoGlobal.empresasCliente} empresas cliente` },
 };
 
-// Sin logos reales todavía: se deja vacío a propósito (ver Credibility.astro).
 export type ClientLogo = { name: string; src: string; alt: string };
-export const clientLogos: ClientLogo[] = [];
+export const clientLogos: ClientLogo[] = [
+  { name: 'Aquagestión', src: '/clientes/aquagestion.svg', alt: 'Logo de Aquagestión' },
+  { name: 'Hites', src: '/clientes/hites.svg', alt: 'Logo de Hites' },
+  { name: 'NTT Data', src: '/clientes/nttdata.svg', alt: 'Logo de NTT Data' },
+  { name: 'Reale Seguros', src: '/clientes/reale-seguros.svg', alt: 'Logo de Reale Seguros' },
+  { name: 'Sodimac', src: '/clientes/sodimac.svg', alt: 'Logo de Sodimac' },
+  { name: 'Tlaxcala', src: '/clientes/tlaxcala.svg', alt: 'Logo de Tlaxcala' },
+  { name: 'Upayments', src: '/clientes/upayments.svg', alt: 'Logo de Upayments' },
+];
