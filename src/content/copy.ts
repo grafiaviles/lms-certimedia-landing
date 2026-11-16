@@ -94,7 +94,7 @@ export const problemsSection = {
 export const problems = [
   {
     tag: 'Plazos SENCE',
-    pain: 'Cerrar a tiempo las Declaraciones Juradas SENCE.',
+    pain: 'Cerrar a tiempo las Declaraciones Juradas SENCE, revisando fecha por fecha y cohorte por cohorte para no dejar pasar un plazo.',
     solution:
       'Alertas preventivas de cierre: el sistema te avisa antes de cada fecha crítica para que la gestión SENCE sea proactiva, no de último minuto.',
     result: 'Gestión proactiva SENCE',
@@ -103,7 +103,7 @@ export const problems = [
   },
   {
     tag: 'Asistencia y fiscalización',
-    pain: 'Registro de asistencia manual y fiscalizaciones que exigen respaldo.',
+    pain: 'Registro de asistencia manual, planillas armadas a mano y fiscalizaciones que exigen respaldo para cada sesión.',
     solution:
       'Asistencia automática y reportes válidos para fiscalización, con historial auditable de cada curso y cada alumno.',
     result: 'Respaldo auditable',
@@ -112,7 +112,7 @@ export const problems = [
   },
   {
     tag: 'Visibilidad para tus clientes',
-    pain: 'Tus clientes (empresas) piden ver el avance de su gente.',
+    pain: 'Tus clientes (empresas) piden ver el avance de su gente, y hoy eso significa armar un reporte manual cada vez que preguntan.',
     solution:
       'Dashboard en vivo multi-empresa: cada cliente entra con su propio acceso y ve solo el avance de su equipo.',
     result: 'Dashboard multi-empresa',
@@ -121,7 +121,7 @@ export const problems = [
   },
   {
     tag: 'Carga operativa',
-    pain: 'Tu equipo pierde tiempo cargando cursos y armando cohortes.',
+    pain: 'Tu equipo pierde tiempo cargando cursos, armando cohortes y coordinando cada detalle operativo en vez de vender más cursos.',
     solution:
       'Operación gestionada: el equipo de Certimedia configura tus cursos y cohortes por ti.',
     result: 'Operación gestionada',
@@ -130,7 +130,7 @@ export const problems = [
   },
   {
     tag: 'Plataforma y marca',
-    pain: 'Plataformas genéricas que se caen o no se ven como tu marca.',
+    pain: 'Plataformas genéricas que se caen en pleno curso, se ven iguales a las de la competencia y no reflejan tu marca.',
     solution:
       'Servidores dedicados y personalización total: dominio propio, tus logos y tus colores.',
     result: 'Servidores dedicados y marca propia',
@@ -139,7 +139,7 @@ export const problems = [
   },
   {
     tag: 'Diplomas y certificados',
-    pain: 'Diplomas y certificados hechos a mano.',
+    pain: 'Diplomas y certificados hechos a mano, uno por uno, después de cada curso que termina.',
     solution:
       'Diplomas en PDF automáticos e insignias digitales verificables, con flujos de correo automáticos.',
     result: 'Certificación automática',

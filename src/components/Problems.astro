@@ -77,12 +77,12 @@ import { problems, problemsSection } from '../content/copy';
               </div>
 
               <div class="mt-6 grid gap-4 sm:grid-cols-[1fr_auto_1fr] sm:items-stretch">
-                <div class="rounded-xl border border-red-100 bg-red-50/60 p-4">
-                  <p class="mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-red-500">
+                <div class="rounded-xl border border-red-100 bg-red-50/60 p-5">
+                  <p class="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-red-500">
                     <Icon name="alert" class="h-4 w-4" />
                     El dolor hoy
                   </p>
-                  <p class="text-sm leading-relaxed text-ink-700">{item.pain}</p>
+                  <p class="text-base leading-relaxed text-ink-700">{item.pain}</p>
                 </div>
 
                 <div class="flex items-center justify-center" aria-hidden="true">
@@ -91,20 +91,21 @@ import { problems, problemsSection } from '../content/copy';
                   </span>
                 </div>
 
-                <div class="rounded-xl border border-accent-200 bg-accent-50 p-4">
-                  <p class="mb-1.5 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-accent-700">
+                <div class="rounded-xl border border-accent-200 bg-accent-50 p-5">
+                  <p class="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-accent-700">
                     <Icon name="spark" class="h-4 w-4" />
                     Cómo lo resuelve Certimedia
                   </p>
-                  <p class="text-sm leading-relaxed text-ink-700">{item.solution}</p>
+                  <p class="text-base leading-relaxed text-ink-700">{item.solution}</p>
                 </div>
               </div>
 
-              <div class="mt-auto flex items-center gap-2 border-t border-ink-100 pt-4">
-                <Icon name="check" class="h-4 w-4 shrink-0 text-accent-600" />
-                <span class="text-sm font-medium text-ink-600">
-                  Resultado: <span class="font-semibold text-ink-900">{item.result}</span>
-                </span>
+              <div class="mt-auto rounded-xl border border-green-100 bg-green-50/60 p-4">
+                <p class="mb-1 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-green-600">
+                  <Icon name="check" class="h-4 w-4" />
+                  Resultado
+                </p>
+                <p class="text-base font-semibold text-ink-900">{item.result}</p>
               </div>
             </div>
           ))
