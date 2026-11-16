@@ -28,7 +28,7 @@ export const whatsapp = {
 // Persona de contacto que "gestiona" (se muestra en el CTA final).
 export const contactPerson = {
   name: 'César Avilés',
-  role: 'Business Manager en Certimedia',
+  role: 'Digital Learning Strategy Consultant | Connecting Business, Technology & People | UX Learning',
   avatar: '/cesar-aviles.png',
 };
 
@@ -438,13 +438,25 @@ export const serviceModel = {
 
 export const support = {
   eyebrow: 'Soporte y mejora continua',
-  title: 'No quedas solo después de la implementación',
+  title: 'Soporte, seguridad y acompañamiento.',
   items: [
     {
       title: 'Soporte del equipo Certimedia',
       description:
         'Un equipo disponible para resolver dudas y problemas operativos de tu plataforma.',
       icon: 'message-circle',
+    },
+    {
+      title: 'Onboarding acompañado',
+      description:
+        'Equipo de onboarding para acompañarte en la puesta en marcha del proyecto.',
+      icon: 'user-check',
+    },
+    {
+      title: 'Políticas de ciberseguridad',
+      description:
+        'Contamos con políticas de ciberseguridad para la protección y resguardo de datos.',
+      icon: 'lock',
     },
     {
       title: 'Actualizaciones normativas y de seguridad',
