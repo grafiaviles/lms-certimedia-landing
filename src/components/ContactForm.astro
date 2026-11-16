@@ -5,6 +5,8 @@ import { contactForm, whatsapp } from '../content/copy';
 // Endpoint del formulario, resuelto en build time desde la variable de entorno.
 // Vacío = envío simulado (modo desarrollo). Ver README y .env.example.
 const formEndpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+// Sheet de scoring de leads (apps-script/README.md). Envío paralelo y silencioso: no bloquea el formulario si falla.
+const leadsEndpoint = import.meta.env.PUBLIC_LEADS_ENDPOINT ?? '';
 const meetingsUrl = whatsapp.url;
 ---
 
@@ -411,7 +413,15 @@ const meetingsUrl = whatsapp.url;
   </div>
 </section>
 
-<script define:vars={{ states: contactForm.states, FORM_ENDPOINT: formEndpoint, delivery: contactForm.delivery, MEETINGS_URL: meetingsUrl }}>
+<script
+  define:vars={{
+    states: contactForm.states,
+    FORM_ENDPOINT: formEndpoint,
+    LEADS_ENDPOINT: leadsEndpoint,
+    delivery: contactForm.delivery,
+    MEETINGS_URL: meetingsUrl,
+  }}
+>
   (function () {
     const form = document.getElementById('contact-form');
     const banner = document.getElementById('form-banner');
@@ -420,6 +430,14 @@ const meetingsUrl = whatsapp.url;
     if (!form || !banner || !submitButton || !submitLabel) return;
 
     const originalLabel = submitLabel.textContent;
+
+    // Atribución UTM de la visita (para el Sheet de scoring de leads).
+    const urlParams = new URLSearchParams(window.location.search);
+    const utm = {
+      utm_source: urlParams.get('utm_source') || '',
+      utm_medium: urlParams.get('utm_medium') || '',
+      utm_campaign: urlParams.get('utm_campaign') || '',
+    };
 
     const fields = {
       name: { el: document.getElementById('name'), errorEl: document.getElementById('name-error') },
@@ -628,12 +646,20 @@ const meetingsUrl = whatsapp.url;
         message: document.getElementById('message').value.trim(),
         dnc_realizado: document.getElementById('dnc_realizado').checked ? 'Sí' : 'No',
         source: 'landing-certimedia',
+        ...utm,
         // Campos de control de FormSubmit (ignorados por otros endpoints).
         _cc: delivery.cc,
         _subject: delivery.subject,
         _template: 'table',
         _captcha: 'false',
       };
+
+      // Registro en el Sheet de scoring de leads: en paralelo, silencioso, no bloquea el envío principal.
+      if (LEADS_ENDPOINT) {
+        fetch(LEADS_ENDPOINT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) }).catch((error) => {
+          console.warn('[contact-form] No se pudo registrar el lead en el Sheet de scoring.', error);
+        });
+      }
 
       setLoading(true);
 
