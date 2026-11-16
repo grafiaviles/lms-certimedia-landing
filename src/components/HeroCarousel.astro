@@ -69,14 +69,20 @@ const cohorteDestacada = demoCohorteDestacada;
           <p class="mb-3 text-xs font-medium text-ink-500">Avance por cohorte vigente</p>
           <div class="space-y-2.5">
             {
-              demoCohortesVigentes.map((row) => (
+              demoCohortesVigentes.map((row, i) => (
                 <div>
                   <div class="mb-1 flex items-center justify-between text-xs text-ink-600">
                     <span>{row.nombre}</span>
                     <span class="font-medium text-ink-800">{row.avance}%</span>
                   </div>
                   <div class="h-2 overflow-hidden rounded-full bg-ink-100">
-                    <div class="h-full rounded-full bg-accent-500" style={`width: ${row.avance}%`} />
+                    <div
+                      class:list={[
+                        'h-full rounded-full',
+                        ['bg-accent-400', 'bg-emerald-400', 'bg-amber-400', 'bg-violet-400'][i % 4],
+                      ]}
+                      style={`width: ${row.avance}%`}
+                    />
                   </div>
                 </div>
               ))

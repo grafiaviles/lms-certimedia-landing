@@ -222,10 +222,12 @@ const meetingsUrl = whatsapp.url;
           </div>
         </div>
 
-        {/* Paso 2 · Tu proyecto (oculto hasta avanzar) */}
-        <div data-step-panel="2" class="hidden grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div class="sm:col-span-2">
-            <label for="problema_principal" class="block text-sm font-medium text-ink-700">
+        {/* Paso 2 · Tu proyecto (oculto hasta avanzar).
+            Grid a 2 columnas desde md (768px); min-h en las etiquetas de esta fila evita que
+            una etiqueta de dos líneas desalinee el select de la columna vecina. */}
+        <div data-step-panel="2" class="hidden grid grid-cols-1 gap-5 md:grid-cols-2">
+          <div>
+            <label for="problema_principal" class="block min-h-[2.75rem] text-sm font-medium text-ink-700">
               ¿Qué problema quieres resolver primero? *
             </label>
             <div class="relative mt-1.5">
@@ -251,7 +253,33 @@ const meetingsUrl = whatsapp.url;
           </div>
 
           <div>
-            <label for="presupuesto" class="block text-sm font-medium text-ink-700">
+            <label for="decisor_compra" class="block min-h-[2.75rem] text-sm font-medium text-ink-700">
+              ¿Quién decide la compra en tu OTEC? *
+            </label>
+            <div class="relative mt-1.5">
+              <select
+                id="decisor_compra"
+                name="decisor_compra"
+                required
+                class="block w-full appearance-none rounded-lg border border-ink-200 bg-white px-3.5 py-2.5 pr-10 text-ink-900 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
+                aria-describedby="decisor_compra-error"
+              >
+                {
+                  contactForm.decisorOptions.map((option) => (
+                    <option value={option.value}>{option.label}</option>
+                  ))
+                }
+              </select>
+              <Icon
+                name="chevron-down"
+                class="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400"
+              />
+            </div>
+            <p id="decisor_compra-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
+          </div>
+
+          <div>
+            <label for="presupuesto" class="block min-h-[2.75rem] text-sm font-medium text-ink-700">
               Presupuesto mensual contemplado *
             </label>
             <div class="relative mt-1.5">
@@ -277,7 +305,7 @@ const meetingsUrl = whatsapp.url;
           </div>
 
           <div>
-            <label for="inicio_estimado" class="block text-sm font-medium text-ink-700">
+            <label for="inicio_estimado" class="block min-h-[2.75rem] text-sm font-medium text-ink-700">
               ¿Cuándo te gustaría comenzar? *
             </label>
             <div class="relative mt-1.5">
@@ -302,33 +330,7 @@ const meetingsUrl = whatsapp.url;
             <p id="inicio_estimado-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
           </div>
 
-          <div class="sm:col-span-2">
-            <label for="decisor_compra" class="block text-sm font-medium text-ink-700">
-              ¿Quién decide la compra en tu OTEC? *
-            </label>
-            <div class="relative mt-1.5">
-              <select
-                id="decisor_compra"
-                name="decisor_compra"
-                required
-                class="block w-full appearance-none rounded-lg border border-ink-200 bg-white px-3.5 py-2.5 pr-10 text-ink-900 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-200"
-                aria-describedby="decisor_compra-error"
-              >
-                {
-                  contactForm.decisorOptions.map((option) => (
-                    <option value={option.value}>{option.label}</option>
-                  ))
-                }
-              </select>
-              <Icon
-                name="chevron-down"
-                class="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-400"
-              />
-            </div>
-            <p id="decisor_compra-error" class="mt-1 hidden text-sm text-red-600" role="alert"></p>
-          </div>
-
-          <div class="sm:col-span-2">
+          <div class="md:col-span-2">
             <label for="message" class="block text-sm font-medium text-ink-700">
               Mensaje (opcional)
             </label>
@@ -340,7 +342,7 @@ const meetingsUrl = whatsapp.url;
             ></textarea>
           </div>
 
-          <div class="sm:col-span-2">
+          <div class="md:col-span-2">
             <label class="flex cursor-pointer items-start gap-2.5">
               <input
                 type="checkbox"
@@ -373,12 +375,14 @@ const meetingsUrl = whatsapp.url;
           </button>
         </div>
 
-        {/* Paso 2: acciones "Atrás" + enviar (oculto hasta avanzar) */}
-        <div id="step2-actions" class="mt-6 hidden flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        {/* Paso 2: acciones "Atrás" + enviar (oculto hasta avanzar).
+            flex-col-reverse en móvil deja "Agenda un diagnóstico" arriba y "Atrás" abajo,
+            sin cambiar el orden del DOM (Atrás primero) que sí se usa en ≥768px (fila normal). */}
+        <div id="step2-actions" class="mt-6 hidden flex flex-col-reverse gap-3 md:flex-row md:items-center md:justify-between">
           <button
             type="button"
             id="step2-back"
-            class="inline-flex items-center justify-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3.5 text-sm font-semibold text-ink-700 transition-colors hover:border-ink-300"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-ink-200 bg-white px-5 py-3.5 text-sm font-semibold text-ink-700 transition-colors hover:border-ink-300 md:w-auto"
           >
             <Icon name="arrow-right" class="h-4 w-4 rotate-180" />
             Atrás
@@ -387,7 +391,7 @@ const meetingsUrl = whatsapp.url;
             type="submit"
             id="submit-button"
             data-track="form_submit"
-            class="inline-flex items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3.5 text-base font-semibold text-white shadow-soft transition-colors hover:bg-accent-700 disabled:cursor-not-allowed disabled:opacity-60"
+            class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-accent-600 px-6 py-3.5 text-base font-semibold text-white shadow-soft transition-colors hover:bg-accent-700 disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
           >
             <span id="submit-label">{contactForm.submitLabel}</span>
           </button>

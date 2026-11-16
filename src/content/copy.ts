@@ -62,7 +62,6 @@ export const hero = {
     'Tus alumnos aprenden en tu campus. Tu equipo gestiona cohortes, empresas y reportería SENCE desde un solo panel. Todo con tu marca, operando en 2 semanas.',
   ctaPrimary: { label: 'Agenda un diagnóstico', href: '#contacto' },
   ctaSecondary: { label: 'Ver cómo funciona', href: '#como-funciona' },
-  microcopy: '1 hora, sin costo y sin compromiso.',
 };
 
 // Franja de cifras bajo el hero (prueba social). Los 4 chips de abajo se mantienen
@@ -150,7 +149,7 @@ export const problems = [
 
 export const solution = {
   eyebrow: 'La solución',
-  title: 'Una plataforma, dos experiencias',
+  title: 'Campus para tus alumnos. Control para tu OTEC.',
   // SEO: única mención de la frase clave en el cuerpo de la página.
   description:
     'Un LMS para OTEC con integración SENCE, en dos aplicaciones que trabajan juntas: Campus y Control.',
@@ -308,6 +307,8 @@ export const features = {
       illustration: 'plazos',
       items: [
         'Integración directa con SENCE (asistencia automática)',
+        'Gestión proactiva de Declaraciones Juradas',
+        'Alertas antes de cada fecha crítica',
         'Reportes válidos para fiscalización',
         'Configuración según SENCE vigente',
       ],
