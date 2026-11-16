@@ -28,7 +28,7 @@ export const whatsapp = {
 // Persona de contacto que "gestiona" (se muestra en el CTA final).
 export const contactPerson = {
   name: 'César Avilés',
-  role: 'Digital Learning Strategy Consultant | Connecting Business, Technology & People | UX Learning',
+  role: 'Digital Learning Strategy Consultant | UX Learning | Connecting Business, Technology & People',
   avatar: '/cesar-aviles.png',
 };
 
@@ -49,6 +49,7 @@ export const nav = {
     { href: '#problemas', label: 'Problemas' },
     { href: '#solucion', label: 'Solución' },
     { href: '#caracteristicas', label: 'Características' },
+    { href: '#comparacion', label: 'Comparación' },
     { href: '#como-funciona', label: 'Cómo funciona' },
     { href: '#faq', label: 'FAQ' },
   ],
