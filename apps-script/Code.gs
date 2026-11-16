@@ -147,6 +147,7 @@ function setup() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   buildLeadsSheet_(ss);
   buildConfigSheet_(ss);
+  repararFormulasLeads_(ss);
   buildDashboardSheet_(ss);
   buildGuiaSheet_(ss);
 
@@ -320,6 +321,31 @@ function aplicarFormatoCondicionalLeads_(sh) {
   sh.setConditionalFormatRules(reglas);
 }
 
+/**
+ * El separador de argumentos dentro de una fórmula depende de la configuración
+ * regional del Sheet, no del idioma de la interfaz: en locales donde la coma
+ * es el separador decimal (es_CL, es_ES, pt_BR, fr_FR, de_DE, etc.) las fórmulas
+ * usan ";" entre argumentos en vez de ",". Todas las fórmulas de este archivo
+ * se escriben con "|" como separador neutro y se convierten aquí al separador
+ * real del Sheet antes de guardarlas, para que funcionen sin importar la cuenta.
+ */
+let SEPARADOR_CACHE_ = null;
+function separadorFormula_() {
+  if (SEPARADOR_CACHE_) return SEPARADOR_CACHE_;
+  let locale = 'en_US';
+  try {
+    locale = SpreadsheetApp.getActiveSpreadsheet().getSpreadsheetLocale() || locale;
+  } catch (err) {
+    // Sin spreadsheet activa disponible (contexto inusual): se asume en_US.
+  }
+  const localesComaDecimal = /^(es|pt|fr|de|it|nl|pl|ru|tr|vi|id|cs|sk|hu|ro|sv|fi|da|nb|nn|el|bg|hr|sl|lt|lv|et|uk|sr)/i;
+  SEPARADOR_CACHE_ = localesComaDecimal.test(locale) ? ';' : ',';
+  return SEPARADOR_CACHE_;
+}
+function f_(formulaConPipes) {
+  return formulaConPipes.replace(/\|/g, separadorFormula_());
+}
+
 function colLetter_(col) {
   let letter = '';
   while (col > 0) {
@@ -350,23 +376,44 @@ function formulasFila_(fila) {
   const V = colLetter_(C_NIVEL) + fila;
 
   return {
-    [C_PTS_URGENCIA]: `=IFERROR(VLOOKUP(${K},RANGO_URGENCIA,2,FALSE),0)`,
-    [C_PTS_DECISOR]: `=IFERROR(VLOOKUP(${I},RANGO_DECISOR,2,FALSE),0)`,
-    [C_PTS_PRESUPUESTO]: `=IFERROR(VLOOKUP(${J},RANGO_PRESUPUESTO,2,FALSE),0)`,
-    [C_PTS_VOLUMEN]: `=IFERROR(VLOOKUP(${F},RANGO_CURSOS,2,FALSE),0)+IFERROR(VLOOKUP(${G},RANGO_PERSONAS,2,FALSE),0)`,
-    [C_PTS_ENCAJE]: `=IFERROR(VLOOKUP(${H},RANGO_ENCAJE,2,FALSE),0)`,
-    [C_PTS_DNC]: `=IF(${M}="Sí",BONUS_DNC,0)`,
-    [C_PUNTAJE]: `=MIN(100,${O}+${P}+${Q}+${R}+${S}+${T})`,
-    [C_NIVEL]: `=LET(esR1,AND(${J}="Aún no tengo un presupuesto definido",${K}="Aún estoy evaluando, sin fecha definida"),esR2,${I}="Otra persona decide; yo evalúo la propuesta",base,IF(${U}>=UMBRAL_VERDE,"Verde",IF(${U}>=UMBRAL_AMARILLO,"Amarillo","Rojo")),ajustado,IF(esR2,IF(base="Verde","Amarillo",base),base),IF(esR1,"Rojo",ajustado))`,
-    [C_REGLA]: `=IF(AND(${J}="Aún no tengo un presupuesto definido",${K}="Aún estoy evaluando, sin fecha definida"),"R1 · sin presupuesto + sin fecha → Rojo",IF(AND(${I}="Otra persona decide; yo evalúo la propuesta",${U}>=UMBRAL_VERDE),"R2 · no es decisor → tope Amarillo","Sin ajuste"))`,
-    [C_ACCION]: `=IFS(${V}="Verde",ACCION_VERDE,${V}="Amarillo",ACCION_AMARILLO,${V}="Rojo",ACCION_ROJO,TRUE,"")`,
-    [C_PROX_SEGUIMIENTO]: `=IFS(${V}="Verde",${A}+SLA_VERDE,${V}="Amarillo",${A}+SLA_AMARILLO,${V}="Rojo",${A}+SLA_ROJO,TRUE,"")`,
+    [C_PTS_URGENCIA]: `=IFERROR(VLOOKUP(${K}|RANGO_URGENCIA|2|FALSE)|0)`,
+    [C_PTS_DECISOR]: `=IFERROR(VLOOKUP(${I}|RANGO_DECISOR|2|FALSE)|0)`,
+    [C_PTS_PRESUPUESTO]: `=IFERROR(VLOOKUP(${J}|RANGO_PRESUPUESTO|2|FALSE)|0)`,
+    [C_PTS_VOLUMEN]: `=IFERROR(VLOOKUP(${F}|RANGO_CURSOS|2|FALSE)|0)+IFERROR(VLOOKUP(${G}|RANGO_PERSONAS|2|FALSE)|0)`,
+    [C_PTS_ENCAJE]: `=IFERROR(VLOOKUP(${H}|RANGO_ENCAJE|2|FALSE)|0)`,
+    [C_PTS_DNC]: `=IF(${M}="Sí"|BONUS_DNC|0)`,
+    [C_PUNTAJE]: `=MIN(100|${O}+${P}+${Q}+${R}+${S}+${T})`,
+    [C_NIVEL]: `=LET(esR1|AND(${J}="Aún no tengo un presupuesto definido"|${K}="Aún estoy evaluando, sin fecha definida")|esR2|${I}="Otra persona decide; yo evalúo la propuesta"|base|IF(${U}>=UMBRAL_VERDE|"Verde"|IF(${U}>=UMBRAL_AMARILLO|"Amarillo"|"Rojo"))|ajustado|IF(esR2|IF(base="Verde"|"Amarillo"|base)|base)|IF(esR1|"Rojo"|ajustado))`,
+    [C_REGLA]: `=IF(AND(${J}="Aún no tengo un presupuesto definido"|${K}="Aún estoy evaluando, sin fecha definida")|"R1 · sin presupuesto + sin fecha → Rojo"|IF(AND(${I}="Otra persona decide; yo evalúo la propuesta"|${U}>=UMBRAL_VERDE)|"R2 · no es decisor → tope Amarillo"|"Sin ajuste"))`,
+    [C_ACCION]: `=IFS(${V}="Verde"|ACCION_VERDE|${V}="Amarillo"|ACCION_AMARILLO|${V}="Rojo"|ACCION_ROJO|TRUE|"")`,
+    [C_PROX_SEGUIMIENTO]: `=IFS(${V}="Verde"|${A}+SLA_VERDE|${V}="Amarillo"|${A}+SLA_AMARILLO|${V}="Rojo"|${A}+SLA_ROJO|TRUE|"")`,
   };
 }
 
 function escribirFormulasFila_(sh, fila) {
   const formulas = formulasFila_(fila);
-  Object.keys(formulas).forEach((col) => sh.getRange(fila, Number(col)).setFormula(formulas[col]));
+  Object.keys(formulas).forEach((col) => sh.getRange(fila, Number(col)).setFormula(f_(formulas[col])));
+}
+
+/**
+ * Vuelve a escribir las fórmulas (puntos, PUNTAJE, NIVEL, etc.) de todas las filas
+ * con datos en "Leads". Úsala si ves #ERROR! en esas columnas — típicamente porque
+ * las fórmulas se guardaron antes de corregir el separador de argumentos (,/;) para
+ * la configuración regional de este Sheet. setup() ya la ejecuta sola.
+ */
+function repararFormulasLeads_(ss) {
+  const sh = ss.getSheetByName(SHEET_LEADS);
+  if (!sh) return;
+  const ultimaFila = sh.getLastRow();
+  for (let fila = 2; fila <= ultimaFila; fila++) {
+    if (sh.getRange(fila, C_NOMBRE).getValue()) escribirFormulasFila_(sh, fila);
+  }
+  Logger.log('Fórmulas de "Leads" recalculadas (filas 2 a %s).', ultimaFila);
+}
+
+/** Atajo para ejecutar repararFormulasLeads_ a mano desde el editor, sin correr setup() completo. */
+function repararFormulas() {
+  repararFormulasLeads_(SpreadsheetApp.getActiveSpreadsheet());
 }
 
 // ---------------------------------------------------------------------------
@@ -546,22 +593,22 @@ function buildDashboardSheet_(ss) {
 
   // --- Totales por nivel --------------------------------------------------
   sh.getRange(4, 1).setValue('Total de leads').setFontWeight('bold');
-  sh.getRange(4, 2).setFormula(`=COUNTA(${rango(C_NOMBRE)})`);
+  sh.getRange(4, 2).setFormula(f_(`=COUNTA(${rango(C_NOMBRE)})`));
 
   sh.getRange(6, 1, 1, 3).setValues([['Nivel', 'Leads', '%']]).setFontWeight('bold').setBackground('#f3f4f6');
   const niveles = ['Verde', 'Amarillo', 'Rojo'];
   niveles.forEach((nivel, i) => {
     const f = 7 + i;
     sh.getRange(f, 1).setValue(nivel);
-    sh.getRange(f, 2).setFormula(`=COUNTIF(${rango(C_NIVEL)},A${f})`);
-    sh.getRange(f, 3).setFormula(`=IFERROR(B${f}/$B$4,0)`).setNumberFormat('0%');
+    sh.getRange(f, 2).setFormula(f_(`=COUNTIF(${rango(C_NIVEL)}|A${f})`));
+    sh.getRange(f, 3).setFormula(f_(`=IFERROR(B${f}/$B$4|0)`)).setNumberFormat('0%');
   });
 
   sh.getRange(11, 1)
     .setValue('Verdes sin contactar')
     .setFontWeight('bold');
   sh.getRange(11, 2).setFormula(
-    `=COUNTIFS(${rango(C_NIVEL)},"Verde",${rango(C_ESTADO)},"Nuevo")`
+    f_(`=COUNTIFS(${rango(C_NIVEL)}|"Verde"|${rango(C_ESTADO)}|"Nuevo")`)
   );
   sh.getRange(12, 1).setValue('… de esos, vencidos (>2h o de un día anterior)').setFontWeight('bold');
   sh.getRange(12, 2).setFormula(
@@ -601,7 +648,7 @@ function buildDashboardSheet_(ss) {
   const inicioProblema = fila;
   Object.values(OPCIONES_PROBLEMA).forEach((etiqueta) => {
     sh.getRange(fila, 1).setValue(etiqueta);
-    sh.getRange(fila, 2).setFormula(`=COUNTIF(${rango(C_PROBLEMA)},A${fila})`);
+    sh.getRange(fila, 2).setFormula(f_(`=COUNTIF(${rango(C_PROBLEMA)}|A${fila})`));
     fila++;
   });
   const finProblema = fila - 1;
@@ -612,7 +659,7 @@ function buildDashboardSheet_(ss) {
   fila++;
   Object.values(OPCIONES_PRESUPUESTO).forEach((etiqueta) => {
     sh.getRange(fila, 1).setValue(etiqueta);
-    sh.getRange(fila, 2).setFormula(`=COUNTIF(${rango(C_PRESUPUESTO)},A${fila})`);
+    sh.getRange(fila, 2).setFormula(f_(`=COUNTIF(${rango(C_PRESUPUESTO)}|A${fila})`));
     fila++;
   });
   fila++;
@@ -621,7 +668,7 @@ function buildDashboardSheet_(ss) {
   sh.getRange(fila, 1).setValue('Leads por origen (UTM)').setFontWeight('bold');
   fila++;
   sh.getRange(fila, 1).setFormula(
-    `=IFERROR(QUERY(${rango(C_ORIGEN)},"select Col1, count(Col1) where Col1 is not null and Col1 <> '' group by Col1 label count(Col1) '' order by count(Col1) desc",0),"(sin datos aún)")`
+    f_(`=IFERROR(QUERY(${rango(C_ORIGEN)}|"select Col1, count(Col1) where Col1 is not null and Col1 <> '' group by Col1 label count(Col1) '' order by count(Col1) desc"|0)|"(sin datos aún)")`)
   );
   fila += 10; // deja espacio para el derrame del QUERY
 
@@ -631,7 +678,7 @@ function buildDashboardSheet_(ss) {
   const inicioEmbudo = fila;
   ESTADOS.forEach((estado) => {
     sh.getRange(fila, 1).setValue(estado);
-    sh.getRange(fila, 2).setFormula(`=COUNTIF(${rango(C_ESTADO)},A${fila})`);
+    sh.getRange(fila, 2).setFormula(f_(`=COUNTIF(${rango(C_ESTADO)}|A${fila})`));
     fila++;
   });
   const chartEmbudo = sh
@@ -665,7 +712,7 @@ function buildDashboardSheet_(ss) {
     const f = fila;
     sh.getRange(f, 1).setValue(inicioSemana).setNumberFormat('dd/mm/yyyy');
     sh.getRange(f, 2).setFormula(
-      `=COUNTIFS(${rango(C_FECHA)},">="&A${f},${rango(C_FECHA)},"<"&(A${f}+7))`
+      f_(`=COUNTIFS(${rango(C_FECHA)}|">="&A${f}|${rango(C_FECHA)}|"<"&(A${f}+7))`)
     );
     fila++;
   }
@@ -820,7 +867,7 @@ function crearVistasDeFiltro() {
             [C_PROX_SEGUIMIENTO - 1]: {
               condition: {
                 type: 'CUSTOM_FORMULA',
-                values: [{ userEnteredValue: `=AND($${letraSeguimiento}2<>"",$${letraSeguimiento}2<=TODAY())` }],
+                values: [{ userEnteredValue: f_(`=AND($${letraSeguimiento}2<>""|$${letraSeguimiento}2<=TODAY())`) }],
               },
             },
           },
@@ -838,7 +885,7 @@ function crearVistasDeFiltro() {
                 type: 'CUSTOM_FORMULA',
                 values: [
                   {
-                    userEnteredValue: `=NOT(OR($${letraEstado}2="Ganado",$${letraEstado}2="Perdido",$${letraEstado}2="En nutrición"))`,
+                    userEnteredValue: f_(`=NOT(OR($${letraEstado}2="Ganado"|$${letraEstado}2="Perdido"|$${letraEstado}2="En nutrición"))`),
                   },
                 ],
               },

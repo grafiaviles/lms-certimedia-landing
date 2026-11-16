@@ -111,6 +111,19 @@ en todas las filas, incluidas las antiguas.
 La pestaña **Guía** (dentro del mismo Sheet) explica la lógica completa para
 cualquiera del equipo que no haya visto esto antes.
 
+## 5.1 Si ves `#ERROR!` en las columnas de puntaje o en el Dashboard
+
+Pasa si tu Sheet usa una configuración regional donde las fórmulas separan sus
+argumentos con `;` en vez de `,` (común en cuentas en español/Chile). El script
+ya detecta esto solo desde esta versión. Si ya habías ejecutado una versión
+anterior y quedaron filas en `#ERROR!`:
+
+1. Reemplaza `Code.gs` por la versión actual de este repo (completa).
+2. Ejecuta `setup()` de nuevo — es seguro repetirlo: no borra tus leads ni tu
+   Config, solo reconstruye el Dashboard y recalcula las fórmulas de Leads.
+3. Si solo quieres recalcular Leads sin tocar el Dashboard, ejecuta
+   `repararFormulas` en su lugar.
+
 ## 6. Mantenimiento
 
 - Si alguna vez cambian las opciones del formulario de la landing (los
