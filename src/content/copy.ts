@@ -161,28 +161,11 @@ export const solution = {
       description:
         'Avance, notas y asistencia SENCE de cada alumno en un solo panel, con alertas de baja dedicación mientras el curso aún está en marcha.',
       bullets: [
-        {
-          title: 'Alerta de baja dedicación',
-          description:
-            'Identifica a quien se atrasa y filtra solo esos alumnos para contactarlos a tiempo.',
-        },
-        {
-          title: 'Asistencia SENCE por sesión',
-          description: 'La ves por alumno, sin planillas.',
-        },
-        {
-          title: 'Reporte semanal a tu cliente',
-          description: 'Lo programas una vez y le llega a cada empresa.',
-        },
-        {
-          title: 'Diploma e insignia al aprobar',
-          description:
-            'El PDF y la insignia verificable (Open Badges) salen automáticos, con correos en cada etapa.',
-        },
-        {
-          title: 'Todo con tu marca',
-          description: 'El campus usa tu dominio, tu logo y tus colores.',
-        },
+        'Alerta de baja dedicación, para contactar a tiempo a quien se atrasa',
+        'Asistencia SENCE por sesión, por alumno y sin planillas',
+        'Reporte semanal a tu cliente, programado una sola vez',
+        'Diploma e insignia (Open Badges) automáticos al aprobar',
+        'Todo con tu marca: dominio, logo y colores',
       ],
       icon: 'badge',
       illustration: 'diplomas',
