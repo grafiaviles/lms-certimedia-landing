@@ -390,10 +390,10 @@ function formulasFila_(fila) {
     [C_PTS_ENCAJE]: `=IFERROR(VLOOKUP(${H}|RANGO_ENCAJE|2|FALSE)|0)`,
     [C_PTS_DNC]: `=IF(${M}="S\u00ed"|BONUS_DNC|0)`,
     [C_PUNTAJE]: `=MIN(100|${O}+${P}+${Q}+${R}+${S}+${T})`,
-    [C_NIVEL]: `=LET(esR1|AND(${J}="A\u00fan no tengo un presupuesto definido"|${K}="A\u00fan estoy evaluando, sin fecha definida")|esR2|${I}="Otra persona decide; yo eval\u00fao la propuesta"|base|IF(${U}>=UMBRAL_VERDE|"Verde"|IF(${U}>=UMBRAL_AMARILLO|"Amarillo"|"Rojo"))|ajustado|IF(esR2|IF(base="Verde"|"Amarillo"|base)|base)|IF(esR1|"Rojo"|ajustado))`,
+    [C_NIVEL]: `=IF(AND(${J}="A\u00fan no tengo un presupuesto definido"|${K}="A\u00fan estoy evaluando, sin fecha definida")|"Rojo"|IF(AND(${I}="Otra persona decide; yo eval\u00fao la propuesta"|IF(${U}>=UMBRAL_VERDE|"Verde"|IF(${U}>=UMBRAL_AMARILLO|"Amarillo"|"Rojo"))="Verde")|"Amarillo"|IF(${U}>=UMBRAL_VERDE|"Verde"|IF(${U}>=UMBRAL_AMARILLO|"Amarillo"|"Rojo"))))`,
     [C_REGLA]: `=IF(AND(${J}="A\u00fan no tengo un presupuesto definido"|${K}="A\u00fan estoy evaluando, sin fecha definida")|"R1 \u00b7 sin presupuesto + sin fecha \u2192 Rojo"|IF(AND(${I}="Otra persona decide; yo eval\u00fao la propuesta"|${U}>=UMBRAL_VERDE)|"R2 \u00b7 no es decisor \u2192 tope Amarillo"|"Sin ajuste"))`,
-    [C_ACCION]: `=IFS(${V}="Verde"|ACCION_VERDE|${V}="Amarillo"|ACCION_AMARILLO|${V}="Rojo"|ACCION_ROJO|TRUE|"")`,
-    [C_PROX_SEGUIMIENTO]: `=IFS(${V}="Verde"|${A}+SLA_VERDE|${V}="Amarillo"|${A}+SLA_AMARILLO|${V}="Rojo"|${A}+SLA_ROJO|TRUE|"")`,
+    [C_ACCION]: `=IF(${V}="Verde"|ACCION_VERDE|IF(${V}="Amarillo"|ACCION_AMARILLO|IF(${V}="Rojo"|ACCION_ROJO|"")))`,
+    [C_PROX_SEGUIMIENTO]: `=IF(${V}="Verde"|${A}+SLA_VERDE|IF(${V}="Amarillo"|${A}+SLA_AMARILLO|IF(${V}="Rojo"|${A}+SLA_ROJO|"")))`,
   };
 }
 
@@ -823,9 +823,10 @@ function buildGuiaSheet_(ss) {
   ];
 
   sh.getRange(1, 1, lineas.length, 2).setValues(lineas);
-  sh.getRange(1, 1).setFontSize(14).setFontWeight('bold');
   sh.setColumnWidth(1, 40);
   sh.setColumnWidth(2, 780);
+  // El titulo (fila 1) ocupa las dos columnas para no quedar achatado en la angosta columna A.
+  sh.getRange(1, 1, 1, 2).merge().setFontSize(14).setFontWeight('bold');
   sh.getRange(1, 1, lineas.length, 2).setWrap(true).setVerticalAlignment('top');
   // Negrita en los t\u00edtulos numerados (columna A: "1. ...", "2. ...", etc.).
   lineas.forEach((linea, i) => {
