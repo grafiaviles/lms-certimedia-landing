@@ -592,7 +592,7 @@ export const faq = {
 
 export const finalCta = {
   title: 'Deja de perseguir plazos SENCE a mano.',
-  subtitle: 'Agenda una demo gratuita de 1 hora y revisemos tu caso.',
+  subtitle: 'Agenda un diagnóstico sin costo y revisamos tu OTEC.',
   cta: { label: 'Agenda un diagnóstico', href: '#contacto' },
 };
 
