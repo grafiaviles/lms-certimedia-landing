@@ -158,8 +158,6 @@ export const solution = {
     {
       app: productNames.campus,
       tagline: 'Aprendizaje',
-      description:
-        'Avance, notas y asistencia SENCE de cada alumno en un solo panel, con alertas de baja dedicación mientras el curso aún está en marcha.',
       bullets: [
         'Alerta de baja dedicación, para contactar a tiempo a quien se atrasa',
         'Asistencia SENCE por sesión, por alumno y sin planillas',
@@ -181,8 +179,6 @@ export const solution = {
     {
       app: productNames.control,
       tagline: 'Gestión y cumplimiento',
-      description:
-        'Tu equipo gestiona cohortes y empresas, y lleva la reportería SENCE (asistencia, Declaración Jurada y reportes para fiscalización) con alertas antes de cada cierre, en un dashboard multi-empresa.',
       bullets: [
         'Integración directa con SENCE (asistencia automática)',
         'Gestión proactiva de Declaraciones Juradas',
@@ -468,7 +464,7 @@ export const contactForm = {
   eyebrow: 'Agenda un diagnóstico',
   title: 'Hablemos de tu OTEC',
   description:
-    'Cuéntanos de tu OTEC y te contactamos para coordinar una demo o asesoría gratuita de 1 hora.',
+    'Cuéntanos de tu OTEC y te contactamos para coordinar un diagnóstico sin costo.',
   disclaimer: 'Sin costo, sin compromiso.',
   submitLabel: 'Agenda un diagnóstico',
   cursosOptions: [

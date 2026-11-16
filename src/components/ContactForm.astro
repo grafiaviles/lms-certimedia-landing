@@ -65,17 +65,36 @@ const meetingsUrl = whatsapp.url;
           />
         </div>
 
-        <!-- Indicador de progreso del wizard (2 pasos). -->
-        <div class="mb-6">
-          <p id="step-label" class="mb-2 text-xs font-semibold uppercase tracking-wide text-accent-600">
-            Paso 1 de 2 · Tus datos de contacto
-          </p>
-          <div class="h-1.5 w-full overflow-hidden rounded-full bg-ink-100">
+        <!-- Indicador de progreso del wizard (2 pasos): círculos numerados unidos por una línea. -->
+        <div class="mb-8 flex items-start justify-center">
+          <div class="flex w-24 flex-col items-center gap-1.5">
+            <span
+              id="step-circle-1"
+              class="flex h-9 w-9 items-center justify-center rounded-full bg-accent-600 text-sm font-bold text-white transition-colors"
+            >
+              1
+            </span>
+            <span id="step-caption-1" class="text-center text-xs font-medium text-ink-900">
+              Tus datos
+            </span>
+          </div>
+          <div class="mt-[1.125rem] h-0.5 w-10 shrink-0 overflow-hidden rounded-full bg-ink-100 sm:w-20">
             <div
               id="step-progress"
-              class="h-full w-1/2 rounded-full bg-accent-600 transition-all duration-500 ease-out"
+              class="h-full w-0 rounded-full bg-accent-600 transition-all duration-500 ease-out"
             >
             </div>
+          </div>
+          <div class="flex w-24 flex-col items-center gap-1.5">
+            <span
+              id="step-circle-2"
+              class="flex h-9 w-9 items-center justify-center rounded-full border-2 border-ink-200 bg-white text-sm font-bold text-ink-400 transition-colors"
+            >
+              2
+            </span>
+            <span id="step-caption-2" class="text-center text-xs font-medium text-ink-400">
+              Tu proyecto
+            </span>
           </div>
         </div>
 
@@ -521,10 +540,10 @@ const meetingsUrl = whatsapp.url;
     const step2Actions = document.getElementById('step2-actions');
     const step1NextBtn = document.getElementById('step1-next');
     const step2BackBtn = document.getElementById('step2-back');
-    const stepLabel = document.getElementById('step-label');
     const stepProgress = document.getElementById('step-progress');
+    const stepCircle2 = document.getElementById('step-circle-2');
+    const stepCaption2 = document.getElementById('step-caption-2');
     const formCard = document.getElementById('contact-form-card');
-    const STEP_LABELS = ['Paso 1 de 2 · Tus datos de contacto', 'Paso 2 de 2 · Tu proyecto'];
 
     function goToStep(step) {
       const isStep1 = step === 1;
@@ -532,8 +551,18 @@ const meetingsUrl = whatsapp.url;
       step2Panel?.classList.toggle('hidden', isStep1);
       step1Actions?.classList.toggle('hidden', !isStep1);
       step2Actions?.classList.toggle('hidden', isStep1);
-      if (stepLabel) stepLabel.textContent = STEP_LABELS[step - 1];
-      if (stepProgress) stepProgress.style.width = isStep1 ? '50%' : '100%';
+      if (stepProgress) stepProgress.style.width = isStep1 ? '0%' : '100%';
+      // El círculo 1 queda siempre resuelto (ya se pasó o se está completando);
+      // solo el círculo 2 alterna entre pendiente (contorno) y activo (relleno).
+      stepCircle2?.classList.toggle('bg-accent-600', !isStep1);
+      stepCircle2?.classList.toggle('border-accent-600', !isStep1);
+      stepCircle2?.classList.toggle('text-white', !isStep1);
+      stepCircle2?.classList.toggle('border-2', isStep1);
+      stepCircle2?.classList.toggle('border-ink-200', isStep1);
+      stepCircle2?.classList.toggle('bg-white', isStep1);
+      stepCircle2?.classList.toggle('text-ink-400', isStep1);
+      stepCaption2?.classList.toggle('text-ink-900', !isStep1);
+      stepCaption2?.classList.toggle('text-ink-400', isStep1);
       banner.classList.add('hidden');
       formCard?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
