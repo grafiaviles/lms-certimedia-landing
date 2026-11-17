@@ -411,6 +411,21 @@ const meetingsUrl = whatsapp.url;
       </div>
     </div>
   </div>
+
+  {/* Toast de éxito: confirma el envío mientras carga el iframe de agendamiento. */}
+  <div
+    id="success-toast"
+    class="pointer-events-none fixed inset-x-4 bottom-5 z-50 flex translate-y-2 justify-center opacity-0 transition-all duration-300 sm:inset-x-auto sm:right-5 sm:justify-end"
+    role="status"
+    aria-live="polite"
+  >
+    <div class="pointer-events-auto flex max-w-sm items-center gap-3 rounded-xl bg-accent-600 px-4 py-3.5 text-sm font-medium text-white shadow-lg">
+      <span class="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-white/20">
+        <Icon name="check" class="h-3.5 w-3.5" />
+      </span>
+      <span id="success-toast-text"></span>
+    </div>
+  </div>
 </section>
 
 <script
@@ -605,6 +620,25 @@ const meetingsUrl = whatsapp.url;
 
     step2BackBtn?.addEventListener('click', () => goToStep(1));
 
+    const toast = document.getElementById('success-toast');
+    const toastText = document.getElementById('success-toast-text');
+    let toastHideTimer = null;
+
+    function showToast(message) {
+      if (!toast || !toastText) return;
+      clearTimeout(toastHideTimer);
+      toastText.textContent = message;
+      toast.classList.remove('opacity-0', 'translate-y-2');
+      // Cierre automático de respaldo, por si el iframe nunca llega a cargar.
+      toastHideTimer = setTimeout(hideToast, 8000);
+    }
+
+    function hideToast() {
+      if (!toast) return;
+      clearTimeout(toastHideTimer);
+      toast.classList.add('opacity-0', 'translate-y-2');
+    }
+
     function showBanner(kind, message) {
       banner.textContent = message;
       banner.classList.remove('hidden', 'bg-red-50', 'text-red-700', 'bg-accent-50', 'text-accent-700');
@@ -686,6 +720,7 @@ const meetingsUrl = whatsapp.url;
         }
 
         window.trackEvent?.('form_submit_success', { form: 'contacto' });
+        showToast(states.success);
         showMeetings(payload.name, payload.email);
       } catch (error) {
         console.error('[contact-form] Error al enviar el formulario', error);
@@ -702,11 +737,20 @@ const meetingsUrl = whatsapp.url;
       const slot = document.getElementById('meetings-slot');
       if (!wrap || !slot || !MEETINGS_URL) {
         showBanner('success', states.success);
+        hideToast();
         return;
       }
       const params = new URLSearchParams({ embed: 'true' });
       if (email) params.set('email', email);
       if (name) params.set('firstName', name);
+
+      // El toast de éxito ya está visible; se oculta cuando el iframe termina de cargar
+      // (con un mínimo de tiempo en pantalla para que no desaparezca de golpe).
+      const toastShownAt = Date.now();
+      const dismissToastAfterLoad = () => {
+        const elapsed = Date.now() - toastShownAt;
+        setTimeout(hideToast, Math.max(0, 1200 - elapsed));
+      };
 
       const iframe = document.createElement('iframe');
       iframe.src = `${MEETINGS_URL}?${params.toString()}`;
@@ -715,6 +759,7 @@ const meetingsUrl = whatsapp.url;
       iframe.style.width = '100%';
       iframe.style.minHeight = '700px';
       iframe.style.border = '0';
+      iframe.addEventListener('load', dismissToastAfterLoad);
       slot.innerHTML = '';
       slot.appendChild(iframe);
 
