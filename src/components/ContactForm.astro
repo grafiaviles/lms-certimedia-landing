@@ -482,6 +482,12 @@ const meetingsUrl = whatsapp.url;
       'decisor_compra',
     ];
 
+    // Texto visible de la opción elegida (ej. "SENCE..."), en vez del código interno
+    // del <option value>, para que el correo y el Sheet muestren la descripción completa.
+    function selectedLabel_(el) {
+      return el?.selectedOptions?.[0]?.text || el?.value || '';
+    }
+
     function setFieldError(field, message) {
       field.el.classList.toggle('border-red-400', Boolean(message));
       field.el.setAttribute('aria-invalid', message ? 'true' : 'false');
@@ -637,12 +643,12 @@ const meetingsUrl = whatsapp.url;
         email: fields.email.el.value.trim(),
         phone: `+56 ${fields.phone.el.value.trim()}`,
         otec: fields.otec.el.value.trim(),
-        cursos_anio: fields.cursos_anio.el.value,
-        personas_anio: fields.personas_anio.el.value,
-        problema_principal: fields.problema_principal.el.value,
-        presupuesto: fields.presupuesto.el.value,
-        inicio_estimado: fields.inicio_estimado.el.value,
-        decisor_compra: fields.decisor_compra.el.value,
+        cursos_anio: selectedLabel_(fields.cursos_anio.el),
+        personas_anio: selectedLabel_(fields.personas_anio.el),
+        problema_principal: selectedLabel_(fields.problema_principal.el),
+        presupuesto: selectedLabel_(fields.presupuesto.el),
+        inicio_estimado: selectedLabel_(fields.inicio_estimado.el),
+        decisor_compra: selectedLabel_(fields.decisor_compra.el),
         message: document.getElementById('message').value.trim(),
         dnc_realizado: document.getElementById('dnc_realizado').checked ? 'Sí' : 'No',
         source: 'landing-certimedia',
